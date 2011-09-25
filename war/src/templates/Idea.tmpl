@@ -1,0 +1,11 @@
+<div data-role="collapsible" {{if first}} data-collapsed="false" {{else}} data-collapsed="true" {{/if}}>
+  <h3>${title}</h3>
+  <p>
+    ${description}
+  </p>
+  <fb:like href="./pages/ideas/${id}.html"
+	   layout="button_count"
+	   show_faces="false"
+	   action="like"
+	   colorscheme="light"></fb:like>
+</div>
