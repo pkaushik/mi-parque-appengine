@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:fb="http://www.facebook.com/2008/fbml">
 <head>
-  <meta charset="utf-8" />
-  <title>Little Village</title>
-  <meta property="fb:app_id" content="281417341887864" />
-  <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-  <link rel="apple-touch-icon" href="./images/appicon.png">
-  <link rel="apple-touch-icon-precomposed" href="./images/appicon.png"/>
-  <link rel="stylesheet" href="./lib/jquery/jquery.mobile/jquery.mobile.min.css" />
-  <link rel="stylesheet" href="./css/main.css" />
+<meta charset="utf-8" />
+<title>Little Village</title>
+<meta property="fb:app_id" content="281417341887864" />
+<meta name="viewport"
+	content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<link rel="apple-touch-icon" href="./images/appicon.png">
+<link rel="apple-touch-icon-precomposed" href="./images/appicon.png" />
+<link rel="stylesheet"
+	href="./lib/jquery/jquery.mobile/jquery.mobile.min.css" />
+<link rel="stylesheet" href="./css/main.css" />
 </head>
-<body> 
-  <div id="fb-root"></div>
-  <script src="http://connect.facebook.net/es_MX/all.js#appId=281417341887864&xfbml=1"></script>
-  <script>
+<body>
+	<div id="fb-root"></div>
+	<script
+		src="http://connect.facebook.net/es_MX/all.js#appId=281417341887864&xfbml=1"></script>
+	<script>
     FB.init({
       appId:'281417341887864', 
       cookie:true,
@@ -45,74 +48,72 @@
       );
     });
   </script>
-  
-    <div data-role="page" class="type-interior">
-      <div data-role="header" data-theme="f">
-        <h1>Mi Parque</h1>
-        <a href="#" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
-      </div><!-- /header -->
-      <div data-role="content" data-theme="c">
-        <div class="content-primary">
-          <h2>Bienvenidos a Little Village<span id="welcome-text"></span>!</h2>
-          <h3>“Be the change you want to see in the world.” - Mahatma Gandhi</h3>
 
-          <!-- Change this URL when testing -->
-          <div id="login-button" class="facebook-plugin">
-            <fb:login-button registration-url="http://mi-parque.appspot.com/index.html#miembro" />
-          </div>
-          
-          <div id="activity-stream" class="facebook-plugin">
-            <fb:activity site="mi-parque.appspot.com" header="false" width="625" height="175" font="arial" border_color="#EDEDED"></fb:activity>
-          </div>
-          
-        </div>
-        
-        <div class="content-secondary">
-          <div data-role="collapsible" data-collapsed="false" data-theme="b">
-            <ul data-role="listview"  data-theme="c" data-dividertheme="d">
-              <li data-theme="a">
-                <a href="#">Mi Parque</a>
-              </li>
-              <li>
-                <a href="#idea">Mi Idea</a>
-              </li>
-              <li>
-                <a href="#voto">Mi Voto</a>
-              </li>
-              <li>
-                <a href="#aviso">Mi Aviso</a>
-              </li>
-              <li>
-                <a href="#mapa">Mi Mapa</a>
-              </li>
-              <li>
-                <a href="#" class="ui-disabled">Mi Calendario</a>
-              </li>
-              <li>
-                <a href="#" class="ui-disabled">Mi Voluntario</a>
-              </li>
-            </ul>
-          </div><!--/collapsible -->
-        </div><!--/content-secondary -->
-      </div><!--/content -->
-      
-      <div data-role="footer" class="footer-docs" data-theme="c">
-        <p>
-          &copy; Open Youth Networks
-        </p>
-      </div>
-    </div><!-- /page -->
-    
-    <!-- Miembro Page Starts Here ------------------------------------------------------------>
-    <div id="miembro" data-role="page" class="type-interior">
-      <div data-role="header" data-theme="f">
-        <h1>Mi Parque</h1>
-        <a href="./index.html" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
-      </div><!-- /header -->
-      <div data-role="content" data-theme="c">
-        <!-- redirect_uri=https%3A%2F%2Fmi-parque.appspot.com%2F&    http%3A%2F%2F192.168.1.106%2F~pallavi%2Fmi-parque%2F-->
-        <div class="content-primary">
-          <iframe src="https://www.facebook.com/plugins/registration.php?
+	<div data-role="page" class="type-interior">
+		<div data-role="header" data-theme="f">
+			<h1>Mi Parque</h1>
+			<a href="#" data-icon="home" data-iconpos="notext"
+				data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
+		</div>
+		<!-- /header -->
+		<div data-role="content" data-theme="c">
+			<div class="content-primary">
+				<h2>
+					Bienvenidos a Little Village<span id="welcome-text"></span>!
+				</h2>
+				<h3>“Be the change you want to see in the world.” - Mahatma
+					Gandhi</h3>
+
+				<!-- Change this URL when testing -->
+				<div id="login-button" class="facebook-plugin">
+					<fb:login-button
+						registration-url="http://mi-parque.appspot.com/index.html#miembro" />
+				</div>
+
+				<div id="activity-stream" class="facebook-plugin">
+					<fb:activity site="mi-parque.appspot.com" header="false"
+						width="625" height="175" font="arial" border_color="#EDEDED"></fb:activity>
+				</div>
+
+			</div>
+
+			<div class="content-secondary">
+				<div data-role="collapsible" data-collapsed="false" data-theme="b">
+					<ul data-role="listview" data-theme="c" data-dividertheme="d">
+						<li data-theme="a"><a href="#">Mi Parque</a></li>
+						<li><a href="#idea">Mi Idea</a></li>
+						<li><a href="#voto">Mi Voto</a></li>
+						<li><a href="#aviso">Mi Aviso</a></li>
+						<li><a href="#mapa">Mi Mapa</a></li>
+						<li><a href="#" class="ui-disabled">Mi Calendario</a></li>
+						<li><a href="#" class="ui-disabled">Mi Voluntario</a></li>
+					</ul>
+				</div>
+				<!--/collapsible -->
+			</div>
+			<!--/content-secondary -->
+		</div>
+		<!--/content -->
+
+		<div data-role="footer" class="footer-docs" data-theme="c">
+			<p>&copy; Open Youth Networks</p>
+		</div>
+	</div>
+	<!-- /page -->
+
+	<!-- Miembro Page Starts Here ------------------------------------------------------------>
+	<div id="miembro" data-role="page" class="type-interior">
+		<div data-role="header" data-theme="f">
+			<h1>Mi Parque</h1>
+			<a href="./index.html" data-icon="home" data-iconpos="notext"
+				data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
+		</div>
+		<!-- /header -->
+		<div data-role="content" data-theme="c">
+			<!-- redirect_uri=https%3A%2F%2Fmi-parque.appspot.com%2F&    http%3A%2F%2F192.168.1.106%2F~pallavi%2Fmi-parque%2F-->
+			<div class="content-primary">
+				<iframe
+					src="https://www.facebook.com/plugins/registration.php?
             client_id=281417341887864&
             fb_only=true&
             fb_register=true&
@@ -143,277 +144,223 @@
                {'name':'send-weather-pollution-alerts', 'description':'Send me Community health, weather and pollution alerts', 'type':'checkbox',  'default':'none'},
                {'name':'captcha'}
             ]"
-            scrolling="auto"
-            frameborder="no"
-            style="border:none"
-            allowTransparency="true"
-            width="100%"
-            height="570">
-          </iframe> 
-        </div>
-        
-        <div class="content-secondary">
-          <div data-role="collapsible" data-collapsed="false" data-theme="b">
-            <ul data-role="listview"  data-theme="c" data-dividertheme="d">
-              <li data-theme="a">
-                <a href="#">Mi Miembro</a>
-              </li>
-              <li>
-                <a href="#idea">Mi Idea</a>
-              </li>
-              <li>
-                <a href="#voto">Mi Voto</a>
-              </li>
-              <li>
-                <a href="#aviso">Mi Aviso</a>
-              </li>
-              <li>
-                <a href="#mapa">Mi Mapa</a>
-              </li>
-              <li>
-                <a href="#" class="ui-disabled">Mi Calendario</a>
-              </li>
-              <li>
-                <a href="#" class="ui-disabled">Mi Voluntario</a>
-              </li>
-            </ul>
-          </div><!--/collapsible -->
-        </div><!--/content-secondary -->
-      </div><!--/content -->
-      
-      <div data-role="footer" class="footer-docs" data-theme="c">
-        <p>
-          &copy; Open Youth Networks
-        </p>
-      </div>
-    </div><!-- /page -->
-    
-    
-     
-    <!-- Voto Page Starts Here ------------------------------------------------------------>
- 
-    <div id="voto" data-role="page" class="type-interior">
-      <div data-role="header" data-theme="f">
-        <h1>Mi Voto</h1>
-        <a href="./index.html" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
-      </div><!-- /header -->
-      <div data-role="content" data-theme="c">
-        <div class="content-primary">
-        </div><!--/content-primary -->  
-        <div class="content-secondary">
-          <div data-role="collapsible" data-collapsed="false" data-theme="b">
-            <ul data-role="listview"  data-theme="c" data-dividertheme="d">
-              <li>
-                <a href="index.html">Mi Parque</a>
-              </li>
-              <li>
-                <a href="#idea">Mi Idea</a>
-              </li>
-              <li data-theme="a">
-                <a href="#">Mi Voto</a>
-              </li>
-              <li>
-                <a href="#aviso">Mi Aviso</a>
-              </li>
-              <li>
-                <a href="#mapa">Mi Mapa</a>
-              </li>
-              <li>
-                <a href="#" class="ui-disabled">Mi Calendario</a>
-              </li>
-              <li>
-                <a href="#" class="ui-disabled">Mi Voluntario</a>
-              </li>
-            </ul>
-          </div><!--/collapsible -->
-        </div><!--/content-secondary -->
-      </div><!--/content -->
-      
-      <div data-role="footer" class="footer-docs" data-theme="c">
-        <p>
-          &copy; Open Youth Networks
-        </p>
-      </div>
-    </div><!-- /page -->
-	
+					scrolling="auto" frameborder="no" style="border: none"
+					allowTransparency="true" width="100%" height="570"> </iframe>
+			</div>
+
+			<div class="content-secondary">
+				<div data-role="collapsible" data-collapsed="false" data-theme="b">
+					<ul data-role="listview" data-theme="c" data-dividertheme="d">
+						<li data-theme="a"><a href="#">Mi Miembro</a></li>
+						<li><a href="#idea">Mi Idea</a></li>
+						<li><a href="#voto">Mi Voto</a></li>
+						<li><a href="#aviso">Mi Aviso</a></li>
+						<li><a href="#mapa">Mi Mapa</a></li>
+						<li><a href="#" class="ui-disabled">Mi Calendario</a></li>
+						<li><a href="#" class="ui-disabled">Mi Voluntario</a></li>
+					</ul>
+				</div>
+				<!--/collapsible -->
+			</div>
+			<!--/content-secondary -->
+		</div>
+		<!--/content -->
+
+		<div data-role="footer" class="footer-docs" data-theme="c">
+			<p>&copy; Open Youth Networks</p>
+		</div>
+	</div>
+	<!-- /page -->
+
+
+
+	<!-- Voto Page Starts Here ------------------------------------------------------------>
+
+	<div id="voto" data-role="page" class="type-interior">
+		<div data-role="header" data-theme="f">
+			<h1>Mi Voto</h1>
+			<a href="./index.html" data-icon="home" data-iconpos="notext"
+				data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
+		</div>
+		<!-- /header -->
+		<div data-role="content" data-theme="c">
+			<div class="content-primary"></div>
+			<!--/content-primary -->
+			<div class="content-secondary">
+				<div data-role="collapsible" data-collapsed="false" data-theme="b">
+					<ul data-role="listview" data-theme="c" data-dividertheme="d">
+						<li><a href="index.html">Mi Parque</a></li>
+						<li><a href="#idea">Mi Idea</a></li>
+						<li data-theme="a"><a href="#">Mi Voto</a></li>
+						<li><a href="#aviso">Mi Aviso</a></li>
+						<li><a href="#mapa">Mi Mapa</a></li>
+						<li><a href="#" class="ui-disabled">Mi Calendario</a></li>
+						<li><a href="#" class="ui-disabled">Mi Voluntario</a></li>
+					</ul>
+				</div>
+				<!--/collapsible -->
+			</div>
+			<!--/content-secondary -->
+		</div>
+		<!--/content -->
+
+		<div data-role="footer" class="footer-docs" data-theme="c">
+			<p>&copy; Open Youth Networks</p>
+		</div>
+	</div>
+	<!-- /page -->
+
 	<!--Aviso Page Starts Here------------------------------------------------------------>
-	
+
 	<div id="aviso" data-role="page" class="type-interior">
-      <div data-role="header" data-theme="f">
-        <h1>Mi Aviso</h1>
-        <a href="./index.html" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
-      </div><!-- /header -->
-      <div data-role="content" data-theme="c">
-        <div class="content-primary">
+		<div data-role="header" data-theme="f">
+			<h1>Mi Aviso</h1>
+			<a href="./index.html" data-icon="home" data-iconpos="notext"
+				data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
+		</div>
+		<!-- /header -->
+		<div data-role="content" data-theme="c">
+			<div class="content-primary"></div>
+			<!--/content-primary -->
 
-        </div><!--/content-primary -->
-        
-        <div class="content-secondary">
-          <div data-role="collapsible" data-collapsed="false" data-theme="b">
-            <ul data-role="listview"  data-theme="c" data-dividertheme="d">
-              <li>
-                <a href="./index.html">Mi Parque</a>
-              </li>
-              <li>
-                <a href="#idea">Mi Idea</a>
-              </li>
-              <li>
-                <a href="#voto">Mi Voto</a>
-              </li>
-              <li data-theme="a">
-                <a href="#">Mi Aviso</a>
-              </li>
-              <li>
-                <a href="#mapa">Mi Mapa</a>
-              </li>
-              <li>
-                <a href="#" class="ui-disabled">Mi Calendario</a>
-              </li>
-              <li>
-                <a href="#" class="ui-disabled">Mi Voluntario</a>
-              </li>
-            </ul>
-          </div><!--/collapsible -->
-        </div><!--/content-secondary -->
-      </div><!--/content -->
-      
-      <div data-role="footer" class="footer-docs" data-theme="c">
-        <p>
-          &copy; Open Youth Networks
-        </p>
-      </div>
-    </div><!-- /page -->
-	
+			<div class="content-secondary">
+				<div data-role="collapsible" data-collapsed="false" data-theme="b">
+					<ul data-role="listview" data-theme="c" data-dividertheme="d">
+						<li><a href="./index.html">Mi Parque</a></li>
+						<li><a href="#idea">Mi Idea</a></li>
+						<li><a href="#voto">Mi Voto</a></li>
+						<li data-theme="a"><a href="#">Mi Aviso</a></li>
+						<li><a href="#mapa">Mi Mapa</a></li>
+						<li><a href="#" class="ui-disabled">Mi Calendario</a></li>
+						<li><a href="#" class="ui-disabled">Mi Voluntario</a></li>
+					</ul>
+				</div>
+				<!--/collapsible -->
+			</div>
+			<!--/content-secondary -->
+		</div>
+		<!--/content -->
+
+		<div data-role="footer" class="footer-docs" data-theme="c">
+			<p>&copy; Open Youth Networks</p>
+		</div>
+	</div>
+	<!-- /page -->
+
 	<!-- Mi Idea page starts here-->
-	<div id ="idea" data-role="page" class="type-interior">
-      <div data-role="header" data-theme="f">
-        <h1>Mi Idea</h1>
-        <a href="./index.html" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
-      </div><!-- /header -->
-      <div data-role="content" data-theme="c">
-        <div class="content-primary">
-          <p>View your ideas for MiParque including ideas of what we should name the park, activities, festivals and other uses.</p>
-          <!-- Idea Collection Anchored Here -->
-          <div data-role="listview" data-inset="true"  id="Ideas">
-          </div>
-          
-        </div><!--/content-primary -->
-        
-        <div class="content-secondary">
-          <div data-role="collapsible" data-collapsed="false" data-theme="b">
-            <ul data-role="listview"  data-theme="c" data-dividertheme="d">
-              <li>
-                <a href="./index.html">Mi Parque</a>
-              </li>
-              <li data-theme="a">
-                <a href="#">Mi Idea</a>
-              </li>
-              <li>
-                <a href="#voto">Mi Voto</a>
-              </li>
-              <li>
-                <a href="#aviso">Mi Aviso</a>
-              </li>
-              <li>
-                <a href="#mapa">Mi Mapa</a>
-              </li>
-              <li>
-                <a href="#" class="ui-disabled">Mi Calendario</a>
-              </li>
-              <li>
-                <a href="#" class="ui-disabled">Mi Voluntario</a>
-              </li>
-            </ul>
-          </div><!--/collapsible -->
-        </div><!--/content-secondary -->
-		
-      </div><!--/content -->
-      
-      <div data-role="footer" class="footer-docs" data-theme="c">
-        <p>
-          &copy; Open Youth Networks
-        </p>
-      </div>
-    </div><!-- /ideapage -->
-    	
-	<!--Mi mapa page starts here------------------------------------------------------------------->
-	
-	<div id="mapa" data-role="page" class="type-interior">
-      <div data-role="header" data-theme="f">
-        <h1>Mi Mapa</h1>
-        <a href="./index.html" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
-      </div><!-- /header -->
-      <div data-role="content" data-theme="c">
-        <div class="content-primary">
-          <div id="map"></div>
-        </div><!--/content-primary -->
-        
-        <div class="content-secondary">
-          <div data-role="collapsible" data-collapsed="false" data-theme="b">
-            <ul data-role="listview"  data-theme="c" data-dividertheme="d">
-              <li>
-                <a href="./index.html">Mi Parque</a>
-              </li>
-              <li>
-                <a href="#idea">Mi Idea</a>
-              </li>
-              <li>
-                <a href="#voto">Mi Voto</a>
-              </li>
-              <li>
-                <a href="#aviso">Mi Aviso</a>
-              </li>
-              <li data-theme="a">
-                <a href="#">Mi Mapa</a>
-              </li>
-              <li>
-                <a href="#" class="ui-disabled">Mi Calendario</a>
-              </li>
-              <li>
-                <a href="#" class="ui-disabled">Mi Voluntario</a>
-              </li>
-            </ul>
-          </div><!--/collapsible -->
-        </div><!--/content-secondary -->
-      </div><!--/content -->
-      
-      <div data-role="footer" class="footer-docs" data-theme="c">
-        <p>
-          &copy; Open Youth Networks
-        </p>
-      </div>
-    </div><!-- /page -->
-    
-    
-    <!-- Vendor Stuff Goes Here -->
-    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false">
-    </script>
-    <script src="./lib/jquery/jquery.min.js">
-    </script>
-    <script src="./lib/jquery/jquery.tmpl.min.js">
-    </script>
-    <script src="./lib/jquery/jquery.dateformat.js">
-    </script>
-    <script src="./lib/jquery/jquery.callout.js">
-    </script>
-    <script src="./lib/underscore/underscore-min.js">
-    </script>
-    <script src="./lib/backbone/backbone-min.js">
-    </script>
-    <script src="./lib/backbone-relational/backbone-relational.js">
-    </script>
-    <script src="./lib/google-geojson/GeoJSON.js">
-    </script>
-    <script src="./lib/google-maps-utility-library/infobubble.js">
-    </script>
-    <script src="./lib/jquery/jquery.mobile/jquery.mobile.min.js">
-    </script>
-   
-    <!-- Our Stuff Below This -->
+	<div id="idea" data-role="page" class="type-interior">
+		<div data-role="header" data-theme="f">
+			<h1>Mi Idea</h1>
+			<a href="./index.html" data-icon="home" data-iconpos="notext"
+				data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
+		</div>
+		<!-- /header -->
+		<div data-role="content" data-theme="c">
+			<div class="content-primary">
+				<p>View your ideas for MiParque including ideas of what we
+					should name the park, activities, festivals and other uses.</p>
+				<!-- Idea Collection Anchored Here -->
+				<div data-role="listview" data-inset="true" id="Ideas"></div>
 
-    <script type="text/javascript" src="./src/helpers/lib.js">
+			</div>
+			<!--/content-primary -->
+
+			<div class="content-secondary">
+				<div data-role="collapsible" data-collapsed="false" data-theme="b">
+					<ul data-role="listview" data-theme="c" data-dividertheme="d">
+						<li><a href="./index.html">Mi Parque</a></li>
+						<li data-theme="a"><a href="#">Mi Idea</a></li>
+						<li><a href="#voto">Mi Voto</a></li>
+						<li><a href="#aviso">Mi Aviso</a></li>
+						<li><a href="#mapa">Mi Mapa</a></li>
+						<li><a href="#" class="ui-disabled">Mi Calendario</a></li>
+						<li><a href="#" class="ui-disabled">Mi Voluntario</a></li>
+					</ul>
+				</div>
+				<!--/collapsible -->
+			</div>
+			<!--/content-secondary -->
+
+		</div>
+		<!--/content -->
+
+		<div data-role="footer" class="footer-docs" data-theme="c">
+			<p>&copy; Open Youth Networks</p>
+		</div>
+	</div>
+	<!-- /ideapage -->
+
+	<!--Mi mapa page starts here------------------------------------------------------------------->
+
+	<div id="mapa" data-role="page" class="type-interior">
+		<div data-role="header" data-theme="f">
+			<h1>Mi Mapa</h1>
+			<a href="./index.html" data-icon="home" data-iconpos="notext"
+				data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
+		</div>
+		<!-- /header -->
+		<div data-role="content" data-theme="c">
+			<div class="content-primary">
+				<div id="map"></div>
+			</div>
+			<!--/content-primary -->
+
+			<div class="content-secondary">
+				<div data-role="collapsible" data-collapsed="false" data-theme="b">
+					<ul data-role="listview" data-theme="c" data-dividertheme="d">
+						<li><a href="./index.html">Mi Parque</a></li>
+						<li><a href="#idea">Mi Idea</a></li>
+						<li><a href="#voto">Mi Voto</a></li>
+						<li><a href="#aviso">Mi Aviso</a></li>
+						<li data-theme="a"><a href="#">Mi Mapa</a></li>
+						<li><a href="#" class="ui-disabled">Mi Calendario</a></li>
+						<li><a href="#" class="ui-disabled">Mi Voluntario</a></li>
+					</ul>
+				</div>
+				<!--/collapsible -->
+			</div>
+			<!--/content-secondary -->
+		</div>
+		<!--/content -->
+
+		<div data-role="footer" class="footer-docs" data-theme="c">
+			<p>&copy; Open Youth Networks</p>
+		</div>
+	</div>
+	<!-- /page -->
+
+
+	<!-- Vendor Stuff Goes Here -->
+	<script type="text/javascript"
+		src="http://maps.google.com/maps/api/js?sensor=false">
     </script>
-    <script type="text/javascript" data-main="src/main" src="lib/require/require.js">
+	<script src="./lib/jquery/jquery.min.js">
     </script>
-  </body>
+	<script src="./lib/jquery/jquery.tmpl.min.js">
+    </script>
+	<script src="./lib/jquery/jquery.dateformat.js">
+    </script>
+	<script src="./lib/jquery/jquery.callout.js">
+    </script>
+	<script src="./lib/underscore/underscore-min.js">
+    </script>
+	<script src="./lib/backbone/backbone-min.js">
+    </script>
+	<script src="./lib/backbone-relational/backbone-relational.js">
+    </script>
+	<script src="./lib/google-geojson/GeoJSON.js">
+    </script>
+	<script src="./lib/google-maps-utility-library/infobubble.js">
+    </script>
+	<script src="./lib/jquery/jquery.mobile/jquery.mobile.min.js">
+    </script>
+
+	<!-- Our Stuff Below This -->
+
+	<script type="text/javascript" src="./src/helpers/lib.js">
+    </script>
+	<script type="text/javascript" data-main="src/main"
+		src="lib/require/require.js">
+    </script>
+</body>
 </html>
