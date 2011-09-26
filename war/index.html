@@ -21,10 +21,10 @@
 	<!--  development mode URL: http://192.168.1.106/~pallavi/mi-parque-appengine/war/index.html#miembro -->
 				
 	<script
-		src="http://connect.facebook.net/es_MX/all.js#appId=197826130288025&xfbml=1"></script>
+		src="http://connect.facebook.net/es_MX/all.js#appId=281417341887864&xfbml=1"></script>
 	<script>
     FB.init({
-      appId:'197826130288025', 
+      appId:'281417341887864', 
       cookie:true,
       status:true, 
       xfbml:true
@@ -32,17 +32,17 @@
     
     FB.getLoginStatus(function(response) {
     	
-    	console.log(response)
-    	console.log(response.status !== "unknown")
       // if we dont have a session, just hide the user info
       if (!response.session) {
         $("#welcome").hide('fast');
+        // additionally, if status is not known, hide the login buttons with all social plugins
         if (response.status === "unknown") {
           $(".fba").addClass("hide-plugin-login-button");
         }
         return;
       } 
       
+      // hide the login button if the user is already connected to the app
       if (response.status === "connected") {
     	$("#login-button").hide('fast');
       } 
@@ -81,7 +81,7 @@
 				<!--  development mode URL: http://192.168.1.106/~pallavi/mi-parque-appengine/war/index.html#miembro -->
 				<div id="login-button" class="facebook-plugin">
 					<fb:login-button
-						registration-url="http://192.168.1.106/~pallavi/mi-parque-appengine/war/index.html#miembro" />
+						registration-url="http://mi-parque.appspot.com/index.html#miembro" />
 				</div>
 
 				<div class="facebook-plugin fba">
@@ -130,10 +130,10 @@
 			<div class="content-primary">
 				<iframe
 					src="https://www.facebook.com/plugins/registration.php?
-            client_id=	197826130288025&
+            client_id=281417341887864&
             fb_only=true&
             fb_register=true&
-            redirect_uri=http%3A%2F%2F192.168.1.106%2F~pallavi%2Fmi-parque-appengine%2Fwar%2Findex.html&
+            redirect_uri=http%3A%2F%2Fmi-parque.appspot.com%2F&
             perms='email,sms'&
             fields=[
                {'name':'name'},
@@ -155,9 +155,9 @@
                  'description':'Mobile Number (to receive text notifications)',             
                  'type':'text'
                },
-               {'name':'send-fb-activity', 'description':'Send me Aviso (news and alerts) from LVEJO', 'type':'checkbox',  'default':'checked'},
-               {'name':'send-voluntario', 'description':'Send me Volunteer Opportunities Digest', 'type':'checkbox',  'default':'none'},
-               {'name':'send-weather-pollution-alerts', 'description':'Send me Community health, weather and pollution alerts', 'type':'checkbox',  'default':'none'},
+               {'name':'send-1', 'description':'Send me Aviso news and alerts from LVEJO', 'type':'checkbox',  'default':'none'},
+               {'name':'send-2', 'description':'Send me Volunteer Opportunities', 'type':'checkbox',  'default':'none'},
+               {'name':'send-3', 'description':'Send me health, weather and pollution alerts', 'type':'checkbox',  'default':'checked'},
                {'name':'captcha'}
             ]"
 					scrolling="auto" frameborder="no" style="border: none"
