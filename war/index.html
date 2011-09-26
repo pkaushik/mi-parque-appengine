@@ -37,7 +37,7 @@
         $("#welcome").hide('fast');
         // additionally, if status is not known, hide the login buttons with all social plugins
         if (response.status === "unknown") {
-          $(".facebook-auto-login-button").addClass("hide-plugin-login-button");
+          $(".facebook-auto-login-button").addClass("hide-auto-login-button");
         }
         return;
       } 
