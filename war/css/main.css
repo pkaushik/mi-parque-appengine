@@ -9,7 +9,15 @@ h3 {
   margin: 3px 0px 3px 0px;
   padding: 3px 0px 3px 0px;
   color: #343434;
-} 
+}
+
+div.hide-plugin-login-button {
+  overflow:hidden;
+}
+
+div.hide-plugin-login-button iframe {
+  margin-top:-38px;
+}
 
 
 
@@ -73,11 +81,15 @@ p.intro strong {
   background: #fff;
   border-top: 1px solid #ccc;
 }
+
 .type-home .ui-content {
   margin-top: 5px;
 }
 .type-interior .ui-content {
   padding-bottom: 0;
+}
+.ui-content {
+  background: #fff;
 }
 .content-secondary .ui-collapsible-contain {
   padding: 10px 15px;
@@ -187,11 +199,12 @@ dd h4 { margin:15px 0 0 0; }
   .type-home .ui-content,
   .type-interior .ui-content {
     padding: 0;
-    background: url(../images/px-ccc.gif) 50% 0 repeat-y;
   }
   .type-interior .ui-content {
     background-position: 45%;
     overflow: hidden;
+    background: #e0e0e0;
+    
   }
   .content-secondary {
     text-align: left;
