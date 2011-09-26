@@ -37,7 +37,7 @@
         $("#welcome").hide('fast');
         // additionally, if status is not known, hide the login buttons with all social plugins
         if (response.status === "unknown") {
-          $(".fba").addClass("hide-plugin-login-button");
+          $(".facebook-auto-login-button").addClass("hide-plugin-login-button");
         }
         return;
       } 
@@ -84,7 +84,7 @@
 						registration-url="http://mi-parque.appspot.com/index.html#miembro" />
 				</div>
 
-				<div class="facebook-plugin fba">
+				<div class="facebook-plugin facebook-auto-login-button">
 					<fb:activity site="mi-parque.appspot.com" header="false"
 						width="625" height="175" font="arial" border_color="#e0e0e0"></fb:activity>
 				</div>

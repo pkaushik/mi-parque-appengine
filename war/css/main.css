@@ -11,11 +11,11 @@ h3 {
   color: #343434;
 }
 
-div.hide-plugin-login-button {
+div.hide-auto-login-button {
   overflow:hidden;
 }
 
-div.hide-plugin-login-button iframe {
+div.hide-auto-login-button iframe {
   margin-top:-38px;
 }
 
