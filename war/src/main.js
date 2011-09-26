@@ -1,9 +1,4 @@
 // Some preliminary global setup
-$(function(){
-  $('body').delegate('.content-secondary .ui-collapsible-content', 'click',  function(){
-    $(this).trigger("collapse")
-  });
-});
 
 function setDefaultTransition(){
   var winwidth = $( window ).width(),
