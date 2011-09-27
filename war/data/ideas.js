@@ -23,14 +23,10 @@ define(function(){
 	    "description": "I’m only 12 but I want to play basketball in my park, could we have a kids size basketball park?"
 	  }, {
 	    "id": "6",
-	    "title": "Soccer Field?",
-	    "description": "My friends and I really want a soccer field. Can we have space for a soccer field in our new park? We could even get a group together for field maintenance."
-	  }, {
-	    "id": "7",
 	    "title": "Graffiti Art",
 	    "description": "Can we have a community mural wall for graffiti artists? We promise to keep it clean."
 	  }, {
-	    "id": "8",
+	    "id": "7",
 	    "title": "Neighborhood Watch",
 	    "description": "How are we going to keep our park safe? This concerned mother needs to know her kids are hanging out in a safe place. If we could organize a community watch I’d be glad to participate. I’m a stay-at-home mom so I could keep my eye on the north-east side of the park Monday through Friday 9-3. Anyone else willing to lend a hand?"
 	  }
