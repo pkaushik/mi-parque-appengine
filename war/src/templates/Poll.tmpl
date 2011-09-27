@@ -1,0 +1,15 @@
+<div data-role="collapsible" {{if first}} data-collapsed="false" {{else}} data-collapsed="true"{{/if}} data-theme="d" >
+  <h3>${title}</h3>
+  <p>
+    ${description}
+  </p>
+  <div data-role="fieldcontain">
+    <fieldset data-role="controlgroup" style="width: 80%">
+     {{each choices}}
+       <input {{if multiple}} type="checkbox" {{else}} type="radio" {{/if}} name="poll-choice-${id}-${$value.index}" id="poll-choice-${id}-${$value.index}" data-theme="d" value="poll-choice-${id}-${$value.index}" />
+       <label for="poll-choice-${id}-${$value.index}">${$value.choice}</label>
+     {{/each}}
+    </fieldset>
+  </div>
+  <a href="#" data-role="button" data-inline="true" data-icon="check">Submit</a>
+</div>

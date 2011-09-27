@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <title>Little Village</title>
-<meta property="fb:app_id" content="281417341887864" />
+<meta property="fb:app_id" content="197826130288025" />
 <meta name="viewport"
 	content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -21,10 +21,10 @@
 	<!--  development mode URL: http://192.168.1.106/~pallavi/mi-parque-appengine/war/index.html#miembro -->
 				
 	<script
-		src="http://connect.facebook.net/es_MX/all.js#appId=281417341887864&xfbml=1"></script>
+		src="http://connect.facebook.net/es_MX/all.js#appId=197826130288025&xfbml=1"></script>
 	<script>
     FB.init({
-      appId:'281417341887864', 
+      appId:'197826130288025', 
       cookie:true,
       status:true, 
       xfbml:true
@@ -81,12 +81,11 @@
 				<!--  development mode URL: http://192.168.1.106/~pallavi/mi-parque-appengine/war/index.html#miembro -->
 				<div id="login-button" class="facebook-plugin">
 					<fb:login-button
-						registration-url="http://mi-parque.appspot.com/index.html#miembro" />
+						registration-url="http://192.168.1.106/~pallavi/mi-parque-appengine/war/index.html#miembro" />
 				</div>
 
 				<div class="facebook-plugin facebook-auto-login-button">
-					<fb:activity site="mi-parque.appspot.com" header="false"
-						width="625" height="175" font="arial" border_color="#e0e0e0"></fb:activity>
+					<fb:activity site="mi-parque.appspot.com" header="false" width="625" height="175" border_color="#e0e0e0"></fb:activity>
 				</div>
 
 			</div>
@@ -130,10 +129,10 @@
 			<div class="content-primary">
 				<iframe
 					src="https://www.facebook.com/plugins/registration.php?
-            client_id=281417341887864&
+            client_id=197826130288025&
             fb_only=true&
             fb_register=true&
-            redirect_uri=http%3A%2F%2Fmi-parque.appspot.com%2F&
+            redirect_uri=http%3A%2F%2F192.168.1.106%2F~pallavi%2Fmi-parque-appengine%2Fwar%2Findex.html&
             perms='email,sms'&
             fields=[
                {'name':'name'},
@@ -200,7 +199,12 @@
 		</div>
 		<!-- /header -->
 		<div data-role="content" data-theme="c">
-			<div class="content-primary"></div>
+			<div class="content-primary">
+			    <p>Vote for community decisions related to MiParque including what we
+					should name the park, activities, festivals and other uses.</p>
+			    <!-- Idea Collection Anchored Here -->
+				<div data-role="collapsible-set" id="Polls"></div>
+			</div>
 			<!--/content-primary -->
 			<div class="content-secondary">
 				<div data-role="collapsible" data-collapsed="false" data-theme="b">
@@ -273,11 +277,8 @@
 		<!-- /header -->
 		<div data-role="content" data-theme="c">
 			<div class="content-primary">
-				<p>View your ideas for MiParque including ideas of what we
-					should name the park, activities, festivals and other uses.</p>
 				<!-- Idea Collection Anchored Here -->
-				<div data-role="listview" data-inset="true" id="Ideas"></div>
-
+				<div data-role="collapsible-set" id="Ideas"></div>
 			</div>
 			<!--/content-primary -->
 

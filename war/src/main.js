@@ -25,20 +25,12 @@ require(
     urlArgs: "bust=" +  (new Date()).getTime() // for cache busting when running off file system
   },
   [
-    'App'
+    'App',
+    '../data/ideas',
+	'../data/polls'
   ], 
-  function(App) { 
-    $.ajax({
-      url: "data/ideas.json",
-      type: "GET",
-      dataType: "json",
-      success: function(ideas) {
-        App.start(ideas); 
-      },
-      error: function(arg, arg1) {
-        console.log("XHR error: " + arg1)
-      }
-    });
+  function(App, ideas, polls) {
+    App.start(ideas, polls);
   }
 );
 

@@ -17,6 +17,7 @@ div.hide-auto-login-button {
 
 div.hide-auto-login-button iframe {
   margin-top:-38px;
+  width: 100%;
 }
 
 
@@ -31,11 +32,9 @@ cobblers, shoes,
 
 body { background: #dddddd; }
 
-.ui-mobile .type-home .ui-content { margin: 0; background: #e5e5e5 url(../images/jqm-sitebg.png) top center repeat-x; }
 .ui-mobile #jqm-homeheader { padding: 40px 10px 0; text-align: center;  margin: 0 auto; }
 .ui-mobile #jqm-homeheader h1 { margin: 0 0 ; }
 .ui-mobile #jqm-homeheader p { margin: .3em 0 0; line-height: 1.3; font-size: .9em; font-weight: bold; color: #666; }
-.ui-mobile #jqm-version { text-indent: -99999px; background: url(../images/version.png) top right no-repeat; width: 119px; height: 122px; overflow: hidden; position: absolute; z-index: 50; top: 0; right: 0; }
 .ui-mobile .jqm-themeswitcher { margin: 10px 25px 10px 10px;  }
 
 h2 { margin:1.2em 0 .4em 0; }
@@ -88,9 +87,7 @@ p.intro strong {
 .type-interior .ui-content {
   padding-bottom: 0;
 }
-.ui-content {
-  background: #fff;
-}
+
 .content-secondary .ui-collapsible-contain {
   padding: 10px 15px;
 
@@ -203,8 +200,6 @@ dd h4 { margin:15px 0 0 0; }
   .type-interior .ui-content {
     background-position: 45%;
     overflow: hidden;
-    background: #e0e0e0;
-    
   }
   .content-secondary {
     text-align: left;
