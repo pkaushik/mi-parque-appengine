@@ -21,8 +21,8 @@ import java.util.regex.Pattern;
 
 public class FusionTablesManager {
 
-  private static final String email="MiparqueLV@gmail.com";
-  private static final String password="apps4change!";
+  private static final String email="liliann.v.lucas@gmail.com";
+  private static final String password="iop!2taa";
   private static final String SERVICE_URL =
       "https://www.google.com/fusiontables/api/query";
 
