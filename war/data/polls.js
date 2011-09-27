@@ -17,8 +17,8 @@ define(function(){
 	    "id": "2",
 	    "title": "Cage Free Chicken Coops?",
 	    "description": "City Farm has set up cage free chicken coops at their urban farm. Do you think people in Little Village should be allowed to have cage free chicken coops in their backyards?",
-	    "multiple": true,
-	    "choices": [{"index": "0", "choice":"Mi familia"},{"index": "1", "choice":"Viva la Raza"},{"index": "2", "choice":"la communidad"}]
+	    "multiple": false,
+	    "choices": [{"index": "0", "choice":"Yes"},{"index": "1", "choice":"No"}]
 	  }, 
 	  {
 	    "id": "3",

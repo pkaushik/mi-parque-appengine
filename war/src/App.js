@@ -2,8 +2,9 @@
 define([
   'models/Map',
   'views/IdeaCollection',
-  'views/PollCollection'
-], function(Map, IdeaCollection, PollCollection) {
+  'views/PollCollection',
+  'views/AvisoCollection'
+], function(Map, IdeaCollection, PollCollection, AvisoCollection) {
   return {
     map: "",
     
@@ -13,20 +14,26 @@ define([
     },
     
     doIdeas: function(ideas) {
-      var ideas = new Backbone.Collection(ideas);
-      new IdeaCollection({ el: $('#Ideas'), collection: ideas });
+      var collection = new Backbone.Collection(ideas);
+      new IdeaCollection({ el: $('#Ideas'), collection: collection });
     },
     
     doPolls: function(polls) {
-      var polls = new Backbone.Collection(polls);
-      new PollCollection({ el: $('#Polls'), collection: polls });
+      var collection = new Backbone.Collection(polls);
+      new PollCollection({ el: $('#Polls'), collection: collection });
+    },
+    
+    doAviso: function(aviso) {
+      var collection = new Backbone.Collection(aviso);
+      new AvisoCollection({ el: $('#Aviso'), collection: collection });
     },
 
-    start: function(ideas, polls) {
-    	
+    start: function(ideas, polls, aviso) {
+console.log(aviso)    	
       this.doMap();
       this.doIdeas(ideas);
       this.doPolls(polls);
+      this.doAviso(aviso);
       
       
       // new Router({

@@ -6,14 +6,12 @@
 	  <p>
 	    ${description}
 	  </p>
-	  <div data-role="fieldcontain">
 	    <fieldset data-role="controlgroup">
 	     {{each choices}}
 	       <input {{if multiple}} type="checkbox" {{else}} type="radio" {{/if}} name="poll-choice-${id}" id="poll-choice-${id}-${$value.index}" data-theme="d" value="poll-choice-${id}-${$value.index}" />
 	       <label for="poll-choice-${id}-${$value.index}">${$value.choice}</label>
 	     {{/each}}
 	    </fieldset>
-	  </div>
 	  <a class="fb_button fb_button_medium" style="float: right"><span class="fb_button_text">Submit a Vote</span></a>
   </div>
 </div>

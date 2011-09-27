@@ -27,10 +27,12 @@ require(
   [
     'App',
     '../data/ideas',
-	'../data/polls'
+	'../data/polls',
+	'../data/aviso'
   ], 
-  function(App, ideas, polls) {
-    App.start(ideas, polls);
+  function(App, ideas, polls, aviso) {
+	  console.log(aviso);
+    App.start(ideas, polls, aviso);
   }
 );
 
