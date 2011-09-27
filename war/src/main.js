@@ -1,13 +1,13 @@
 // Some preliminary global setup
 
 function setDefaultTransition(){
-  var winwidth = $( window ).width(),
+  var winwidth = $(window).width(),
     trans ="slide";
     
-  if( winwidth >= 1000 ){
+  if(winwidth >= 1000){
     trans = "none";
   }
-  else if( winwidth >= 650 ){
+  else if(winwidth >= 650){
     trans = "fade";
   }
 
@@ -16,7 +16,7 @@ function setDefaultTransition(){
 
 $(function(){
   setDefaultTransition();
-  $( window ).bind( "throttledresize", setDefaultTransition );
+  $(window).bind("throttledresize", setDefaultTransition);
 });
 
 
