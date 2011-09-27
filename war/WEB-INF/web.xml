@@ -4,15 +4,40 @@ xmlns="http://java.sun.com/xml/ns/javaee"
 xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
-	<servlet>
+   <servlet>
 		<servlet-name>MiParque</servlet-name>
 		<servlet-class>org.apps4good.miparque.MiParqueServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>MiParque</servlet-name>
-		<url-pattern>/miparque</url-pattern>
-	</servlet-mapping>
-	<welcome-file-list>
+   </servlet>
+   <servlet>
+    <servlet-name>smsInvoker</servlet-name>
+    <servlet-class>com.miparque.server.SMSInvoker</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>emailInvoker</servlet-name>
+    <servlet-class>com.miparque.server.EmailInvoker</servlet-class>
+  </servlet>
+  <servlet>
+        <servlet-name>Registration</servlet-name>
+        <servlet-class>com.miparque.server.UserRegistration</servlet-class>
+  </servlet>
+  <servlet-mapping>
+        <servlet-name>Registration</servlet-name>
+        <url-pattern>/reg</url-pattern>
+   </servlet-mapping>      
+   <servlet-mapping>
+    <servlet-name>smsInvoker</servlet-name>
+    <url-pattern>/sendSMS</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>emailInvoker</servlet-name>
+    <url-pattern>/sendEmail</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+        <servlet-name>MiParque</servlet-name>
+        <url-pattern>/miparque</url-pattern>
+  </servlet-mapping>
+
+  <welcome-file-list>
 		<welcome-file>index.html</welcome-file>
-	</welcome-file-list>
+  </welcome-file-list>
 </web-app>
