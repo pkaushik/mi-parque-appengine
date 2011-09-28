@@ -31,7 +31,6 @@ require(
 	'../data/aviso'
   ], 
   function(App, ideas, polls, aviso) {
-	  console.log(aviso);
     App.start(ideas, polls, aviso);
   }
 );

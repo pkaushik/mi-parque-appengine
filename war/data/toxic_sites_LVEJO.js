@@ -1,4 +1,5 @@
-[
+define(function() { 
+return [
     { "id": "Placemark2", "name": "Celotex Superfund Site", "lat":-87.701691, "lon":41.838047 }, 
     { "id": "Placemark2", "name": "Fisk Coal Power Plant", "lat":-87.653427, "lon":41.852699 }, 
     { "id": "Placemark3", "name": "Crawford Coal Power Plant", "lat":-87.716988, "lon":41.829220 }, 
@@ -8,3 +9,4 @@
     { "id": "Placemark7", "name": "Prima Plastics", "lat":-87.716560, "lon":41.832417 }, 
     { "id": "Placemark8", "name": "Washburne Trade School", "lat":-87.706017, "lon":41.837032 }
 ] 
+)};

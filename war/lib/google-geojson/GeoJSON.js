@@ -114,7 +114,9 @@ var GeoJSON = function( geojson, options ){
 			}else{
 				obj = [];
 				for (var i = 0; i < geojson.features.length; i++){
-					obj.push(_geometryToGoogleMaps(geojson.features[i].geometry, opts));
+					if (geojson.features[i].geometry) {
+					  obj.push(_geometryToGoogleMaps(geojson.features[i].geometry, opts));
+					}
 				}
 			}
 			break;
