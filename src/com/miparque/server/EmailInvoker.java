@@ -33,11 +33,11 @@ public class EmailInvoker extends HttpServlet {
 
 	public void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException{
-//		
+		
 //		PrintWriter out = response.getWriter();
 //		response.setContentType("text/plain");
-//		
-//
+		
+
 //		try {
 //			byte[] test = (byte[]) new Base64().decode(request.getHeader("Authorization"));
 //			System.out.println("===="+test.toString());
@@ -46,7 +46,7 @@ public class EmailInvoker extends HttpServlet {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-//						
+						
 		String title = request.getParameter("title");
 		String subject =request.getParameter("subject");
 		String bodyText = request.getParameter("bodyText");
