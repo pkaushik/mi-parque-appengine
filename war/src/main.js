@@ -14,6 +14,10 @@ function setDefaultTransition(){
   $.mobile.defaultPageTransition = trans;
 }
 
+function scrollToBottom(){
+  $.mobile.silentScroll($(document).height());
+}
+
 $(function(){
   setDefaultTransition();
   $(window).bind("throttledresize", setDefaultTransition);

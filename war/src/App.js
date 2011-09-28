@@ -98,11 +98,13 @@ define([
     doIdeas: function(ideas) {
       var collection = new Backbone.Collection(ideas);
       new IdeaCollection({ el: $('#Ideas'), collection: collection });
+      $('#idea').trigger('pagecreate');
     },
     
     doPolls: function(polls) {
       var collection = new Backbone.Collection(polls);
       new PollCollection({ el: $('#Polls'), collection: collection });
+      $('#voto').trigger('pagecreate');
     },
     
     doAviso: function(aviso) {
