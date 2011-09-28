@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document><Folder><name>DATA_ADMIN_OPNSP_RIVERWALK</name>
+<Schema name="DATA_ADMIN_OPNSP_RIVERWALK" id="DATA_ADMIN_OPNSP_RIVERWALK">
+	<SimpleField name="Name" type="string"></SimpleField>
+	<SimpleField name="Description" type="string"></SimpleField>
+	<SimpleField name="OBJECTID" type="int"></SimpleField>
+	<SimpleField name="ID" type="int"></SimpleField>
+	<SimpleField name="STATUS" type="int"></SimpleField>
+	<SimpleField name="SHAPE_LEN" type="float"></SimpleField>
+</Schema>
+  <Placemark>
+	<Style><LineStyle><color>ff0000ff</color></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>
+	<ExtendedData><SchemaData schemaUrl="#DATA_ADMIN_OPNSP_RIVERWALK">
+		<SimpleData name="OBJECTID">0</SimpleData>
+		<SimpleData name="ID">0</SimpleData>
+		<SimpleData name="STATUS">1</SimpleData>
+		<SimpleData name="SHAPE_LEN">594.85593774500</SimpleData>
+	</SchemaData></ExtendedData>
+      <LineString><coordinates>-87.687258513216022,41.836646295578397 -87.687100907551468,41.83673747684476 -87.686803787763353,41.836790208563187 -87.68653447746938,41.83685983566523 -87.686577937048028,41.836989812450952 -87.685787168050709,41.837161122980703 -87.685535359834446,41.837159703071684 -87.685429716085622,41.837092148735721</coordinates></LineString>
+  </Placemark>
+</Folder></Document></kml>
