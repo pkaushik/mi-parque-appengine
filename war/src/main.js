@@ -35,7 +35,19 @@ require(
 	'../data/aviso'
   ], 
   function(App, ideas, polls, aviso) {
-    App.start(ideas, polls, aviso);
+	App.start(ideas, polls, aviso);
+    
+    $('#idea').live('pagecreate', function(event){
+    	$('#idea').trigger('create');
+    });
+    
+    $('#aviso').live('pagecreate', function(event){
+    	$('#aviso').trigger('create');
+    });
+    
+    $('#voto').live('pagecreate', function(event){
+    	$('#voto').trigger('create');
+    });
   }
 );
 
