@@ -1,6 +1,6 @@
 
 define([
-  '../data/neighborhood_little_village',
+  '../data/gis/neighborhood_little_village',
   'views/Placemaking',
   'views/IdeaCollection',
   'views/PollCollection',
@@ -63,11 +63,17 @@ define([
 	        
       var map = new google.maps.Map(document.getElementById('map'), {
         mapTypeId: google.maps.MapTypeId.ROADMAP,
+        zoom: 10,
+        center: new google.maps.LatLng(-87.712334, 41.842339),
         mapTypeControl: false,
-        streetViewControl: false,
+        streetViewControl: true,
         overviewMapControl: false,
-        panControl: false,
-        zoomControl: true
+        panControl: true,
+        zoomControl: false,
+        zoomControlOptions: {
+          style: google.maps.ZoomControlStyle.LARGE,
+          position: google.maps.ControlPosition.LEFT_BOTTOM
+        }
       });
 	        
       map.mapTypes.set('desat', mapType);
@@ -76,11 +82,11 @@ define([
       var LittleVillage = new GeoJSON(LittleVillageGeoJSON, {
     		strokeColor: "#5470AB",
     		strokeWeight: 2,
-    		strokeOpacity: 1
+    		strokeOpacity: 0.75,
+    		fillOpacity: 0 
     	})[0];
       
       LittleVillage.setMap(map);
-      map.fitBounds(LittleVillage.getBounds());
 	      
       $('#mapa').live('pageshow', function(event){
         google.maps.event.trigger(map, 'resize');
