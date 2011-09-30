@@ -16,6 +16,14 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
         <servlet-name>Registration</servlet-name>
         <servlet-class>com.miparque.server.UserRegistration</servlet-class>
   </servlet>
+  <servlet>
+        <servlet-name>Notification</servlet-name>
+        <servlet-class>com.miparque.server.NotificationManager</servlet-class>
+  </servlet>
+  <servlet-mapping>
+        <servlet-name>Notification</servlet-name>
+        <url-pattern>/notify</url-pattern>
+   </servlet-mapping>  
   <servlet-mapping>
         <servlet-name>Registration</servlet-name>
         <url-pattern>/reg</url-pattern>
