@@ -47,17 +47,18 @@
       if (response.status === "connected") {
     	$("#login-button").hide('fast');
       } 
+      
+      $(".facebook-show-when-logged-in").show('fast');
 
       // if we have a session, query for the user's profile picture and name
       FB.api('/me', function(user) {
          if (user) {
-            $('#image').attr('src', 'http://graph.facebook.com/' + user.id + '/picture');
             $('#name').html(", " + user.name);
          }
        });
       
       // if we have a session, query for the user's friends
-      FB.api(
+      /* FB.api(
         {
           method: 'fql.query',
           query: "SELECT uid, name, is_app_user, pic_square FROM user WHERE uid in (SELECT uid2 FROM friend WHERE uid1 = me()) AND is_app_user = 1"
@@ -68,7 +69,7 @@
         	  
           });
         }
-      );
+      ); */
     });
     
     function convertToSlug(v) {
@@ -111,15 +112,13 @@
 		<!-- /header -->
 		<div data-role="content" data-theme="c">
 			<div class="content-primary">
+				<h2>
+					Bienvenidos a La Villita<span id="name"></span>! 
+				</h2>
+				<p><i>Juntos podemos convertir La Villita en un parque vibrante.</i><br/>
+				<i>Building a vibrant park in Little Village together.</i></p>
 				<div class="container">
 					<div class="column">
-						<h2>
-							Bienvenidos a La Villita<span id="name"></span>! 
-						</h2>
-						<img id="image" style="float: right"></img>
-						<p><i>Juntos podemos convertir La Villita en un parque vibrante.</i><br/>
-						<i>Building a vibrant park in Little Village together.</i></p>
-		
 						<!--  development mode ID: 197826130288025 / Production mode ID: 281417341887864 -->
 						<!--  URL: http://mi-parque.appspot.com/index.html#miembro -->
 						<!--  development mode URL: http://192.168.1.106/~pallavi/mi-parque-appengine/war/index.html#miembro -->
@@ -134,7 +133,9 @@
 						</div>
 					</div>
 					<div class="column" id="#info">
-						<div id="friends"></div> 
+						<div class="facebook-plugin facebook-show-when-logged-in" style="display:none">
+							<div class="fb-add-to-timeline" data-show-faces="true" data-mode="button"></div>
+						</div>
 					</div>
 				</div>
 			</div>
