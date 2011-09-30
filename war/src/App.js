@@ -20,14 +20,15 @@ define([
           featureType: "water",
           elementType: "simplified",
           stylers: [
-            { saturation: -100 }
+            { hue: "#4E89C5" }
           ]
         },{
-          featureType: "poi",
-          elementType: "all",
-          stylers: [
-            { saturation: -100 }
-          ]
+            featureType: "poi.park",
+            stylers: [
+              { hue: "#285702" },
+              { saturation: 100 },
+              { lightness: -75 }
+            ]
         },{
           featureType: "landscape",
           elementType: "all",
@@ -38,13 +39,13 @@ define([
           featureType: "administrative",
           elementType: "labels",
           stylers: [
-            { visibility: "off" }
+            { visibility: "simplified" }
           ]
         },{
           featureType: "poi",
           elementType: "labels",
           stylers: [
-            { visibility: "off" }
+            { visibility: "simplified" }
           ]
         },{
           featureType: "water",
@@ -56,7 +57,7 @@ define([
           featureType: "road",
           elementType: "labels",
           stylers: [
-            { visibility: "simplified" }
+            { visibility: "on" }
           ]
         }
       ], {name: "Desaturated"});

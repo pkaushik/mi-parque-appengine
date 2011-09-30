@@ -84,7 +84,7 @@ define([
 	},
 	
     render: function() { 
-      this.renderFeatureCollection(this.boulevards[0], this.options.map);
+      //this.renderFeatureCollection(this.boulevards[0], this.options.map);
       this.renderFeatureCollection(this.campus_parks, this.options.map);
       this.renderFeatureCollection(this.mall_plaza, this.options.map);
       //this.renderFeatureCollection(this.neighborspace, this.options.map);
