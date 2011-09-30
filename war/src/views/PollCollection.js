@@ -6,6 +6,16 @@ define([
       this.render();
       return this;
     },
+    events: {
+      "click .vote_button": "vote" 
+    },
+    vote: function(e) {
+    	var title = $(e.currentTarget).parent().find(".ui-radio-on").find(".ui-btn-text").text();
+    	var id = $(e.currentTarget).parent().find(".ui-radio-on").attr("data-poll-id");
+    	var choice = $(e.currentTarget).parent().find(".ui-radio-on").attr("data-poll-choice");
+    	postPoll(id, title, choice);
+    	console.log("just called postPoll with id:" + id + " title:" + title + " choice:" + choice);
+    },
     render: function() {      
       $(this.el)
         .append($.tmpl(template, this.collection.toJSON()));

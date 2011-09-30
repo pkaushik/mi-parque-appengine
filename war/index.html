@@ -11,8 +11,8 @@
 <link rel="shortcut icon" href="./images/favicon.ico" />
 <link rel="apple-touch-icon" href="./images/appicon.png">
 <link rel="apple-touch-icon-precomposed" href="./images/appicon.png" />
-<link rel="stylesheet"
-	href="./lib/jquery/jquery.mobile/jquery.mobile.min.css" />
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.css" />
+<link rel="stylesheet" href="./css/skeleton.css" />
 <link rel="stylesheet" href="./css/main.css" />
 </head>
 <body>
@@ -47,53 +47,101 @@
       if (response.status === "connected") {
     	$("#login-button").hide('fast');
       } 
-      
 
       // if we have a session, query for the user's profile picture and name
+      FB.api('/me', function(user) {
+         if (user) {
+            $('#image').attr('src', 'http://graph.facebook.com/' + user.id + '/picture');
+            $('#name').html(", " + user.name);
+         }
+       });
+      
+      // if we have a session, query for the user's friends
       FB.api(
         {
           method: 'fql.query',
-          query: 'SELECT name FROM profile WHERE id=' + FB.getSession().uid
+          query: "SELECT uid, name, is_app_user, pic_square FROM user WHERE uid in (SELECT uid2 FROM friend WHERE uid1 = me()) AND is_app_user = 1"
         },
         function(response) {
-          var user = response[0];
-          $('#welcome').html(", " + user.name).show('fast');
+          
+          _(response).each(function(){
+        	  
+          });
         }
       );
     });
+    
+    function convertToSlug(v) {
+      if (!v) return '';
+      var from = "ıİöÖüÜçÇğĞşŞâÂêÊîÎôÔûÛĘęÓóĄąŚśŁłŻżŹźĆćŃń";
+  		var to   = "iIoOuUcCgGsSaAeEiIoOuUEeOoAaSsLlZzZzCcNn";
+      for (var i=0, l=from.length ; i<l ; i++) {
+        v = v.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+      }
+      return v.replace(/'/g, '').replace(/\s*&\s*/g, ' and ').replace(/[^A-Za-z0-9]+/g, '-').replace(/^-|-$/g, '').toLowerCase();
+    }
+    
+    function postPoll(id, title, choice) {
+      var verb = '/me/miparque:voice';
+      var poll_url = 'http://mi-parque.appspot.com/pages/polls/';
+      var token = 'AAADZC8pSyZAXgBANTS4LWmpU6ssNYjK7whHGwRTdFlGpKgLWhkThADqZAXEviNfUvfaoGY03G7TxQcZCEE8Fy5vXiWFNMGknvIq0tXWrQTn3O3Ek87Y6';
+      var slug = convertToSlug([id, title, choice].join(" "));
+
+      var og_action = verb + '&access_token=' + token + '&poll=' + poll_url + slug + '.html';
+      console.log(og_action);
+      FB.api(og_action, 'post', function(response) {
+        if (!response || response.error) {
+          console.log(response);
+        } else {
+          console.log('It worked. id: ' + response.id);
+        }
+      });
+    }
   </script>
 
-	<div data-role="page" class="type-interior">
+	<div id="index" data-role="page" class="type-interior">
 		<div data-role="header" data-theme="f">
+			<a href="#about" data-icon="info" data-iconpos="notext"
+				data-rel="dialog" data-transition="pop" class="ui-btn-left">Info</a>
 			<h1>Mi Parque - La Villita</h1>
 			<a href="#" data-icon="home" data-iconpos="notext"
-				data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
+				data-direction="reverse" class="ui-btn-right">Home</a>
 		</div>
 		<!-- /header -->
 		<div data-role="content" data-theme="c">
 			<div class="content-primary">
-				<h2>
-					Bienvenidos a La Villita<span id="welcome"></span>!
-				</h2>
-				<h5>Juntos podemos convertir La Villita en un parque vibrante.</h5>
-				<h5>Building a vibrant park en Little Village together.</h5>
-
-				<!--  development mode ID: 197826130288025 / Production mode ID: 281417341887864 -->
-				<!--  URL: http://mi-parque.appspot.com/index.html#miembro -->
-				<!--  development mode URL: http://192.168.1.106/~pallavi/mi-parque-appengine/war/index.html#miembro -->
-				<div id="login-button" class="facebook-plugin">
-					<fb:login-button
-						registration-url="http://mi-parque.appspot.com/index.html#miembro" />
+				<div class="container">
+					<div class="column">
+						<h2>
+							Bienvenidos a La Villita<span id="name"></span>! 
+						</h2>
+						<img id="image" style="float: right"></img>
+						<p><i>Juntos podemos convertir La Villita en un parque vibrante.</i><br/>
+						<i>Building a vibrant park in Little Village together.</i></p>
+		
+						<!--  development mode ID: 197826130288025 / Production mode ID: 281417341887864 -->
+						<!--  URL: http://mi-parque.appspot.com/index.html#miembro -->
+						<!--  development mode URL: http://192.168.1.106/~pallavi/mi-parque-appengine/war/index.html#miembro -->
+				
+				
+						<div id="login-button" class="facebook-plugin">
+							<fb:login-button
+								registration-url="http://mi-parque.appspot.com/index.html#miembro" />
+						</div>
+						<div class="facebook-plugin facebook-auto-login-button">
+							<fb:activity site="mi-parque.appspot.com" header="false" height="175" border_color="#e0e0e0"></fb:activity>
+						</div>
+					</div>
+					<div class="column" id="#info">
+						<div id="friends"></div> 
+					</div>
 				</div>
-
-				<div class="facebook-plugin facebook-auto-login-button">
-					<fb:activity site="mi-parque.appspot.com" header="false" height="175" border_color="#e0e0e0"></fb:activity>
-				</div>
-
 			</div>
 
 			<div class="content-secondary">
-				<div data-role="collapsible" data-collapsed="false" data-theme="b">
+			
+				<div data-role="collapsible" data-collapsed="true" data-theme="b" data-content-theme="d">
+				<h3>More in this section</h3>
 					<ul data-role="listview" data-theme="c" data-dividertheme="d">
 						<li data-theme="b"><a href="#">Mi Parque</a></li>
 						<li><a href="#idea">Mi Idea</a></li>
@@ -102,9 +150,79 @@
 						<li><a href="#mapa">Mi Mapa</a></li>
 						<li><a href="#" class="ui-disabled">Mi Calendario</a></li>
 						<li><a href="#" class="ui-disabled">Mi Voluntario</a></li>
+						<li data-theme="e"><a target="_blank" href="https://docs.google.com/spreadsheet/viewform?formkey=dHdvei16dS02RnVpbUh6dDRHakxWeWc6MQ">Tester Feedback</a></li>
 					</ul>
 				</div>
 				<!--/collapsible -->
+			</div>
+			<!--/content-secondary -->
+		</div>
+		<!--/content -->
+
+		<div data-role="footer" class="footer-docs" data-theme="c">
+			<p>&copy; Open Youth Networks</p><img src="images/logo_bottom.png" style="float: right"/>
+		</div>
+	</div>
+	<!-- /page -->
+	
+	
+	
+	<!-- About Page Starts Here ------------------------------------------------------------>
+	<div id="about" data-role="page" class="type-interior">
+		<div data-role="header" data-theme="f">
+			<h1>About Mi Parque</h1>
+		</div>
+		<!-- /header -->
+		<div data-role="content" data-theme="d">
+			<div class="content-primary">
+					<p>In 2014, Little Village will have a beautiful new 23 acre park that 
+					will transform the Superfund Celotex site with a vibrant, 
+					open green space for all of our residents to enjoy and make our own. 
+					What is your vision for the future of Little Village’s new park? 
+					Do you have ideas about how to make this park and our other open spaces 
+					safer, greener and healthier places that meet community needs? 
+					Do you want a quick and easy way to receive current news, info, maps, 
+					alerts and volunteer opportunities about La Villita so you can help make 
+					it a better place to live?</p>
+ 
+					<p>Mi Parque is a bilingual app that allows you to do all of that through 
+					the web or your smartphone. Ready to get started? If you have a Facebook account, it is easy to register. 
+					Join the Mi Parque community today!</p>
+					
+					<h3 style="display: block; font-size: 15px !important; font-weight: normal; background: #f0f0f0; border-left: 7px solid #74B64A; padding: 5px 0 5px 8px;">
+						<strong> Mi Idea</strong> – View ideas for Mi Parque and share the ones you like best with your Facebook friends.
+					</h3>
+					
+					<h3 style="display: block; font-size: 15px !important; font-weight: normal; background: #f0f0f0; border-left: 7px solid #74B64A; padding: 5px 0 5px 8px;">
+						<strong> Mi Voto</strong> – Vote on ideas and decisions that affect the community and discuss your opinions with your Facebook friends.
+					</h3>
+					
+					<h3 style="display: block; font-size: 15px !important; font-weight: normal; background: #f0f0f0; border-left: 7px solid #74B64A; padding: 5px 0 5px 8px;">
+						<strong> Mi Aviso</strong> – Learn about upcoming community happenings and receive safety, weather and health alerts impacting La Villita.
+					</h3>
+					
+					<h3 style="display: block; font-size: 15px !important; font-weight: normal; background: #f0f0f0; border-left: 7px solid #74B64A; padding: 5px 0 5px 8px;">
+						<strong> Mi Mapa</strong> – Locate park sites, open lands and community gardens in La Villita and view news, toxic sites and alerts.
+					</h3>
+					
+					<hr>
+					
+					<p>In the future, Mi Parque will allow you to:</p>
+					
+					<ul>
+						<li>Submit your ideas for improving the community, and allow the community to vote on them</li>
+						<li>Submit video, photos and reports and share developments with your neighbors</li> 
+						<li>Receive health, safety and weather alerts via email, text messages or through Facebook in Spanish or English</li>
+						<li>View and sign up for volunteer activities</li>
+					</ul>
+			</div>
+
+			<div class="content-secondary">
+			    <br/>
+			    <div>
+					<img src="images/LVEJO_park_proposal.jpg" style="width: 95%; float: right">
+				</div>
+				<a href="#index" data-role="button" data-theme="b" data-inline="true" style="float: right;">Go Back</a>
 			</div>
 			<!--/content-secondary -->
 		</div>
@@ -119,9 +237,11 @@
 	<!-- Miembro Page Starts Here ------------------------------------------------------------>
 	<div id="miembro" data-role="page" class="type-interior">
 		<div data-role="header" data-theme="f">
+			<a href="#about" data-icon="info" data-iconpos="notext"
+				data-rel="dialog" data-transition="pop" class="ui-btn-left">Info</a>
 			<h1>Mi Parque</h1>
-			<a href="./index.html" data-icon="home" data-iconpos="notext"
-				data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
+			<a href="#index" data-icon="home" data-iconpos="notext"
+				data-direction="reverse" class="ui-btn-right">Home</a>
 		</div>
 		<!-- /header -->
 		<div data-role="content" data-theme="c">
@@ -135,7 +255,7 @@
             fb_only=true&
             fb_register=true&
             redirect_uri=http%3A%2F%2Fmi-parque.appspot.com%2Freg?
-            perms='email,sms'&
+            perms='email,sms,publish_stream,publish_actions'&
             fields=[
                {'name':'name'},
                {'name':'email'},
@@ -195,9 +315,11 @@
 
 	<div id="voto" data-role="page" class="type-interior">
 		<div data-role="header" data-theme="f">
+			<a href="#about" data-icon="info" data-iconpos="notext"
+				data-rel="dialog" data-transition="pop" class="ui-btn-left">Info</a>
 			<h1>Mi Voto</h1>
-			<a href="./index.html" data-icon="home" data-iconpos="notext"
-				data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
+			<a href="#index" data-icon="home" data-iconpos="notext"
+				data-direction="reverse" class="ui-btn-right">Home</a>
 		</div>
 		<!-- /header -->
 		<div data-role="content" data-theme="c">
@@ -211,7 +333,7 @@
 			<div class="content-secondary">
 				<div data-role="collapsible" data-collapsed="false" data-theme="b">
 					<ul data-role="listview" data-theme="c" data-dividertheme="d">
-						<li><a href="index.html">Mi Parque</a></li>
+						<li><a href="#index">Mi Parque</a></li>
 						<li><a href="#idea">Mi Idea</a></li>
 						<li data-theme="b"><a href="#">Mi Voto</a></li>
 						<li><a href="#aviso">Mi Aviso</a></li>
@@ -236,9 +358,11 @@
 
 	<div id="aviso" data-role="page" class="type-interior">
 		<div data-role="header" data-theme="f">
+			<a href="#about" data-icon="info" data-iconpos="notext"
+				data-rel="dialog" data-transition="pop" class="ui-btn-left">Info</a>
 			<h1>Mi Aviso</h1>
-			<a href="./index.html" data-icon="home" data-iconpos="notext"
-				data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
+			<a href="#index" data-icon="home" data-iconpos="notext"
+				data-direction="reverse" class="ui-btn-right">Home</a>
 		</div>
 		<!-- /header -->
 		<div data-role="content" data-theme="c">
@@ -250,7 +374,7 @@
 			<div class="content-secondary">
 				<div data-role="collapsible" data-collapsed="false" data-theme="b">
 					<ul data-role="listview" data-theme="c" data-dividertheme="d">
-						<li><a href="./index.html">Mi Parque</a></li>
+						<li><a href="#index">Mi Parque</a></li>
 						<li><a href="#idea">Mi Idea</a></li>
 						<li><a href="#voto">Mi Voto</a></li>
 						<li data-theme="b"><a href="#">Mi Aviso</a></li>
@@ -274,9 +398,11 @@
 	<!-- Mi Idea page starts here-->
 	<div id="idea" data-role="page" class="type-interior">
 		<div data-role="header" data-theme="f">
+			<a href="#about" data-icon="info" data-iconpos="notext"
+				data-rel="dialog" data-transition="pop" class="ui-btn-left">Info</a>
 			<h1>Mi Idea</h1>
-			<a href="./index.html" data-icon="home" data-iconpos="notext"
-				data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
+			<a href="#index" data-icon="home" data-iconpos="notext"
+				data-direction="reverse" class="ui-btn-right">Home</a>
 		</div>
 		<!-- /header -->
 		<div data-role="content" data-theme="c">
@@ -289,7 +415,7 @@
 			<div class="content-secondary">
 				<div data-role="collapsible" data-collapsed="false" data-theme="b">
 					<ul data-role="listview" data-theme="c" data-dividertheme="d">
-						<li><a href="./index.html">Mi Parque</a></li>
+						<li><a href="#index">Mi Parque</a></li>
 						<li data-theme="b"><a href="#">Mi Idea</a></li>
 						<li><a href="#voto">Mi Voto</a></li>
 						<li><a href="#aviso">Mi Aviso</a></li>
@@ -315,9 +441,11 @@
 
 	<div id="mapa" data-role="page" class="type-interior">
 		<div data-role="header" data-theme="f">
+			<a href="#about" data-icon="info" data-iconpos="notext"
+				data-rel="dialog" data-transition="pop" class="ui-btn-left">Info</a>
 			<h1>Mi Mapa</h1>
-			<a href="./index.html" data-icon="home" data-iconpos="notext"
-				data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
+			<a href="#index" data-icon="home" data-iconpos="notext"
+				data-direction="reverse" class="ui-btn-right">Home</a>
 		</div>
 		<!-- /header -->
 		<div data-role="content" data-theme="c">
@@ -329,7 +457,7 @@
 			<div class="content-secondary">
 				<div data-role="collapsible" data-collapsed="false" data-theme="b">
 					<ul data-role="listview" data-theme="c" data-dividertheme="d">
-						<li><a href="./index.html">Mi Parque</a></li>
+						<li><a href="#index">Mi Parque</a></li>
 						<li><a href="#idea">Mi Idea</a></li>
 						<li><a href="#voto">Mi Voto</a></li>
 						<li><a href="#aviso">Mi Aviso</a></li>
@@ -338,15 +466,16 @@
 						<li><a href="#" class="ui-disabled">Mi Voluntario</a></li>
 					</ul>
 					<br/>
+					<div class="">
 					<ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="f">
-						<li data-role="list-divider">Map Legend</li>
+						<li data-role="list-divider">La Villita Map Legend</li>
 						<li>
 						<div class="ui-grid-b">
 			              <div class="ui-block-a" style="width: 30px">
 			                <span class="green-square"></span>
 			              </div>
 			              <div class="ui-block-b" style="width: 200px">
-			                Proposed Mi Parque - La Villita
+			                Mi Parque
 			              </div>
           				</div>
 						</li>
@@ -356,7 +485,7 @@
 			                <span class="dark-green-square"></span>
 			              </div>
 			              <div class="ui-block-b" style="width: 200px">
-			                City of Chicago Placemaking - Open Spaces
+			                Existing Open Spaces
 			              </div>
           				</div>
 						</li>
@@ -366,8 +495,7 @@
 			                <img src="images/firstaid_tiny.png">
 			              </div>
 			              <div class="ui-block-b" style="width: 200px">
-			                Asthma Van Aviso
-			                <span class="ui-li-count">1</span>
+			                Asthma Van Alert
 			              </div>
           				</div>
 						</li>
@@ -377,8 +505,7 @@
 			                <img src="images/factory_tiny.png">
 			              </div>
 			              <div class="ui-block-b" style="width: 200px">
-			                Air Quality Aviso
-			                <span class="ui-li-count">1</span>
+			                Air Quality Alert
 			              </div>
           				</div>
 						</li>
@@ -388,14 +515,12 @@
 			                <img src="images/aviso_community_tiny.png">
 			              </div>
 			              <div class="ui-block-b" style="width: 200px">
-			                La Villita Aviso
-			                <span class="ui-li-count">2</span>
+			                Community Alert
 			              </div>
           				</div>
 						</li>
-
-						
 					</ul>
+					</div>
 				</div>
 				<!--/collapsible -->
 			</div>
@@ -432,10 +557,10 @@
     </script>
 	<script src="./lib/google-maps-utility-library/infobubble.js">
     </script>
-	<script src="./lib/jquery/jquery.mobile/jquery.mobile.min.js">
-    </script>
 	<script src="./lib/jquery-slugify-plugin/jquery.slugify.js">
     </script>
+	<script src="http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.js">
+	</script>
 
 	<!-- Our Stuff Below This -->
 
