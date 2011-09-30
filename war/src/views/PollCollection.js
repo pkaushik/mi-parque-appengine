@@ -10,9 +10,9 @@ define([
       "click .vote_button": "vote" 
     },
     vote: function(e) {
-    	var title = $(e.currentTarget).parent().find(".ui-radio-on").find(".ui-btn-text").text();
+    	var choice = $(e.currentTarget).parent().find(".ui-radio-on").find(".ui-btn-text").text();
     	var id = $(e.currentTarget).parent().find(".ui-radio-on").attr("data-poll-id");
-    	var choice = $(e.currentTarget).parent().find(".ui-radio-on").attr("data-poll-choice");
+    	var title = $(e.currentTarget).parent().find(".ui-radio-on").attr("data-poll-title");
     	postPoll(id, title, choice);
     	console.log("just called postPoll with id:" + id + " title:" + title + " choice:" + choice);
     },
