@@ -1,12 +1,13 @@
-<div data-theme="b" data-role="collapsible" {{if first}} data-collapsed="false" {{else}} data-collapsed="true"{{/if}} data-theme="d" >
+<div data-theme="b" data-content-theme="d" data-role="collapsible" {{if first}} data-collapsed="false" {{else}} data-collapsed="true"{{/if}} data-theme="d" >
   <h3>${title}</h3>
 	  <p>
 	    ${description}
 	  </p>
 	  <fb:like href="http://mi-parque.appspot.com/pages/ideas/${id}.html"
 		   layout="button_count"
-		   show_faces="false"
+		   show_faces="true"
 		   action="like"
 		   colorscheme="light">
 	  </fb:like>
+	  <br/>
 </div>

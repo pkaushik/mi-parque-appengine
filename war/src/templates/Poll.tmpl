@@ -1,4 +1,4 @@
-<div data-theme="b" data-role="collapsible" {{if first}} data-collapsed="false" {{else}} data-collapsed="true"{{/if}} data-theme="d" >
+<div data-theme="b" data-content-theme="d"  data-role="collapsible" {{if first}} data-collapsed="false" {{else}} data-collapsed="true"{{/if}} data-theme="d" >
   <h3>
     ${title}
   </h3>
@@ -11,6 +11,6 @@
 	       <label data-poll-id="${id}" data-poll-title="${title}" for="poll-choice-${id}-${$value.index}">${$value.choice}</label>
 	     {{/each}}
 	    </fieldset>
-	  <a class="fb_button fb_button_medium vote_button" style="float: right"><span class="fb_button_text">Submit a Vote</span></a>
+	  <a class="fb_button fb_button_medium vote_button"><span class="fb_button_text">Submit a Vote</span></a>
 	  <br/>
 </div>
