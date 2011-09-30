@@ -12,7 +12,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/google-collect-1.0-rc1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/google-voice-java-1.6.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/json-lib-2.4-jdk15.jar"/>
-	<classpathentry kind="lib" path="/Users/jikimlucas/Downloads/jarfiles/google-gson-stream-1.7.1.jar"/>
-	<classpathentry kind="lib" path="/Users/jikimlucas/Downloads/google-gson-1.7.1/gson-1.7.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gson-1.7.1.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
