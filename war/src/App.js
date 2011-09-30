@@ -81,8 +81,8 @@ define([
       map.setMapTypeId('desat');
 	  
       var LittleVillage = new GeoJSON(LittleVillageGeoJSON, {
-    		strokeColor: "#5470AB",
-    		strokeWeight: 2,
+    		strokeColor: "#333",
+    		strokeWeight: 3,
     		strokeOpacity: 0.75,
     		fillOpacity: 0 
     	})[0];
