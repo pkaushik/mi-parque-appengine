@@ -47,7 +47,7 @@ define([
 	}),
 	
 	neighborspace: new GeoJSON(neighborspace, {
-	    "icon": "images/quadrifoglio.png"
+	    icon: "images/quadrifoglio.png"
 	}),
 	
 	miparque: new GeoJSON(miparque, {
@@ -94,14 +94,7 @@ define([
       this.renderFeatureCollection(this.campus_parks, this.options.map);
       this.renderFeatureCollection(this.riverwalk, this.options.map);
       this.renderFeatureCollection(this.miparque, this.options.map);
-      
-//      var markerImage = new google.maps.MarkerImage(
-//    		  'images/quadrifoglio.png', 
-//    		  new google.maps.Size(32,37), 
-//    		  new google.maps.Point(0, 0), 
-//    		  new google.maps.Point(16, 16));
 
-      
       this.renderFeatureCollection(this.neighborspace, this.options.map);
       
 //      this.renderFeatureCollection(this.school_grounds, this.options.map); // meh

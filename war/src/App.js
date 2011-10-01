@@ -5,8 +5,10 @@ define([
   'views/TrafficCounts',
   'views/IdeaCollection',
   'views/PollCollection',
-  'views/AvisoCollection'
-], function(LittleVillageGeoJSON, Places, TrafficCounts, IdeaCollection, PollCollection, AvisoCollection) {
+  'views/AvisoCollection',
+  'views/AvisoMap'
+], function(LittleVillageGeoJSON, Places, TrafficCounts, IdeaCollection, PollCollection, AvisoCollection, AvisoMap) {
+  var map;
   return {
 	initMap: function() {
       var mapType = new google.maps.StyledMapType(
@@ -99,9 +101,9 @@ define([
 	},
     
     doMap: function() {
-      var m = this.initMap();
-      new Places({ map: m });  
-      //new TrafficCounts({ map: m });
+      map = this.initMap();
+      new Places({ map: map }); 
+      //new TrafficCounts({ map: map });
     },
     
     doIdeas: function(ideas) {
@@ -117,6 +119,7 @@ define([
     doAviso: function(aviso) {
       var collection = new Backbone.Collection(aviso);
       new AvisoCollection({ el: $('#Aviso'), collection: collection });
+      new AvisoMap({ collection: collection, map: map });
     },
 
     start: function(ideas, polls, aviso) {   	
