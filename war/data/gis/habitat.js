@@ -1,4 +1,5 @@
-{
+define(function() {
+return {
 "type": "FeatureCollection",
 "features": [
 { "type": "Feature", "properties": { "ADDRESS": "2200 N Ashland", "COMMENT_": "Riverbank habitat opportunity site", "OWNERSHIP": "Private", "FEATURES": "", "NAME": "Webster Wildlife Site", "ACRES": 1.120000, "SQFT": 48871.580000, "SHAPE_AREA": 48871.542454, "SHAPE_LEN": 1034.248640 }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -87.668283, 41.920941 ], [ -87.667952, 41.921060 ], [ -87.667774, 41.920583 ], [ -87.667703, 41.920473 ], [ -87.667497, 41.920291 ], [ -87.668039, 41.919858 ], [ -87.668133, 41.919943 ], [ -87.668182, 41.920314 ], [ -87.668283, 41.920941 ] ] ] } }
@@ -225,3 +226,4 @@
 
 ]
 }
+});

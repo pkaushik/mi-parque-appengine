@@ -1,4 +1,5 @@
-{
+define(function() {
+return {
 "type": "FeatureCollection",
 "features": [
 { "type": "Feature", "properties": { "MATCH_ADDR": "1842 S TROY ST", "SITE_NAME": "1800 South Troy Block Club Garden", "SITE_ADDRE": "1842 South Troy Street", "SQ_FT": 5940, "ACRES": 0.140000, "OWNED_OR_L": "Owned" }, "geometry": { "type": "Point", "coordinates": [ -87.704321, 41.856426 ] } }
@@ -155,3 +156,4 @@
 
 ]
 }
+});

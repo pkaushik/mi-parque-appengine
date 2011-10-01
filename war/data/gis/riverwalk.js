@@ -1,4 +1,5 @@
-{
+define(function() {
+return {
 "type": "FeatureCollection",
 "features": [
 { "type": "Feature", "properties": { "OBJECTID": 1, "ID": 0, "STATUS": 1, "SHAPE_LEN": 713.002635 }, "geometry": { "type": "LineString", "coordinates": [ [ -87.709467, 41.992194 ], [ -87.709424, 41.992065 ], [ -87.708919, 41.990280 ] ] } }
@@ -143,3 +144,4 @@
 
 ]
 }
+});

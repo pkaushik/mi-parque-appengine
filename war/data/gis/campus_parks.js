@@ -1,4 +1,5 @@
-{
+define(function() {
+return {
 "type": "FeatureCollection",
 "features": [
 { "type": "Feature", "properties": { "CPS_SCHOOL": "John P. Altgeld School", "PROJ_NAME": "Altgeld", "YEAR_BUILT": "1998", "ADDRESS": "1340 W 71ST ST", "SQFT": 62119.624243, "ACRES": 1.426070, "SHAPE_AREA": 62119.628712, "SHAPE_LEN": 1245.511066 }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -87.658213, 41.766728 ], [ -87.657922, 41.766726 ], [ -87.657902, 41.765551 ], [ -87.658597, 41.765548 ], [ -87.658632, 41.766234 ], [ -87.658203, 41.766232 ], [ -87.658208, 41.766716 ], [ -87.658213, 41.766728 ] ] ] } }
@@ -227,3 +228,4 @@
 
 ]
 }
+});
