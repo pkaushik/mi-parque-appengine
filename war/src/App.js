@@ -2,10 +2,11 @@
 define([
   '../data/gis/neighborhood_little_village',
   'views/Placemaking',
+  'views/TrafficCounts',
   'views/IdeaCollection',
   'views/PollCollection',
   'views/AvisoCollection'
-], function(LittleVillageGeoJSON, Places, IdeaCollection, PollCollection, AvisoCollection) {
+], function(LittleVillageGeoJSON, Places, TrafficCounts, IdeaCollection, PollCollection, AvisoCollection) {
   return {
 	initMap: function() {
       var mapType = new google.maps.StyledMapType(
@@ -67,10 +68,10 @@ define([
         zoom: 10,
         center: new google.maps.LatLng(-87.712334, 41.842339),
         mapTypeControl: false,
-        streetViewControl: true,
+        streetViewControl: false,
         overviewMapControl: false,
         panControl: true,
-        zoomControl: false,
+        zoomControl: true,
         zoomControlOptions: {
           style: google.maps.ZoomControlStyle.LARGE,
           position: google.maps.ControlPosition.LEFT_BOTTOM
@@ -99,7 +100,8 @@ define([
     
     doMap: function() {
       var m = this.initMap();
-      var p = new Places({ map: m });      
+      new Places({ map: m });  
+      //new TrafficCounts({ map: m });
     },
     
     doIdeas: function(ideas) {

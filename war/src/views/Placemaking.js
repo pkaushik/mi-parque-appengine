@@ -1,12 +1,10 @@
 define([
-  '../../data/gis/boulevards_little_village',
-  '../../data/gis/campus_parks_little_village',
-  '../../data/gis/habitat_little_village',
-  '../../data/gis/mall_plaza_little_village',
-  '../../data/gis/neighborspace_gardens_little_village',
-  '../../data/gis/riverwalk_little_village',
+  '../../data/gis/campus_parks',
+  '../../data/gis/habitat',
+  '../../data/gis/neighborspace_gardens',
+  '../../data/gis/riverwalk',
   '../../data/gis/mi_parque'
-], function(boulevards, campus_parks, habitat, mall_plaza, neighborspace, riverwalk, miparque) {
+], function(campus_parks, habitat, neighborspace, riverwalk, miparque) {
   return Backbone.View.extend({
 	googleOptions: {
 		strokeColor: "#285702",
@@ -15,14 +13,6 @@ define([
 		fillOpacity: 1,
 		fillColor: "#285702" 
 	},
-	  
-	boulevards: new GeoJSON(boulevards, {
-		strokeColor: "#285702",
-		strokeWeight: 1,
-		strokeOpacity: 0.75,
-		fillOpacity: 1,
-		fillColor: "#285702" 
-	}),
 
 	campus_parks: new GeoJSON(campus_parks, {
 		strokeColor: "#285702",
@@ -32,7 +22,23 @@ define([
 		fillColor: "#285702" 
 	}),
 	
-	mall_plaza: new GeoJSON(mall_plaza, {
+//	bike_routes: new GeoJSON(bike_routes, {
+//		strokeColor: "#BA2046",
+//		strokeWeight: 3,
+//		strokeOpacity: 0.75,
+//		fillOpacity: 1,
+//		fillColor: "#BA2046" 
+//	}),
+//	
+//	school_grounds: new GeoJSON(school_grounds, {
+//		strokeColor: "#BA2046",
+//		strokeWeight: 1,
+//		strokeOpacity: 0.75,
+//		fillOpacity: 1,
+//		fillColor: "#BA2046" 
+//	}),
+	
+	habitat: new GeoJSON(habitat, {
 		strokeColor: "#285702",
 		strokeWeight: 1,
 		strokeOpacity: 0.75,
@@ -40,13 +46,9 @@ define([
 		fillColor: "#285702" 
 	}),
 	
-//	neighborspace: new GeoJSON(neighborspace, {
-//		strokeColor: "#285702",
-//		strokeWeight: 1,
-//		strokeOpacity: 0.75,
-//		fillOpacity: 1,
-//		fillColor: "#285702" 
-//	}),
+	neighborspace: new GeoJSON(neighborspace, {
+	    "icon": "images/quadrifoglio.png"
+	}),
 	
 	miparque: new GeoJSON(miparque, {
 		strokeColor: "#56A00E",
@@ -56,11 +58,11 @@ define([
 		fillColor: "#56A00E" 
 	}),
 	
-//	riverwalk: new GeoJSON(riverwalk, {
-//		strokeColor: "#285702",
-//		strokeWeight: 3,
-//		strokeOpacity: 0.75
-//	}),
+	riverwalk: new GeoJSON(riverwalk, {
+		strokeColor: "#285702",
+		strokeWeight: 3,
+		strokeOpacity: 0.75
+	}),
 	
 	initialize: function() {
 	  this.render();
@@ -69,10 +71,10 @@ define([
 	
 	renderFeatureCollection: function(collection, map) {
 	  if (collection.length) {
-	    _(collection).each(function(feature){
+	    _(collection).each(function(feature) {
     	  if (feature.length) {
-    		_(feature).each(function(f){
-    			f.setMap(map)
+    		_(feature).each(function(f) {
+    			f.setMap(map);
     		}); 
     	  } else {
     		 feature.setMap(map); 
@@ -81,15 +83,31 @@ define([
 	  } else {
 		collection.setMap(map);
 	  }
+	  return this;
 	},
 	
     render: function() { 
-      //this.renderFeatureCollection(this.boulevards[0], this.options.map);
+      //this.renderFeatureCollection(this.boulevards[0], this.options.map); // rendering this using Google Maps Tile Styling
+      //this.renderFeatureCollection(this.mall_plaza, this.options.map); // not green
+    	
+      this.renderFeatureCollection(this.habitat, this.options.map);
       this.renderFeatureCollection(this.campus_parks, this.options.map);
-      this.renderFeatureCollection(this.mall_plaza, this.options.map);
-      //this.renderFeatureCollection(this.neighborspace, this.options.map);
-      //this.renderFeatureCollection(this.riverwalk, this.options.map);
+      this.renderFeatureCollection(this.riverwalk, this.options.map);
       this.renderFeatureCollection(this.miparque, this.options.map);
+      
+//      var markerImage = new google.maps.MarkerImage(
+//    		  'images/quadrifoglio.png', 
+//    		  new google.maps.Size(32,37), 
+//    		  new google.maps.Point(0, 0), 
+//    		  new google.maps.Point(16, 16));
+
+      
+      this.renderFeatureCollection(this.neighborspace, this.options.map);
+      
+//      this.renderFeatureCollection(this.school_grounds, this.options.map); // meh
+//      this.renderFeatureCollection(this.bike_routes, this.options.map); // meh
+      
+      return this;
     }
   });
 });

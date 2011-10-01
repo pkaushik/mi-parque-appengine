@@ -142,8 +142,7 @@
 
 			<div class="content-secondary">
 			
-				<div data-role="collapsible" data-collapsed="true" data-theme="b" data-content-theme="d">
-				<h3>More in this section</h3>
+				<div data-role="collapsible" data-collapsed="false" data-theme="b" data-content-theme="d">
 					<ul data-role="listview" data-theme="c" data-dividertheme="d">
 						<li data-theme="b"><a href="#">Mi Parque</a></li>
 						<li><a href="#idea">Mi Idea</a></li>
@@ -487,14 +486,24 @@
 			                <span class="dark-green-square"></span>
 			              </div>
 			              <div class="ui-block-b" style="width: 200px">
-			                Existing Open Spaces
+			                Parks and Open Spaces
 			              </div>
           				</div>
 						</li>
 						<li>
 						<div class="ui-grid-b">
 			              <div class="ui-block-a" style="width: 30px">
-			                <img src="images/firstaid_tiny.png">
+			                <img src="images/quadrifoglio.png" style="height: 20px">
+			              </div>
+			              <div class="ui-block-b" style="width: 200px">
+			                Neighborspace Gardens
+			              </div>
+          				</div>
+						</li>
+						<li>
+						<div class="ui-grid-b">
+			              <div class="ui-block-a" style="width: 30px">
+			                <img src="images/aviso_asthma_small.png"  style="height: 20px">
 			              </div>
 			              <div class="ui-block-b" style="width: 200px">
 			                Asthma Van Alert
@@ -504,7 +513,7 @@
 						<li>
 						<div class="ui-grid-b">
 			              <div class="ui-block-a" style="width: 30px">
-			                <img src="images/factory_tiny.png">
+			                <img src="images/aviso_air_small.png"  style="height: 20px">
 			              </div>
 			              <div class="ui-block-b" style="width: 200px">
 			                Air Quality Alert
@@ -514,7 +523,7 @@
 						<li>
 						<div class="ui-grid-b">
 			              <div class="ui-block-a" style="width: 30px">
-			                <img src="images/aviso_community_tiny.png">
+			                <img src="images/aviso_community_small.png"  style="height: 20px">
 			              </div>
 			              <div class="ui-block-b" style="width: 200px">
 			                Community Alert
@@ -535,6 +544,38 @@
 		</div>
 	</div>
 	<!-- /page -->
+	
+	
+	<!--Detailed aviso page starts here------------------------------------------------------------------->
+	
+	<div id="aviso-detail" data-role="page" class="type-interior">
+		<div data-role="header" data-theme="f">
+			<h1 id="#aviso-detail-title"></h1>
+		</div>
+		<div data-role="content" data-theme="d">
+			<div class="content-primary">
+			       <img id="aviso-detail-image"/>
+			        <hr>
+					<p id="aviso-detail-description"></p>
+			</div>
+			<div class="content-secondary">
+				<div data-role="collapsible" data-collapsed="false" data-theme="b">
+					<ul data-role="listview" data-theme="c" data-dividertheme="d">
+						<li><a href="#index">Mi Parque</a></li>
+						<li><a href="#idea">Mi Idea</a></li>
+						<li><a href="#voto">Mi Voto</a></li>
+						<li data-theme="a"><a href="#aviso">Mi Aviso</a></li>
+						<li><a href="#mapa">Mi Mapa</a></li>
+						<li><a href="#" class="ui-disabled">Mi Calendario</a></li>
+						<li><a href="#" class="ui-disabled">Mi Voluntario</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div data-role="footer" class="footer-docs" data-theme="c">
+			<p>&copy; Open Youth Networks</p><img src="images/logo_bottom.png" style="float: right"/>
+		</div>
+	</div>
 
 
 	<!-- Vendor Stuff Goes Here -->

@@ -10,6 +10,7 @@ define([
       $(this.el)
         .append($.tmpl(template, this.collection.toJSON()));
       FB.XFBML.parse(document.getElementById('Ideas'));
+      return this;
     }
   });
 });
