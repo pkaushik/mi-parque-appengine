@@ -6,10 +6,9 @@ define(function() {
     },
     render: function() {    
       var that = this;
-      console.log(this.collection.length)
       this.collection.each(function(model){    	
     	  var marker = new google.maps.Marker({
-  			position: new google.maps.LatLng(model.get("lat"), model.get("lon")),
+  			position: new google.maps.LatLng(parseFloat(model.get("lat")), parseFloat(model.get("lon"))),
   			icon: "images/aviso_" + model.get("type") + "_small.png"
   		  });
     	  
