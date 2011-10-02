@@ -1,13 +1,23 @@
 
 define([
-  '../data/gis/neighborhood_little_village',
+  '../data/gis/community_south_lawndale',
   'views/Placemaking',
-  'views/TrafficCounts',
+  'views/TrafficCountsMap',
   'views/IdeaCollection',
   'views/PollCollection',
   'views/AvisoCollection',
-  'views/AvisoMap'
-], function(LittleVillageGeoJSON, Places, TrafficCounts, IdeaCollection, PollCollection, AvisoCollection, AvisoMap) {
+  'views/AvisoMap',
+  'views/ToxicMap'
+], function(
+  LittleVillageGeoJSON, 
+  Places, 
+  TrafficCountsMap, 
+  IdeaCollection, 
+  PollCollection, 
+  AvisoCollection, 
+  AvisoMap,
+  ToxicMap
+) {
   var map;
   return {
 	initMap: function() {
@@ -103,7 +113,8 @@ define([
     doMap: function() {
       map = this.initMap();
       new Places({ map: map }); 
-      //new TrafficCounts({ map: map });
+      //new TrafficCountsMap({ map: map });
+      new ToxicMap({ map: map });
     },
     
     doIdeas: function(ideas) {
