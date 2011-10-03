@@ -130,7 +130,7 @@ define([
     doAviso: function(aviso) {
       var collection = new Backbone.Collection(aviso);
       new AvisoCollection({ el: $('#Aviso'), collection: collection });
-      new AvisoMap({ collection: collection, map: map });
+      //new AvisoMap({ collection: collection, map: map });
     },
 
     start: function(ideas, polls, aviso) {   	
