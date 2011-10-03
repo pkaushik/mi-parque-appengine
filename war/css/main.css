@@ -5,15 +5,15 @@
 
 .green-square {
   background: #56A00E; 
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   display: block;
 }
 
 .dark-green-square {
   background: #285702; 
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   display: block;
 }
 
@@ -270,10 +270,10 @@ dd h4 { margin:15px 0 0 0; }
 		margin: 0;
 		padding: 0;
 	}
-	.type-interior  .content-secondary .ui-li-divider {
+/* 	.type-interior  .content-secondary .ui-li-divider {
 		padding-top: 1em;
 		padding-bottom: 1em;
-	}
+	} */
 	.type-interior .content-secondary {
 		margin: 0;
 		padding: 0;

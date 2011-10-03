@@ -9,10 +9,9 @@ define(function() {
       this.collection.each(function(model){    	
     	  var marker = new google.maps.Marker({
   			position: new google.maps.LatLng(parseFloat(model.get("lat")), parseFloat(model.get("lon"))),
-  			icon: "images/aviso_" + model.get("type") + "_small.png"
+  			icon: "images/aviso_" + model.get("type") + "_small.png",
+  			map: that.options.map
   		  });
-    	  
-  		  marker.setMap(that.options.map);
       });
 
       return this;

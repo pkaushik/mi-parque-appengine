@@ -33,7 +33,7 @@ define([
           featureType: "water",
           elementType: "simplified",
           stylers: [
-            { hue: "#4E89C5" }
+            { hue: "#225377" }
           ]
         },{
             featureType: "poi.park",
@@ -94,11 +94,11 @@ define([
       map.setMapTypeId('desat');
 	  
       var LittleVillage = new GeoJSON(LittleVillageGeoJSON, {
-    		strokeColor: "#333",
-    		strokeWeight: 3,
-    		strokeOpacity: 0.75,
-    		fillOpacity: 0 
-    	})[0];
+		strokeColor: "#333",
+		strokeWeight: 3,
+		strokeOpacity: 0.75,
+		fillOpacity: 0 
+	  })[0];
       
       LittleVillage.setMap(map);
 	      
@@ -113,7 +113,7 @@ define([
     doMap: function() {
       map = this.initMap();
       new Places({ map: map }); 
-      //new TrafficCountsMap({ map: map });
+      new TrafficCountsMap({ el: $("#legend"), map: map });
       new ToxicMap({ map: map });
     },
     
