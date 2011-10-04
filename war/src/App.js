@@ -1,24 +1,23 @@
 
 define([
   '../data/gis/community_south_lawndale',
-  'views/Placemaking',
-  'views/TrafficCountsMap',
+  'views/GreenMapOverlay',
+  'views/TrafficCountsMapOverlay',
+  'views/AvisoMapOverlay',
+  'views/ToxicMapOverlay',
   'views/IdeaCollection',
   'views/PollCollection',
-  'views/AvisoCollection',
-  'views/AvisoMap',
-  'views/ToxicMap'
+  'views/AvisoCollection'
 ], function(
   LittleVillageGeoJSON, 
-  Places, 
-  TrafficCountsMap, 
+  GreenMapOverlay, 
+  TrafficCountsMapOverlay, 
+  AvisoMapOverlay,
+  ToxicMapOverlay,
   IdeaCollection, 
   PollCollection, 
-  AvisoCollection, 
-  AvisoMap,
-  ToxicMap
+  AvisoCollection
 ) {
-  var map;
   return {
 	initMap: function() {
       var mapType = new google.maps.StyledMapType(
@@ -97,7 +96,7 @@ define([
 		strokeColor: "#333",
 		strokeWeight: 3,
 		strokeOpacity: 0.75,
-		fillOpacity: 0 
+		fillOpacity: 0
 	  })[0];
       
       LittleVillage.setMap(map);
@@ -110,35 +109,21 @@ define([
       return map;
 	},
     
-    doMap: function() {
-      map = this.initMap();
-      new Places({ map: map }); 
-      new TrafficCountsMap({ el: $("#legend"), map: map });
-      new ToxicMap({ map: map });
-    },
-    
-    doIdeas: function(ideas) {
-      var collection = new Backbone.Collection(ideas);
-      new IdeaCollection({ el: $('#Ideas'), collection: collection });
-    },
-    
-    doPolls: function(polls) {
-      var collection = new Backbone.Collection(polls);
-      new PollCollection({ el: $('#Polls'), collection: collection });
-    },
-    
-    doAviso: function(aviso) {
-      var collection = new Backbone.Collection(aviso);
-      new AvisoCollection({ el: $('#Aviso'), collection: collection });
-      //new AvisoMap({ collection: collection, map: map });
-    },
 
-    start: function(ideas, polls, aviso) {   	
-      this.doMap();
-      this.doIdeas(ideas);
-      this.doPolls(polls);
-      this.doAviso(aviso);
-      
+    start: function(ideas, polls, aviso) { 
+    	var map = this.initMap();
+    	var avisoCollection = new Backbone.Collection(aviso);
+    	
+        new GreenMapOverlay({ el: $("#mapa"), map: map });
+        new TrafficCountsMapOverlay({ el: $("#mapa"), map: map });
+        new ToxicMapOverlay({ el: $("#mapa"), map: map });
+        new AvisoMapOverlay({ el: $("#mapa"), collection: avisoCollection, map: map });
+        
+        
+        new IdeaCollection({ el: $('#Ideas'), collection: new Backbone.Collection(ideas) });
+        new PollCollection({ el: $('#Polls'), collection: new Backbone.Collection(polls) });
+        new AvisoCollection({ el: $('#Aviso'), collection: avisoCollection });
+        
       
       // new Router({
       // 
