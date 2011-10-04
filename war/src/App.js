@@ -2,6 +2,7 @@
 define([
   '../data/gis/community_south_lawndale',
   'views/GreenMapOverlay',
+  'views/NeighborspaceGardensMapOverlay',
   'views/TrafficCountsMapOverlay',
   'views/AvisoMapOverlay',
   'views/ToxicMapOverlay',
@@ -11,6 +12,7 @@ define([
 ], function(
   LittleVillageGeoJSON, 
   GreenMapOverlay, 
+  NeighborspaceGardensMapOverlay,
   TrafficCountsMapOverlay, 
   AvisoMapOverlay,
   ToxicMapOverlay,
@@ -114,12 +116,16 @@ define([
     	var map = this.initMap();
     	var avisoCollection = new Backbone.Collection(aviso);
     	
+    	// Fixed overlays
         new GreenMapOverlay({ el: $("#mapa"), map: map });
         new TrafficCountsMapOverlay({ el: $("#mapa"), map: map });
+        
+        // Toggle-able overlays
+        new NeighborspaceGardensMapOverlay({ el: $("#mapa"), map: map });
         new ToxicMapOverlay({ el: $("#mapa"), map: map });
         new AvisoMapOverlay({ el: $("#mapa"), collection: avisoCollection, map: map });
         
-        
+        // Pages
         new IdeaCollection({ el: $('#Ideas'), collection: new Backbone.Collection(ideas) });
         new PollCollection({ el: $('#Polls'), collection: new Backbone.Collection(polls) });
         new AvisoCollection({ el: $('#Aviso'), collection: avisoCollection });

@@ -5,7 +5,7 @@ define([
 	  
 	dotter: new Dotter(4),
 	
-	legendDotter: new Dotter(8),
+	legendDotter: new Dotter(8.5),
 	
 	initialize: function() {
 	  
