@@ -18,8 +18,6 @@ define([
       var id = $(e.currentTarget).attr("data-id");
       var model = this.collection.get(id).toJSON();
       
-      console.log(model);
-      
       $("#aviso-detail")
       	.find("#aviso-detail-title")
       	.text(model.title)

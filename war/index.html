@@ -24,82 +24,18 @@
 	<script
 		src="http://connect.facebook.net/es_MX/all.js#appId=281417341887864&xfbml=1"></script>
 	<script>
-    FB.init({
-      appId:'281417341887864', 
-      cookie:true,
-      status:true, 
-      xfbml:true
-    });
-    
-    FB.getLoginStatus(function(response) {
-    	
-      // if we dont have a session, just hide the user info
-      if (!response.session) {
-        $("#welcome").hide('fast');
-        // additionally, if status is not known, hide the login buttons with all social plugins
-        if (response.status === "unknown") {
-          $(".facebook-auto-login-button").addClass("hide-auto-login-button");
-        }
-        return;
-      } 
-      
-      // hide the login button if the user is already connected to the app
-      if (response.status === "connected") {
-    	$("#login-button").hide('fast');
-      } 
-      
-      $(".facebook-show-when-logged-in").show('fast');
-
-      // if we have a session, query for the user's profile picture and name
-      FB.api('/me', function(user) {
-         if (user) {
-            $('#name').html(", " + user.name);
-         }
-       });
-      
-      // if we have a session, query for the user's friends
-      /* FB.api(
-        {
-          method: 'fql.query',
-          query: "SELECT uid, name, is_app_user, pic_square FROM user WHERE uid in (SELECT uid2 FROM friend WHERE uid1 = me()) AND is_app_user = 1"
-        },
-        function(response) {
-          
-          _(response).each(function(){
-        	  
-          });
-        }
-      ); */
-    });
-    
-    function convertToSlug(v) {
-      if (!v) return '';
-      var from = "ıİöÖüÜçÇğĞşŞâÂêÊîÎôÔûÛĘęÓóĄąŚśŁłŻżŹźĆćŃń";
-  		var to   = "iIoOuUcCgGsSaAeEiIoOuUEeOoAaSsLlZzZzCcNn";
-      for (var i=0, l=from.length ; i<l ; i++) {
-        v = v.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
-      }
-      return v.replace(/'/g, '').replace(/\s*&\s*/g, ' and ').replace(/[^A-Za-z0-9]+/g, '-').replace(/^-|-$/g, '').toLowerCase();
-    }
-    
-    function postPoll(id, title, choice) {
-      var verb = '/me/miparque:voice';
-      var poll_url = 'http://mi-parque.appspot.com/pages/polls/';
-      var token = 'AAADZC8pSyZAXgBANTS4LWmpU6ssNYjK7whHGwRTdFlGpKgLWhkThADqZAXEviNfUvfaoGY03G7TxQcZCEE8Fy5vXiWFNMGknvIq0tXWrQTn3O3Ek87Y6';
-      var path = convertToSlug([id, title].join(" "));
-            var slug = convertToSlug([choice].join(" "));
-            var og_action = verb + '&access_token=' + token + '&poll=' + poll_url + path + '/' + slug + '.html';
-          
-      console.log(og_action);
-      FB.api(og_action, 'post', function(response) {
-        if (!response || response.error) {
-          console.log(response);
-        } else {
-          console.log('It worked. id: ' + response.id);
-        }
-      });
-    }
-  </script>
+	function convertToSlug(v) {
+		if (!v)
+			return '';
+		var from = "ıİöÖüÜçÇğĞşŞâÂêÊîÎôÔûÛĘęÓóĄąŚśŁłŻżŹźĆćŃń";
+		var to = "iIoOuUcCgGsSaAeEiIoOuUEeOoAaSsLlZzZzCcNn";
+		for ( var i = 0, l = from.length; i < l; i++) {
+			v = v.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+		}
+		return v.replace(/'/g, '').replace(/\s*&\s*/g, ' and ').replace(
+				/[^A-Za-z0-9]+/g, '-').replace(/^-|-$/g, '').toLowerCase();
+	}
+	</script>
 
 	<div id="index" data-role="page" class="type-interior">
 		<div data-role="header" data-theme="f">
