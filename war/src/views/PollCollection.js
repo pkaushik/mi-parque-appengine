@@ -10,8 +10,8 @@ define([
       "click .vote_button": "vote" 
     },
     vote: function(e) {
-    	debugger;
-    	$(e.currentTarget).disable();
+    	//debugger;
+    	//$(e.currentTarget).disable();
     	var choice = $(e.currentTarget).parent().find(".ui-radio-on").find(".ui-btn-text").text();
     	var id = $(e.currentTarget).parent().find(".ui-radio-on").attr("data-poll-id");
     	var title = $(e.currentTarget).parent().find(".ui-radio-on").attr("data-poll-title");
