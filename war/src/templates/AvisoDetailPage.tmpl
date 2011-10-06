@@ -1,0 +1,27 @@
+<div data-role="header" data-theme="f">
+	<h1>${title}</h1>
+</div>
+<div data-role="content" data-theme="d">
+	<div class="content-primary">
+	       <img src="${imgURL}"/>
+	        <hr>
+			<p>${description}</p>
+			<fb:comments href="http://mi-parque.appspot.com/pages/aviso/${id}.html" num_posts="4"></fb:comments>
+	</div>
+	<div class="content-secondary">
+		<div data-role="collapsible" data-collapsed="false" data-theme="b">
+			<ul data-role="listview" data-theme="c" data-dividertheme="d">
+				<li><a href="#index">Mi Parque</a></li>
+				<li><a href="#idea">Mi Idea</a></li>
+				<li><a href="#voto">Mi Voto</a></li>
+				<li data-theme="a"><a href="#aviso">Mi Aviso</a></li>
+				<li><a href="#mapa">Mi Mapa</a></li>
+				<li><a href="#" class="ui-disabled">Mi Calendario</a></li>
+				<li><a href="#" class="ui-disabled">Mi Voluntario</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<div data-role="footer" class="footer-docs" data-theme="c">
+	<p>&copy; Open Youth Networks</p><img src="images/logo_bottom.png" style="float: right"/>
+</div>

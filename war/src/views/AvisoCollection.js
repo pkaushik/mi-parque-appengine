@@ -1,6 +1,7 @@
 define([
-  'text!templates/Aviso.tmpl'
-], function(template) {
+  'text!templates/Aviso.tmpl',
+  'text!templates/AvisoDetailPage.tmpl'
+], function(template, pageTemplate) {
   return Backbone.View.extend({
     initialize: function() {
       this.render();
@@ -16,18 +17,14 @@ define([
     },
     clicked: function(e) {
       var id = $(e.currentTarget).attr("data-id");
-      var model = this.collection.get(id).toJSON();
-      
+ 
       $("#aviso-detail")
-      	.find("#aviso-detail-title")
-      	.text(model.title)
-      	.end()
-      	.find("#aviso-detail-description")
-      	.text(model.description)
-      	.end()
-      	.find("#aviso-detail-image")
-      	.attr("src", model.imgURL)
-      	
+      	.empty()
+      	.append($.tmpl(pageTemplate, this.collection.get(id).toJSON()));
+      
+      $.mobile.changePage("#aviso-detail");
+      $('#aviso-detail').trigger('pagecreate');
+      
       return this;
     }
   });
