@@ -5,8 +5,9 @@ public class Notification {
 	private String title;
 	private String description;
 	private String type;
-	private String lat;
-	private String lon;
+	private float lat;
+	private float lon;
+	private String imgURL;
 	public Notification() {
 		// TODO Auto-generated constructor stub
 	}
@@ -17,19 +18,19 @@ public class Notification {
 		return id;
 	}
 	public void setTitle(String title) {
-		title.replaceAll("\u0027", "\'");
+	
 		this.title = title;
 	}
 	public String getTitle() {
-		title.replaceAll("\u0027", "\'");
+		
 		return title;
 	}
 	public void setDescription(String description) {
-		description.replaceAll("\u0027", "\'");
+		
 		this.description = description;
 	}
 	public String getDescription() {
-		description.replaceAll("\u0027", "\'");
+		
 		return description;
 	}
 	public void setType(String type) {
@@ -39,20 +40,26 @@ public class Notification {
 		return type;
 	}
 	public void setLat(String lat) {
-		this.lat = lat;
+		this.lat = Float.parseFloat(lat);
 	}
-	public String getLat() {
+	public float getLat() {
 		return lat;
 	}
 	public void setLon(String lon) {
-		this.lon = lon;
+		this.lon = Float.parseFloat(lon);
 	}
-	public String getLon() {
+	public float getLon() {
 		return lon;
 	}
 	
-	public String toString() {
-        return String.format("id: %s, title: %s, type: %s, lat:  %s, lon:  %s, description:  %s", id, title, type,lat,lon,description);
-    }
+	public void setImgURL(String imgURL) {
+		this.imgURL = imgURL;
+	}
+	public String getImgURL() {
+		return imgURL;
+	}
 
+	public String toString() {
+        return String.format("id: %s, title: %s, type: %s, lat:  %s, lon:  %s, description:  %s, imgURL:  %s", id, title, type,lat,lon,description,imgURL);
+    }
 }

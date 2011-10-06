@@ -84,7 +84,7 @@ public class FusionTablesManager {
 	    MatchResult match = scanner.match();
 	    String quotedString = match.group(2);
 	    String decoded = quotedString == null ? match.group(1) : quotedString.replaceAll("\"\"", "\"");
-	    if(decoded.equalsIgnoreCase("id") || decoded.equalsIgnoreCase("title")|| decoded.equalsIgnoreCase("type")|| decoded.equalsIgnoreCase("description")|| decoded.equalsIgnoreCase("lat")|| decoded.equalsIgnoreCase("lon")){
+	    if(decoded.equalsIgnoreCase("id") || decoded.equalsIgnoreCase("title")|| decoded.equalsIgnoreCase("type")|| decoded.equalsIgnoreCase("description")|| decoded.equalsIgnoreCase("lat")|| decoded.equalsIgnoreCase("lon") || decoded.equalsIgnoreCase("imgURL")){
 	    	nc = null;}
 	    else{
 	    	if(index == 0){
@@ -106,6 +106,9 @@ public class FusionTablesManager {
 	    	}
 	    	if(index == 5){
 	    		nc.setLon(decoded);
+	    	}
+	    	if(index == 6){
+	    		nc.setImgURL(decoded);
 	    	}
 	    }
 	   

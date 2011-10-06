@@ -44,7 +44,7 @@ public class NotificationManager extends HttpServlet {
 			HashMap messages = da.getNotification();
 		    JsonWriter writer = new JsonWriter(print);
 			   
-		     writer.setHtmlSafe(true);
+		     writer.setHtmlSafe(false);
 		     writer.setIndent("    ");
 		     writeMessagesArray(writer, messages);
 		    // print.print(writer.toString());
@@ -64,7 +64,7 @@ public class NotificationManager extends HttpServlet {
 	public void writeJsonStream(OutputStream out, HashMap messages) throws IOException {
 	     JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, "UTF-8"));
 	   
-	     writer.setHtmlSafe(true);
+	     writer.setHtmlSafe(false);
 	     writer.setIndent("    ");
 	     writeMessagesArray(writer, messages);
 	     writer.toString();
@@ -89,6 +89,7 @@ public class NotificationManager extends HttpServlet {
 	     writer.name("lat").value(message.getLat());
 	     writer.name("lon").value(message.getLon());
 	     writer.name("description").value(message.getDescription());
+	     writer.name("imgURL").value(message.getImgURL());
 	     writer.endObject();
 	   }
 

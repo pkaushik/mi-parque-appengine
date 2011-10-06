@@ -17,7 +17,7 @@ public class DataAct {
 	public HashMap getNotification() throws IOException, ServiceException{
 		HashMap hm = null;
 		StringBuffer sb = new StringBuffer();
-		sb = sb.append("select id,title,type,description,lat,lon From ");
+		sb = sb.append("select id,title,type,description,lat,lon,imgURL From ");
 		sb = sb.append(NOTIFY );
 		sb = sb.append(" ORDER BY id DESC LIMIT 10"  );
 		try {
