@@ -9,7 +9,8 @@ define([
     render: function() {      
       $(this.el)
         .append($.tmpl(template, this.collection.toJSON()));
-      FB.XFBML.parse(document.getElementById('Ideas'));
+      
+      (typeof FB !== 'undefined') && FB.XFBML.parse(document.getElementById('Ideas'));
       return this;
     }
   });

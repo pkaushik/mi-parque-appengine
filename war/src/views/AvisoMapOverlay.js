@@ -3,6 +3,8 @@ define(function() {
 	rendered: false,
 	
     initialize: function() {
+      if (typeof google === 'undefined') return this;
+    	
 	  this.collection.each(function(model){    	
 	  	var marker = new google.maps.Marker({
 		  position: new google.maps.LatLng(parseFloat(model.get("lat")), parseFloat(model.get("lon"))),

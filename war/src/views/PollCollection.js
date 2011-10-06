@@ -22,7 +22,8 @@ define([
       $(this.el)
         .append($.tmpl(template, this.collection.toJSON()));
       
-      FB.XFBML.parse(document.getElementById('Polls'));
+      (typeof FB !== 'undefined') && FB.XFBML.parse(document.getElementById('Polls'));
+      return this;
     }
   });
 });

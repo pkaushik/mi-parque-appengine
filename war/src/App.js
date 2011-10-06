@@ -113,7 +113,7 @@ define([
     
 
     start: function(ideas, polls, aviso) { 
-    	var map = this.initMap();
+    	var map = (typeof google === 'undefined') ? null : this.initMap();
     	var avisoCollection = new Backbone.Collection(aviso);
     	
     	// Fixed overlays

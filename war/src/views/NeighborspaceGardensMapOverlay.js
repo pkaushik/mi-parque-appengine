@@ -4,11 +4,15 @@ define([
   return Backbone.View.extend({
     rendered: false,
   
-	neighborspace: new GeoJSON(neighborspace, {
-	    icon: "images/quadrifoglio.png"
-	}),
+	neighborspace: null,
 	
 	initialize: function() {
+	  if (typeof google === 'undefined') return this;
+	  
+	  this.neighborspace = new GeoJSON(neighborspace, {
+		icon: "images/quadrifoglio.png"
+	  });
+	  
 	  this.render();
 	  return this;
 	},

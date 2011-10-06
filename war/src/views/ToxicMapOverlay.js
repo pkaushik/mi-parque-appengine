@@ -4,7 +4,13 @@ define([
   return Backbone.View.extend({
 	rendered: false,
 	
+	infowindow: null,
+	
 	initialize: function() {
+	  if (typeof google === 'undefined') return this;
+	  
+	  this.infowindow = new google.maps.InfoWindow();
+		
 	  this.collection = new Backbone.Collection();
 	  var that = this;
 	  _(placemarks).each(function(item){ 
@@ -49,8 +55,6 @@ define([
     	this.render();
       }
     },
-	
-	infowindow: new google.maps.InfoWindow(),
 	
 	setInfoWindow: function(marker, message) {
 		var that = this;

@@ -5,37 +5,47 @@ define([
   '../../data/gis/mi_parque'
 ], function(campus_parks, habitat, riverwalk, miparque) {
   return Backbone.View.extend({
-	campus_parks: new GeoJSON(campus_parks, {
+	campus_parks: null,
+	
+	habitat: null,
+	
+	miparque: null,
+	
+	riverwalk: null,
+	
+	initialize: function() {
+	  if (typeof google === 'undefined') return this;
+	  
+	  this.campus_parks = new GeoJSON(campus_parks, {
 		strokeColor: "#285702",
 		strokeWeight: 1,
 		strokeOpacity: 0.75,
 		fillOpacity: 1,
 		fillColor: "#285702" 
-	}),
-	
-	habitat: new GeoJSON(habitat, {
+	  });
+		
+	  this.habitat = new GeoJSON(habitat, {
 		strokeColor: "#285702",
 		strokeWeight: 1,
 		strokeOpacity: 0.75,
 		fillOpacity: 1,
 		fillColor: "#285702" 
-	}),
-	
-	miparque: new GeoJSON(miparque, {
+	  });
+		
+	  this.miparque = new GeoJSON(miparque, {
 		strokeColor: "#56A00E",
 		strokeWeight: 1,
 		strokeOpacity: 0.75,
 		fillOpacity: 1,
 		fillColor: "#56A00E" 
-	}),
-	
-	riverwalk: new GeoJSON(riverwalk, {
+	  });
+		
+	  this.riverwalk = new GeoJSON(riverwalk, {
 		strokeColor: "#285702",
 		strokeWeight: 3,
 		strokeOpacity: 0.75
-	}),
-	
-	initialize: function() {
+	  });
+	  
 	  this.render();
 	  return this;
 	},
