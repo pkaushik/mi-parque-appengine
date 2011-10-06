@@ -35,40 +35,6 @@ function postPoll(id, title, choice) {
 	});
 }
 
-FB.init({
-	appId : '281417341887864',
-	cookie : true,
-	status : true,
-	xfbml : true
-});
-
-FB.getLoginStatus(function(response) {
-	// if we dont have a session, just hide the user info
-	if (!response.session) {
-		$("#welcome").hide('fast');
-		// additionally, if status is not known, hide the login buttons with all social plugins
-		if (response.status === "unknown") {
-			$(".facebook-auto-login-button").addClass(
-					"hide-auto-login-button");
-		}
-		return;
-	}
-
-	// hide the login button if the user is already connected to the app
-	if (response.status === "connected") {
-		$("#login-button").hide('fast');
-	}
-
-	$(".facebook-show-when-logged-in").show('fast');
-
-	// if we have a session, query for the user's profile picture and name
-	FB.api('/me', function(user) {
-		if (user) {
-			$('#name').html(", " + user.name);
-		}
-	});
-});
-
 
 $('#idea').live('pagecreate', function(event) {
 	$('#idea').trigger('create');
