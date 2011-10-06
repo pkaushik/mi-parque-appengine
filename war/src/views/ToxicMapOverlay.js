@@ -4,6 +4,10 @@ define([
   return Backbone.View.extend({
 	rendered: false,
 	
+	events: {
+	  "click #toggle-toxic-sites" : "toggle"
+	},
+	
 	infowindow: null,
 	
 	initialize: function() {
@@ -31,19 +35,25 @@ define([
 	},
 	
 	render: function() {
-	  var that = this;
-	  this.collection.each(function(model){    	
-        model.get("marker").setMap(that.options.map);
-      });
+	  if (typeof google !== "undefined") {
+	    var that = this;
+	    this.collection.each(function(model){    	
+          model.get("marker").setMap(that.options.map);
+        });
+	  }
+	  console.log('rendered toxic sites');
       this.rendered = true;
       return this;
 	},
 	
 	remove: function() {
-	  var that = this;
-	  this.collection.each(function(model){    	
-	  	model.get("marker").setMap(null);
-	  });
+	  if (typeof google !== "undefined") {
+	    var that = this;
+	    this.collection.each(function(model){    	
+	  	  model.get("marker").setMap(null);
+	    });
+	  }
+	  console.log('removed toxic sites');
 	  this.rendered = false;
 	  return this;
     },

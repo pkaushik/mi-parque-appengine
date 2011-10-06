@@ -2,6 +2,10 @@ define(function() {
   return Backbone.View.extend({
 	rendered: false,
 	
+	events: {
+	  "click #toggle-aviso" : "toggle"
+	},
+	
     initialize: function() {
       if (typeof google === 'undefined') return this;
     	
@@ -16,21 +20,27 @@ define(function() {
       return this;
     },
     
-    render: function() {  
-      var that = this;
-      this.collection.each(function(model){    	
+    render: function() { 
+      if (typeof google !== "undefined") {
+        var that = this;
+        this.collection.each(function(model){    	
     	  model.get("marker").setMap(that.options.map);
-      });
+        });
+      }
       this.rendered = true;
+      console.log('rendered aviso');
       return this;
     },
     
     remove: function() {
-	  var that = this;
-	  this.collection.each(function(model){    	
-	  	model.get("marker").setMap(null);
-	  });
+      if (typeof google !== "undefined") {
+	    var that = this;
+	    this.collection.each(function(model){    	
+	  	  model.get("marker").setMap(null);
+	    });
+      }
 	  this.rendered = false;
+	  console.log('removed aviso');
 	  return this;
     },
     

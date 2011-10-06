@@ -119,9 +119,9 @@ define([
     	// Fixed overlays
         new GreenMapOverlay({ el: $("#mapa"), map: map });
         new TrafficCountsMapOverlay({ el: $("#mapa"), map: map });
+        new NeighborspaceGardensMapOverlay({ el: $("#mapa"), map: map });
         
         // Toggle-able overlays
-        new NeighborspaceGardensMapOverlay({ el: $("#mapa"), map: map });
         new ToxicMapOverlay({ el: $("#mapa"), map: map });
         new AvisoMapOverlay({ el: $("#mapa"), collection: avisoCollection, map: map });
         

@@ -11,7 +11,8 @@
 <link rel="shortcut icon" href="./images/favicon.ico" />
 <link rel="apple-touch-icon" href="./images/appicon.png">
 <link rel="apple-touch-icon-precomposed" href="./images/appicon.png" />
-<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.css" />
+<link rel="stylesheet" href="./lib/jquery/jquery.mobile/jquery.mobile.min.css" />
+<!-- <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.css" /> -->
 <link rel="stylesheet" href="./css/skeleton.css" />
 <link rel="stylesheet" href="./css/main.css" />
 </head>
@@ -35,6 +36,42 @@
 		return v.replace(/'/g, '').replace(/\s*&\s*/g, ' and ').replace(
 				/[^A-Za-z0-9]+/g, '-').replace(/^-|-$/g, '').toLowerCase();
 	}
+	
+
+	FB.init({
+		appId : '281417341887864',
+		cookie : true,
+		status : true,
+		xfbml : true
+	});
+	
+
+	FB.getLoginStatus(function(response) {
+		// if we dont have a session, just hide the user info
+		if (!response.session) {
+			$("#welcome").hide('fast');
+			// additionally, if status is not known, hide the login buttons with all social plugins
+			if (response.status === "unknown") {
+				$(".facebook-auto-login-button").addClass(
+						"hide-auto-login-button");
+			}
+			return;
+		}
+
+		// hide the login button if the user is already connected to the app
+		if (response.status === "connected") {
+			$("#login-button").hide('fast');
+		}
+
+		$(".facebook-show-when-logged-in").show('fast');
+
+		// if we have a session, query for the user's profile picture and name
+		FB.api('/me', function(user) {
+			if (user) {
+				$('#name').html(", " + user.name);
+			}
+		});
+	});
 	</script>
 
 	<div id="index" data-role="page" class="type-interior">
@@ -58,8 +95,6 @@
 						<!--  development mode ID: 197826130288025 / Production mode ID: 281417341887864 -->
 						<!--  URL: http://mi-parque.appspot.com/index.html#miembro -->
 						<!--  development mode URL: http://192.168.1.106/~pallavi/mi-parque-appengine/war/index.html#miembro -->
-				
-				
 						<div id="login-button" class="facebook-plugin">
 							<fb:login-button
 								registration-url="http://mi-parque.appspot.com/index.html#miembro" />
@@ -77,7 +112,6 @@
 			</div>
 
 			<div class="content-secondary">
-			
 				<div data-role="collapsible" data-collapsed="false" data-theme="b" data-content-theme="d">
 					<ul data-role="listview" data-theme="c" data-dividertheme="d">
 						<li data-theme="b"><a href="#">Mi Parque</a></li>
@@ -441,7 +475,7 @@
 				              <div id="dot1" class="ui-block-a" style="width: 30px"> 
 				              </div>
 				              <div class="ui-block-b" style="width: 260px">
-				                Avg. Daily Traffic Ct. < 5000
+				                Avg. Daily Traffic Ct. < 5K
 				              </div>
 	          				</div>
 							</li>
@@ -450,7 +484,7 @@
 				              <div id="dot2" class="ui-block-a" style="width: 30px">
 				              </div>
 				              <div class="ui-block-b" style="width: 260px">
-				                Avg. Daily Traffic Ct. 5000 - 15000
+				                Avg. Daily Traffic Ct. 5K - 15K
 				              </div>
 	          				</div>
 							</li>
@@ -459,12 +493,12 @@
 				              <div id="dot3" class="ui-block-a" style="width: 30px">
 				              </div>
 				              <div class="ui-block-b" style="width: 260px">
-				                Avg. Daily Traffic Ct. > 15000
+				                Avg. Daily Traffic Ct. > 15K
 				              </div>
 	          				</div>
 							</li>
 							<li data-role="list-divider">Toggle Layers</li>
-							<li>
+							<li id="toggle-toxic-sites">
 							<div class="ui-grid-b">
 				              <div class="ui-block-a" style="width: 30px">
 				                <img src="images/factory.png"  style="height: 20px">
@@ -474,7 +508,7 @@
 				              </div>
 	          				</div>
 							</li>
- 							<li>
+ 							<li id="toggle-aviso">
 							<div class="ui-grid-b">
 				              <div class="ui-block-a" style="width: 70px">
 				                <img src="images/aviso_asthma_small.png"  style="height: 20px">
@@ -558,8 +592,10 @@
     </script>
 	<script src="./lib/jquery-slugify-plugin/jquery.slugify.js">
     </script>
-	<script src="http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.js">
+    <script src="./lib/jquery/jquery.mobile/jquery.mobile.min.js">
 	</script>
+<!-- 	<script src="http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.js">
+	</script> -->
 	<script type="text/javascript" src="http://broady.github.com/Dotter/dotter.js">
 	</script>
 
