@@ -18,6 +18,15 @@
 <link rel="stylesheet" href="../../css/main.css" />
 </head>
 <body>
+	<div id="fb-root"></div>		
+	<script>(function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) {return;}
+	  js = d.createElement(s); js.id = id;
+	  js.src = "http://connect.facebook.net/es_MX/all.js#xfbml=1";
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
+	
 	<div data-role="page" class="type-interior">
 		<div data-role="header" data-theme="f">
 			<h1 class="title">Clean-Up Group</h1>
@@ -30,15 +39,6 @@
 			<p class="description">I want to help clean up the lot before it
 				becomes a park. Could we get a clean-up group organized for this?
 				I'm available on the weekends and after school on weekdays.</p>
-			<div id="fb-root"></div>
-			
-			<script>(function(d, s, id) {
-			  var js, fjs = d.getElementsByTagName(s)[0];
-			  if (d.getElementById(id)) {return;}
-			  js = d.createElement(s); js.id = id;
-			  js.src = "http://connect.facebook.net/es_MX/all.js#xfbml=1";
-			  fjs.parentNode.insertBefore(js, fjs);
-			}(document, 'script', 'facebook-jssdk'));</script>
 			<fb:comments href="http://mi-parque.appspot.com/pages/ideas/1.html" num_posts="4"></fb:comments>
 		</div>
 		<div data-role="footer" class="footer-docs" data-theme="c">
