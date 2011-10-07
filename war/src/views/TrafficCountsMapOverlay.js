@@ -11,7 +11,7 @@ define([
 	  if (typeof google === 'undefined') return this;
 	  
 	  this.dotter = new Dotter(4);
-	  this.legeldDotter = new Dotter(8.5);
+	  this.legendDotter = new Dotter(8.5);
 	  
 	  this.el.find("#dot1").append("<img src=\"" + this.legendDotter.getDot("#FECC5C") + "\"/>");
 	  this.el.find("#dot2").append("<img src=\"" + this.legendDotter.getDot("#FD8D3C") + "\"/>");
