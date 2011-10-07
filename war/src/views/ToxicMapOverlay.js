@@ -41,7 +41,6 @@ define([
           model.get("marker").setMap(that.options.map);
         });
 	  }
-	  console.log('rendered toxic sites');
       this.rendered = true;
       return this;
 	},
@@ -53,7 +52,6 @@ define([
 	  	  model.get("marker").setMap(null);
 	    });
 	  }
-	  console.log('removed toxic sites');
 	  this.rendered = false;
 	  return this;
     },

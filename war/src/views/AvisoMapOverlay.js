@@ -28,7 +28,6 @@ define(function() {
         });
       }
       this.rendered = true;
-      console.log('rendered aviso');
       return this;
     },
     
@@ -40,7 +39,6 @@ define(function() {
 	    });
       }
 	  this.rendered = false;
-	  console.log('removed aviso');
 	  return this;
     },
     
