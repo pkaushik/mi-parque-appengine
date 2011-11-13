@@ -1,5 +1,7 @@
 package com.miparque.restlet;
 
+import java.net.URLEncoder;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,6 +28,10 @@ import com.miparque.server.database.PollFtDao;
  * <ul>/voto/{id}
  * </ul>
  * 
+ * TODO: question about restlet framework. Is there a way to automatically map exceptions on to content and status
+ * codes so that I don't have to put try/catch blocks with returns? That's pretty ugly. I'd like to be able to
+ * let exceptions go through and get handled by the framework.
+ * 
  * @author codersquid
  *
  */
@@ -42,31 +48,28 @@ public class PollResource extends ServerResource {
      */
     @Get("json")
     public Representation represent() {
-        String id = (String) getRequest().getAttributes().get("id");
+        getResponse().getCacheDirectives().add(CacheDirective.noCache());
         // try
         // get poll ... logic here or pass id to data manager?
         // prob data manager... will also want logic to get choices. things could get lengthy. hate huge classes
         // catch not found, return 404
         // catch some service exception, 500
+
+        String id = (String) getRequest().getAttributes().get("id");
         Poll poll = pollDao.getById(id); // mock data
 
-        // serialize to json and return
         JSONObject json = new JSONObject();
         try {
-            json.put("id", poll.getId());
-            json.put("title", poll.getTitle());
-            json.put("description", poll.getDescription());
-            json.put("multiple", poll.getType().equals(PollType.APPROVAL));
+            json = PollJsonAdapter.toJson(poll);
         } catch (JSONException e) {
             e.printStackTrace(); // what kind of real logging do we have?
             setStatus(Status.SERVER_ERROR_INTERNAL);
+            return jsonifyException(e);
         }
+
         JsonRepresentation jr = new JsonRepresentation(json);
         jr.setCharacterSet(CharacterSet.UTF_8);
-        // etc.
 
-        // follow up with transport layer stuff
-        getResponse().getCacheDirectives().add(CacheDirective.noCache());
         setStatus(Status.SUCCESS_OK);
         return jr;
     }
@@ -97,10 +100,10 @@ public class PollResource extends ServerResource {
      * 
      */
     @Post
-    public void acceptRepresentation(JsonRepresentation entity) {
+    public Representation acceptRepresentation(JsonRepresentation entity) {
         if (! entity.getMediaType().isCompatible(MediaType.APPLICATION_JSON)) {
             setStatus(Status.CLIENT_ERROR_UNSUPPORTED_MEDIA_TYPE);
-            return;
+            return new JsonRepresentation(new JSONObject());
         }
 
         Poll poll = new Poll();
@@ -125,23 +128,53 @@ public class PollResource extends ServerResource {
         } catch (JSONException e) {
             e.printStackTrace();
             setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
-            return;
+            return jsonifyException(e);
         }
 
+        String rowid = "";
         try {
-            pollDao.create(poll);
+            rowid = pollDao.create(poll);
         } catch (Exception e) {
             // catch already exists and return 4xx
             // catch some service exception and return 500
             e.printStackTrace();
             setStatus(Status.SERVER_ERROR_INTERNAL);
-            return;
+            return jsonifyException(e);
         }
 
         // everything works
         setStatus(Status.SUCCESS_CREATED);
+        JSONObject json = new JSONObject();
+        try {
+			json.putOpt("rowid", rowid);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        JsonRepresentation jr = new JsonRepresentation(json);
+        jr.setCharacterSet(CharacterSet.UTF_8);
+        return jr;
     }
 
+    private JsonRepresentation jsonifyException(Exception e) {
+        JSONObject json = new JSONObject();
+        try {
+            StringBuffer sb = new StringBuffer(e.getMessage());
+            sb.append("\n");
+            for (StackTraceElement ste : e.getStackTrace()) {
+                sb.append(ste.toString());
+                sb.append("\n");
+            }
+            String msg = URLEncoder.encode(sb.toString(), "UTF-8");
+            json.put("error", msg);
+        } catch (Exception e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        JsonRepresentation errorJson = new JsonRepresentation(json);
+        errorJson.setCharacterSet(CharacterSet.UTF_8);
+        return errorJson;
+    }
     /**
      * we could have a PUT for adding choices, but
      * then must have a unique way to identify a choice so that we maintain idempotency.
@@ -155,4 +188,5 @@ public class PollResource extends ServerResource {
      * not acceptable. though if I were a user, I'd want to be able to do that.
      * hence, think about this.
      */
+    
 }

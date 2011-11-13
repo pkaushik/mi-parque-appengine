@@ -21,6 +21,7 @@ import java.util.List;
  */
 public class Poll implements Serializable {
     private static final long serialVersionUID = 1L;
+    private static final String og_type = "unassigned"; // TODO
 
     /** database id */
     private String id;
@@ -90,7 +91,9 @@ public class Poll implements Serializable {
     public void setActive(boolean active) {
         this.active = active;
     }
-
+    public String getOpenGraphType() {
+        return og_type;
+    }
     public int hashCode() {
         final int prime = 31;
         int result = 1;
@@ -117,6 +120,7 @@ public class Poll implements Serializable {
         return "Poll [id=" + id
                 + ", openGraphUrl=" + openGraphUrl
                 + ", openGraphImageUrl=" + openGraphImageUrl
+                + ", openGraphType=" + og_type
                 + ", title=" + title
                 + ", description=" + description
                 + ", type=" + type

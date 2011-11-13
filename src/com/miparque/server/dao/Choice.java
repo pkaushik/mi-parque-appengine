@@ -21,6 +21,7 @@ import java.io.Serializable;
  */
 public class Choice implements Serializable {
     private static final long serialVersionUID = 1L;
+    private static final String og_type = "poll";
 
     /** database id */
     private String id;
@@ -85,6 +86,9 @@ public class Choice implements Serializable {
     public void setDetail(String detail) {
         this.detail = detail;
     }
+    public String getOpenGraphType() {
+        return og_type;
+    }
     public int hashCode() {
         final int prime = 31;
         int result = 1;
@@ -115,6 +119,7 @@ public class Choice implements Serializable {
                 + ", choice=" + choice
                 + ", detail=" + detail
                 + ", openGraphImageUrl=" + openGraphImageUrl
+                + ", openGraphType=" + og_type
                 + "]";
     }
 
