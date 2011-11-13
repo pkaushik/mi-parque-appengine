@@ -1,23 +1,33 @@
 package com.miparque.server.dao;
 
+import java.io.Serializable;
+
 import com.google.gdata.data.DateTime;
 
 /**
  * Record of a vote of a member. When a user votes, we add an entry to the history table
+ *
+ * UserChoiceHistory 2148972
+ * column id,name,type
+ * col0,choiceId,string
+ * col1,userId,string
+ * col2,timeOfVote,datetime
+ * col3,pollId,string
  * 
  * @author codersquid
  */
-public class UserChioceHistory {
-    private int id;
+public class UserChoiceHistory implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private String id;
     private String userId;
-    private int pollId;
-    private int choiceId;
+    private String pollId;
+    private String choiceId;
     private DateTime timeOfVote;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
     public String getUserId() {
@@ -26,16 +36,16 @@ public class UserChioceHistory {
     public void setUserId(String userId) {
         this.userId = userId;
     }
-    public int getPollId() {
+    public String getPollId() {
         return pollId;
     }
-    public void setPollId(int pollId) {
+    public void setPollId(String pollId) {
         this.pollId = pollId;
     }
-    public int getChoiceId() {
+    public String getChoiceId() {
         return choiceId;
     }
-    public void setChoiceId(int choiceId) {
+    public void setChoiceId(String choiceId) {
         this.choiceId = choiceId;
     }
     public DateTime getTimeOfVote() {
@@ -47,7 +57,7 @@ public class UserChioceHistory {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + id;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         return result;
     }
     public boolean equals(Object obj) {
@@ -57,8 +67,11 @@ public class UserChioceHistory {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        UserChioceHistory other = (UserChioceHistory) obj;
-        if (id != other.id)
+        UserChoiceHistory other = (UserChoiceHistory) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
             return false;
         return true;
     }

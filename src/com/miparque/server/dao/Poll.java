@@ -1,18 +1,33 @@
 package com.miparque.server.dao;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A model of a Mi Voto poll
+ *
+ * fusiontable details
+ * Poll 2149092
+ * column id,name,type
+ * col0,description,string
+ * col1,title,string
+ * col2,openGraphUrl,string
+ * col3,pollType,string
+ * col4,active,string
+ * col5,openGraphImageUrl,string
  * 
  * @author codersquid
  */
-public class Poll {
+public class Poll implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     /** database id */
-    private int id;
-    /** descriptive but URL friendly slug. most likely based on title*/
-    private String slug;
+    private String id;
+    /** friendly human readable OpenGraph URL */
+    private String openGraphUrl;
+    /** URL to open graph friendly image */
+    private String openGraphImageUrl;
     /** Title of Poll. short headline */
     private String title;
     /** Extra verbiage to describe poll. how many characters? */
@@ -24,17 +39,23 @@ public class Poll {
     /** determines if the poll is currently available for voting */
     private boolean active;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
-    public String getSlug() {
-        return slug;
+    public String getOpenGraphUrl() {
+        return openGraphUrl;
     }
-    public void setSlug(String slug) {
-        this.slug = slug;
+    public void setOpenGraphUrl(String ogUrl) {
+        this.openGraphUrl = ogUrl;
+    }
+    public String getOpenGraphImageUrl() {
+        return openGraphImageUrl;
+    }
+    public void setOpenGraphImageUrl(String ogImageUrl) {
+        this.openGraphImageUrl = ogImageUrl;
     }
     public String getTitle() {
         return title;
@@ -69,10 +90,12 @@ public class Poll {
     public void setActive(boolean active) {
         this.active = active;
     }
+
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + id;
+        result = prime * result
+                + ((openGraphUrl == null) ? 0 : openGraphUrl.hashCode());
         return result;
     }
     public boolean equals(Object obj) {
@@ -83,18 +106,23 @@ public class Poll {
         if (getClass() != obj.getClass())
             return false;
         Poll other = (Poll) obj;
-        if (id != other.id)
+        if (openGraphUrl == null) {
+            if (other.openGraphUrl != null)
+                return false;
+        } else if (!openGraphUrl.equals(other.openGraphUrl))
             return false;
         return true;
     }
     public String toString() {
         return "Poll [id=" + id
-                + ", slug=" + slug
+                + ", openGraphUrl=" + openGraphUrl
+                + ", openGraphImageUrl=" + openGraphImageUrl
                 + ", title=" + title
                 + ", description=" + description
                 + ", type=" + type
-                + ", active=" + active
                 + ", choices=" + choices
+                + ", active=" + active
                 + "]";
     }
+
 }

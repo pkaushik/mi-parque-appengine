@@ -1,40 +1,64 @@
 package com.miparque.server.dao;
 
+import java.io.Serializable;
+
 /**
  * A model of a choice in a Mi Voto Poll. Polls can have multiple choices.
- *
- * an example of a json choice element that the front end will see:
- * {"index": "3", "choice": "Parque Sarate", "detail": "Director of Little Village Community Development Corporation"}
  * 
- * TODO: perhaps we add media links
+ * fusiontable description of table
+ * Choice 2149094
+ * column id,name,type
+ * col0,viewIndex,string
+ * col1,openGraphUrl,string
+ * col2,choice,string
+ * col3,details,string
+ * col4,pollId,string
+ * col5,openGraphImageUrl,string
+ * 
+ * fusiontable uses Strings for row ids
  * 
  * @author codersquid
  */
-public class Choice {
+public class Choice implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     /** database id */
-    private int id;
+    private String id;
+
     /** URL friendly human readable string based on the choice content */
-    private String slug;
+    private String openGraphUrl;
+
     /** fkey to Poll */
-    private int pollId;
-    /** stores the index that is being used by the frontend when showing the choice. this is probably not
-     * the best idea, but I'm continuing with the data structure as it is for now */
+    private String pollId;
+
+    /** stores the index that is being used by the frontend when showing the choice. */
     private String viewIndex;
+
     /** Short description to serve as the "headline" of the choice */
     private String choice;
+
     /** Lengthier description about the choice */
     private String detail;
 
-    public String getSlug() {
-        return slug;
+    /** URL to open graph friendly image for this Choic */
+    private String openGraphImageUrl;
+
+    public String getOpenGraphUrl() {
+        return openGraphUrl;
     }
-    public void setSlug(String slug) {
-        this.slug = slug;
+    public void setOpenGraphUrl(String ogUrl) {
+        this.openGraphUrl = ogUrl;
     }
-    public int getId() {
+    public String getOpenGraphImageUrl() {
+        return openGraphImageUrl;
+    }
+    public void setOpenGraphImageUrl(String ogImageUrl) {
+        this.openGraphImageUrl = ogImageUrl;
+    }
+    public String getId() {
         return id;
     }
-    public int getPollId() {
+    public String getPollId() {
         return pollId;
     }
     public String getViewIndex() {
@@ -46,10 +70,10 @@ public class Choice {
     public String getDetail() {
         return detail;
     }
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
-    public void setPollId(int pollId) {
+    public void setPollId(String pollId) {
         this.pollId = pollId;
     }
     public void setViewIndex(String viewIndex) {
@@ -64,7 +88,8 @@ public class Choice {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + id;
+        result = prime * result
+                + ((openGraphUrl == null) ? 0 : openGraphUrl.hashCode());
         return result;
     }
     public boolean equals(Object obj) {
@@ -75,18 +100,23 @@ public class Choice {
         if (getClass() != obj.getClass())
             return false;
         Choice other = (Choice) obj;
-        if (id != other.id)
+        if (openGraphUrl == null) {
+            if (other.openGraphUrl != null)
+                return false;
+        } else if (!openGraphUrl.equals(other.openGraphUrl))
             return false;
         return true;
     }
     public String toString() {
         return "Choice [id=" + id
+                + ", openGraphUrl=" + openGraphUrl
                 + ", pollId=" + pollId
-                + ", slug=" + slug
                 + ", viewIndex=" + viewIndex
                 + ", choice=" + choice
                 + ", detail=" + detail
+                + ", openGraphImageUrl=" + openGraphImageUrl
                 + "]";
     }
+
     
 }
