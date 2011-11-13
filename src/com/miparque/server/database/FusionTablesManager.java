@@ -1,29 +1,29 @@
 package com.miparque.server.database;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Scanner;
+import java.util.regex.MatchResult;
+import java.util.regex.Pattern;
+
 import com.google.gdata.client.ClientLoginAccountType;
 import com.google.gdata.client.GoogleService;
 import com.google.gdata.client.Service.GDataRequest;
 import com.google.gdata.client.Service.GDataRequest.RequestType;
-
 import com.google.gdata.util.AuthenticationException;
 import com.google.gdata.util.ContentType;
 import com.google.gdata.util.ServiceException;
 import com.miparque.server.dao.Notification;
 
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.regex.MatchResult;
-import java.util.regex.Pattern;
-
 
 public class FusionTablesManager {
   private static final Pattern CSV_VALUE_PATTERN =
-	      Pattern.compile("([^,\\r\\n\"]*|\"(([^\"]*\"\")*[^\"]*)\")(,|\\r?\\n)");
+          Pattern.compile("([^,\\r\\n\"]*|\"(([^\"]*\"\")*[^\"]*)\")(,|\\r?\\n)");
   private static final String email="liliann.v.lucas@gmail.com";
   private static final String password="iop!2taa";
   private static final String SERVICE_URL =
@@ -32,7 +32,7 @@ public class FusionTablesManager {
   private GoogleService service;
 
   public FusionTablesManager(GoogleService service) {
-	    this.service = service;
+        this.service = service;
   }
 
   public FusionTablesManager()
@@ -48,85 +48,115 @@ public class FusionTablesManager {
   }
 
 
-  public void runInsert(String updateQuery) throws IOException,ServiceException {
-    URL url = new URL(SERVICE_URL);
-    GDataRequest request = service.getRequestFactory().getRequest(
-        RequestType.INSERT, url,
-        new ContentType("application/x-www-form-urlencoded"));
-    OutputStreamWriter writer =
-        new OutputStreamWriter(request.getRequestStream());
-    writer.append("sql=" + URLEncoder.encode(updateQuery, "UTF-8"));
-    writer.flush();
+  /**
+   * Runs an insert command and returns the rowids if any were found in the response
+   * 
+   * @param updateQuery sql insert statement that is valid for fusiontables
+   * @return list of rowids returned from the FusionTable service
+   * @throws IOException
+   * @throws ServiceException
+   */
+  public List<String> runInsert(String updateQuery) throws IOException,ServiceException {
+      URL url = new URL(SERVICE_URL);
+      GDataRequest request = service.getRequestFactory().getRequest(RequestType.INSERT, url,
+              new ContentType("application/x-www-form-urlencoded"));
+      OutputStreamWriter writer = new OutputStreamWriter(request.getRequestStream());
+      writer.append("sql=" + URLEncoder.encode(updateQuery, "UTF-8"));
+      writer.flush();
+      request.execute();
 
+      List<String> rowids = new ArrayList<String>();
+      Scanner scanner = new Scanner(request.getResponseStream(),"UTF-8");
+      scanner.useDelimiter(System.getProperty("line.separator"));
+      while (scanner.hasNext()) {
+          String token = scanner.next();
+          if (token.matches("\\d+")) {
+              rowids.add(token);
+          }
+      }
+      return rowids;
+  }
+
+  /**
+   * Runs select request, uses the hdrs=false parameter value in order to suppress the column names.
+   * 
+   * @param selectQuery sql select statement that is valid for fusiontables
+   * @return executed request
+   * @throws IOException
+   * @throws ServiceException
+   */
+  public GDataRequest runSelect(String selectQuery) throws IOException, ServiceException {
+    URL url = new URL(SERVICE_URL + "?hdrs=false&sql=" + URLEncoder.encode(selectQuery, "UTF-8"));
+    GDataRequest request = service.getRequestFactory().getRequest(RequestType.QUERY, url, ContentType.TEXT_PLAIN);
     request.execute();
-
+    return request;
   }
 
   public HashMap runSelectNotification(String selectQuery) throws IOException,
   ServiceException {
-	//URL url = new URL(SERVICE_URL);
-	
-	URL url = new URL(SERVICE_URL + "?sql=" + URLEncoder.encode(selectQuery, "UTF-8"));
-		
-	GDataRequest request = service.getRequestFactory().getRequest(
-	        RequestType.QUERY, url, ContentType.TEXT_PLAIN);
-	
-	request.execute();
+    //URL url = new URL(SERVICE_URL);
+    
+    URL url = new URL(SERVICE_URL + "?sql=" + URLEncoder.encode(selectQuery, "UTF-8"));
+        
+    GDataRequest request = service.getRequestFactory().getRequest(
+            RequestType.QUERY, url, ContentType.TEXT_PLAIN);
+    
+    request.execute();
 
-	Scanner scanner = new Scanner(request.getResponseStream(),"UTF-8");
-	int index = 0;
-	Notification  nc = new Notification();
-	HashMap dataset = new HashMap();
-	boolean reset = false;
-	int entry = 0;
-	while (scanner.hasNextLine()) {
-	    scanner.findWithinHorizon(CSV_VALUE_PATTERN, 0);
-	    MatchResult match = scanner.match();
-	    String quotedString = match.group(2);
-	    String decoded = quotedString == null ? match.group(1) : quotedString.replaceAll("\"\"", "\"");
-	    if(decoded.equalsIgnoreCase("id") || decoded.equalsIgnoreCase("title")|| decoded.equalsIgnoreCase("type")|| decoded.equalsIgnoreCase("description")|| decoded.equalsIgnoreCase("lat")|| decoded.equalsIgnoreCase("lon") || decoded.equalsIgnoreCase("imgURL")){
-	    	nc = null;}
-	    else{
-	    	if(index == 0){
-	    		if(reset){
-	    			nc = new Notification();}
-	    		nc.setId(Integer.parseInt(decoded));
-	    	}
-	    	if(index == 1){
-	    		nc.setTitle(decoded);
-	    	}
-	    	if(index == 2){
-	    		nc.setType(decoded);
-	    	}
-	    	if(index == 3){
-	    		nc.setDescription(decoded);
-	    	}
-	    	if(index == 4){
-	    		nc.setLat(decoded);
-	    	}
-	    	if(index == 5){
-	    		nc.setLon(decoded);
-	    	}
-	    	if(index == 6){
-	    		nc.setImgURL(decoded);
-	    	}
-	    }
-	   
-	    if (!match.group(4).equals(",")) {
-	    	index = 0;
-	    	reset = true;
-	    	if(nc != null){
-	    		dataset.put(new Integer(entry), nc);
-	    		entry = entry + 1;
-	    	}
-	    }
-	    else{
-	    	index = index + 1;
-	    }
-	}
-	return dataset;
+    Scanner scanner = new Scanner(request.getResponseStream(),"UTF-8");
+    int index = 0;
+    Notification  nc = new Notification();
+    HashMap dataset = new HashMap();
+    boolean reset = false;
+    int entry = 0;
+    while (scanner.hasNextLine()) {
+        scanner.findWithinHorizon(CSV_VALUE_PATTERN, 0);
+        MatchResult match = scanner.match();
+        String quotedString = match.group(2);
+        String decoded = quotedString == null ? match.group(1) : quotedString.replaceAll("\"\"", "\"");
+        if(decoded.equalsIgnoreCase("id") || decoded.equalsIgnoreCase("title")|| decoded.equalsIgnoreCase("type")|| decoded.equalsIgnoreCase("description")|| decoded.equalsIgnoreCase("lat")|| decoded.equalsIgnoreCase("lon") || decoded.equalsIgnoreCase("imgURL")){
+            nc = null;}
+        else{
+            if(index == 0){
+                if(reset){
+                    nc = new Notification();}
+                nc.setId(Integer.parseInt(decoded));
+            }
+            if(index == 1){
+                nc.setTitle(decoded);
+            }
+            if(index == 2){
+                nc.setType(decoded);
+            }
+            if(index == 3){
+                nc.setDescription(decoded);
+            }
+            if(index == 4){
+                nc.setLat(decoded);
+            }
+            if(index == 5){
+                nc.setLon(decoded);
+            }
+            if(index == 6){
+                nc.setImgURL(decoded);
+            }
+        }
+       
+        if (!match.group(4).equals(",")) {
+            index = 0;
+            reset = true;
+            if(nc != null){
+                dataset.put(new Integer(entry), nc);
+                entry = entry + 1;
+            }
+        }
+        else{
+            index = index + 1;
+        }
+    }
+    return dataset;
   }
 
-	  
+      
 
 }

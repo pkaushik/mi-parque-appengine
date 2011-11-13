@@ -17,7 +17,6 @@ import com.miparque.server.RestApplication;
 import com.miparque.server.dao.Choice;
 import com.miparque.server.dao.Poll;
 import com.miparque.server.dao.PollType;
-import com.miparque.server.database.DataInterface;
 import com.miparque.server.database.PollFtDao;
 
 /**
@@ -32,7 +31,7 @@ import com.miparque.server.database.PollFtDao;
  */
 public class PollResource extends ServerResource {
     // pretend like we have data injection or whatever and we get different impls based on our backing data store
-    private DataInterface<Poll,String> pollDao = new PollFtDao();
+    private PollFtDao pollDao = new PollFtDao();
 
     /**
      * GET /voto/{id} where {id} is the key in to the db for a Poll
@@ -120,7 +119,7 @@ public class PollResource extends ServerResource {
                 // choice setSlug not sure what to set as slug right now
                 choice.setChoice(choiceJson.getString("choice"));
                 choice.setViewIndex(choiceJson.getString("index"));
-                choice.setDetail(choiceJson.getString("detail"));
+                choice.setDetail(choiceJson.optString("detail"));
                 poll.addChoice(choice);
             }
         } catch (JSONException e) {
