@@ -2,7 +2,6 @@ package com.miparque.restlet;
 
 import java.net.URLEncoder;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.restlet.data.CacheDirective;
@@ -15,10 +14,9 @@ import org.restlet.resource.Get;
 import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 
+import com.miparque.server.ResourceNotFoundException;
 import com.miparque.server.RestApplication;
-import com.miparque.server.dao.Choice;
 import com.miparque.server.dao.Poll;
-import com.miparque.server.dao.PollType;
 import com.miparque.server.database.PollFtDao;
 
 /**
@@ -57,13 +55,18 @@ public class PollResource extends ServerResource {
         // catch some service exception, 500
 
         String id = (String) getRequest().getAttributes().get("id");
-        Poll poll = pollDao.getById(id); // mock data
+        Poll poll = null;
+        try {
+            poll = pollDao.getById(id); // mock data
+        } catch (ResourceNotFoundException e) {
+            setStatus(Status.CLIENT_ERROR_NOT_FOUND);
+            return jsonifyException(e);
+        }
 
         JSONObject json = new JSONObject();
         try {
             json = PollJsonAdapter.toJson(poll);
         } catch (JSONException e) {
-            e.printStackTrace(); // what kind of real logging do we have?
             setStatus(Status.SERVER_ERROR_INTERNAL);
             return jsonifyException(e);
         }

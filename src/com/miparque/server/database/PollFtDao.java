@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.google.appengine.repackaged.com.google.common.base.Strings;
+import com.miparque.server.ResourceNotFoundException;
 import com.miparque.server.dao.Choice;
 import com.miparque.server.dao.Poll;
 import com.miparque.server.dao.PollType;
@@ -32,30 +32,93 @@ public class PollFtDao {
      * TODO: stubbed with mock data.
      * @param rowid rowid for a Poll
      * @return the Poll associated with the rowid
+     * @throws ResourceNotFoundException 
      */
-    public Poll getById(String rowid) {
-        Poll poll = mockPoll(rowid);
+    public Poll getById(String rowid) throws ResourceNotFoundException {
 
         FusionTablesManager fm;
         String pollquery = "SELECT " + columnsPoll + " from " + POLL_FID + " WHERE ROWID = '" + rowid + "'" ;
         String choicequery = "SELECT " + columnsChoice + " from " + CHOICE_FID + " WHERE 'pollId' = '" + rowid + "'" ;
-
+        List<Map<String, String>> pollrows;
+        List<Map<String,String>> choicerows;
         try {
             fm = new FusionTablesManager();
-            List<Map<String, String>> pollrows = fm.runSelect(pollquery);
+            pollrows = fm.runSelect(pollquery);
             System.out.println(pollrows);
         } catch (Exception e) {
             throw new RuntimeException("Unable to find poll for query: " + pollquery, e);
         }
+        if (pollrows.isEmpty()) {
+            throw new ResourceNotFoundException("No poll results found for query: " + pollquery);
+        }
+        Map<String,String> pollMap = pollrows.get(0);
+
+        Poll poll = pollFromMappedResults(pollMap);
 
         try {
-            List<Map<String,String>> choicerows = fm.runSelect(choicequery);
+            choicerows = fm.runSelect(choicequery);
             System.out.println(choicerows);
         } catch (Exception e) {
             throw new RuntimeException("Unable to find choices for query: " + choicequery, e);
         }
+        // attach Choices to Poll if any exist
+        for (Map<String,String> choiceMap : choicerows) {
+            Choice choice = choiceFromMappedResults(choiceMap);
+            poll.addChoice(choice);
+        }
 
         return poll;
+    }
+    private Poll pollFromMappedResults(Map<String,String> m) {
+        Poll poll = new Poll();
+        if (m.containsKey("rowid")) {
+            poll.setId(m.get("rowid"));
+        }
+        if (m.containsKey("description")) {
+            poll.setDescription(m.get("description"));
+        }
+        if (m.containsKey("title")) {
+            poll.setTitle(m.get("title"));
+        }
+        if (m.containsKey("openGraphUrl")) {
+            poll.setOpenGraphUrl(m.get("openGraphUrl"));
+        }
+        if (m.containsKey("pollType")) {
+            poll.setType(PollType.valueOf(m.get("pollType")));
+        }
+        if (m.containsKey("active")) {
+            poll.setActive(m.get("active").equals("true"));
+        }
+        if (m.containsKey("openGraphImageUrl")) {
+            poll.setOpenGraphImageUrl(m.get("openGraphImageUrl"));
+        }
+        return poll;
+    }
+    private Choice choiceFromMappedResults(Map<String,String> m) {
+        //"ROWID,viewIndex,openGraphUrl,choice,details,pollId,openGraphImageUrl";
+        Choice choice = new Choice();
+        if (m.containsKey("rowid")) {
+            choice.setId(m.get("rowid"));
+        }
+        if (m.containsKey("viewIndex")) {
+            choice.setViewIndex(m.get("viewIndex"));
+        }
+        if (m.containsKey("openGraphUrl")) {
+            choice.setOpenGraphUrl(m.get("openGraphUrl"));
+        }
+        if (m.containsKey("choice")) {
+            choice.setChoice(m.get("choice"));
+        }
+        if (m.containsKey("details")) {
+            choice.setDetail(m.get("details"));
+        }
+        if (m.containsKey("pollId")) {
+            choice.setPollId(m.get("pollId"));
+        }
+        if (m.containsKey("openGraphImageUrl")) {
+            choice.setOpenGraphImageUrl(m.get("openGraphImageUrl"));
+        }
+        return choice;
     }
 
     /**
