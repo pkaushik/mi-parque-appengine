@@ -3,6 +3,7 @@ package com.miparque.restlet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -52,5 +53,23 @@ public class PollJsonAdapter {
         json.put("og_url", choice.getOpenGraphUrl());
         json.putOpt("og_image_url", choice.getOpenGraphImageUrl());
         return json;
+    }
+    public static Poll fromJson(JSONObject json) throws JSONException {
+        Poll poll = new Poll();
+        poll.setActive(false); // needs to be moderated by hand
+        poll.setTitle(json.getString("title"));
+        poll.setDescription(json.getString("description"));
+        PollType type = json.optBoolean("mulitple") ? PollType.APPROVAL : PollType.PLURALITY;
+        poll.setType(type);
+        JSONArray choices = json.getJSONArray("choices");
+        for (int i = 0; i < choices.length(); i++) {
+            JSONObject choiceJson = choices.getJSONObject(i);
+            Choice choice = new Choice();
+            choice.setChoice(choiceJson.getString("choice"));
+            choice.setViewIndex(choiceJson.getString("index"));
+            choice.setDetail(choiceJson.optString("detail"));
+            poll.addChoice(choice);
+        }
+        return poll;
     }
 }

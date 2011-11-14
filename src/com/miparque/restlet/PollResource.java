@@ -45,9 +45,10 @@ public class PollResource extends ServerResource {
      * {@code $ curl -v -X GET -H 'accept:application/json' "http://localhost:8888/api/voto/123"}
      * 
      * @return json representation of {@link Poll}
+     * @throws Exception 
      */
     @Get("json")
-    public Representation represent() {
+    public Representation represent() throws Exception {
         getResponse().getCacheDirectives().add(CacheDirective.noCache());
         // try
         // get poll ... logic here or pass id to data manager?
@@ -110,21 +111,7 @@ public class PollResource extends ServerResource {
         try {
             // allow required elements to blow up when they are not found
             JSONObject json = entity.getJsonObject();
-            poll.setActive(false); // needs to be moderated by hand
-            poll.setTitle(json.getString("title"));
-            poll.setDescription(json.getString("description"));
-            PollType type = json.optBoolean("mulitple") ? PollType.APPROVAL : PollType.PLURALITY;
-            poll.setType(type);
-            JSONArray choices = json.getJSONArray("choices");
-            for (int i = 0; i < choices.length(); i++) {
-                JSONObject choiceJson = choices.getJSONObject(i);
-                Choice choice = new Choice();
-                // choice setSlug not sure what to set as slug right now
-                choice.setChoice(choiceJson.getString("choice"));
-                choice.setViewIndex(choiceJson.getString("index"));
-                choice.setDetail(choiceJson.optString("detail"));
-                poll.addChoice(choice);
-            }
+            poll = PollJsonAdapter.fromJson(json);
         } catch (JSONException e) {
             e.printStackTrace();
             setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
