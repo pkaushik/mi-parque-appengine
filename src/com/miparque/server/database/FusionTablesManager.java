@@ -1,12 +1,15 @@
 package com.miparque.server.database;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
@@ -78,19 +81,69 @@ public class FusionTablesManager {
   }
 
   /**
-   * Runs select request, uses the hdrs=false parameter value in order to suppress the column names.
+   * Runs select request
    * 
    * @param selectQuery sql select statement that is valid for fusiontables
-   * @return executed request
+   * @return list of maps lists of strings of each column
    * @throws IOException
    * @throws ServiceException
    */
-  public GDataRequest runSelect(String selectQuery) throws IOException, ServiceException {
-    URL url = new URL(SERVICE_URL + "?hdrs=false&sql=" + URLEncoder.encode(selectQuery, "UTF-8"));
+  public List<Map<String,String>> runSelect(String selectQuery) throws IOException, ServiceException {
+    //URL url = new URL(SERVICE_URL + "?hdrs=false&sql=" + URLEncoder.encode(selectQuery, "UTF-8"));
+    URL url = new URL(SERVICE_URL + "?sql=" + URLEncoder.encode(selectQuery, "UTF-8"));
     GDataRequest request = service.getRequestFactory().getRequest(RequestType.QUERY, url, ContentType.TEXT_PLAIN);
     request.execute();
-    return request;
+    // stringify, mappify, return
+    StringBuilder sb = new StringBuilder();
+    BufferedReader reader = new BufferedReader(new InputStreamReader(request.getResponseStream()));
+    while (true) {
+        String line = reader.readLine();
+        if (line == null) {
+            break;
+        } else {
+            sb.append(line);
+            sb.append("\n");
+        }
+    }
+    return parseResponse(sb.toString());
   }
+    /**
+     * see https://github.com/ddewaele/FusionTablesJ2SE
+     * see src/main/java/com/ecs/fusiontables/sample/CsvParser.java
+     * Parses the response coming back from the API call (CSV format),
+     * and converts it into a list of maps. (intermediary format).
+     */
+    private List<Map<String, String>> parseResponse(String response) {
+        Scanner scanner = new Scanner(response);
+        boolean foundHeader = false;
+        List<String> keys = new ArrayList<String>();
+        List<Map<String, String>> entries = new ArrayList<Map<String, String>>();
+        Map<String, String> lineItem = new HashMap<String, String>();
+
+        int i = 0;
+        while (scanner.hasNextLine()) {
+            i++;
+            scanner.findWithinHorizon(CSV_VALUE_PATTERN, 0);
+            MatchResult match = scanner.match();
+            String quotedString = match.group(2);
+            String decoded = quotedString == null ? match.group(1)
+                    : quotedString.replaceAll("\"\"", "\"");
+            if (!foundHeader) {
+                keys.add(decoded);
+            } else {
+                lineItem.put(keys.get(i - 1), decoded);
+            }
+            if (!match.group(4).equals(",")) {
+                i = 0;
+                if (lineItem.size() != 0) {
+                    entries.add(lineItem);
+                }
+                lineItem = new HashMap<String, String>();
+                foundHeader = true;
+            }
+        }
+        return entries;
+    }
 
   public HashMap runSelectNotification(String selectQuery) throws IOException,
   ServiceException {

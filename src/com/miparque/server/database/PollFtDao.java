@@ -7,8 +7,9 @@ import java.text.Normalizer.Form;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
-import com.google.gdata.client.Service.GDataRequest;
+import com.google.appengine.repackaged.com.google.common.base.Strings;
 import com.miparque.server.dao.Choice;
 import com.miparque.server.dao.Poll;
 import com.miparque.server.dao.PollType;
@@ -23,6 +24,8 @@ import com.miparque.server.dao.PollType;
 public class PollFtDao {
     private static final String POLL_FID = "2149092";
     private static final String CHOICE_FID = "2149094";
+    private static final String columnsPoll = "ROWID,description,title,openGraphUrl,pollType,active,openGraphImageUrl";
+    private static final String columnsChoice = "ROWID,viewIndex,openGraphUrl,choice,details,pollId,openGraphImageUrl";
     //2148972,UserChoiceHistory
 
     /**
@@ -33,18 +36,26 @@ public class PollFtDao {
     public Poll getById(String rowid) {
         Poll poll = mockPoll(rowid);
 
-//        FusionTablesManager fm;
-//        String query = "SELECT * from " + POLL_FID + " WHERE ROWID = '" + rowid + "'" ;
-//        try {
-//            fm = new FusionTablesManager();
-//            GDataRequest request = fm.runSelect(query);
-//        } catch (Exception e) {
-//            throw new RuntimeException("Unable to find poll for query: " + query, e);
-//        }
-        
+        FusionTablesManager fm;
+        String pollquery = "SELECT " + columnsPoll + " from " + POLL_FID + " WHERE ROWID = '" + rowid + "'" ;
+        String choicequery = "SELECT " + columnsChoice + " from " + CHOICE_FID + " WHERE 'pollId' = '" + rowid + "'" ;
+
+        try {
+            fm = new FusionTablesManager();
+            List<Map<String, String>> pollrows = fm.runSelect(pollquery);
+            System.out.println(pollrows);
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to find poll for query: " + pollquery, e);
+        }
+
+        try {
+            List<Map<String,String>> choicerows = fm.runSelect(choicequery);
+            System.out.println(choicerows);
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to find choices for query: " + choicequery, e);
+        }
 
         return poll;
-
     }
 
     /**
