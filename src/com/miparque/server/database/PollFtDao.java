@@ -4,11 +4,17 @@ import static com.miparque.server.database.FusionTableUtil.nullSafeString;
 
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.miparque.restlet.PollJsonAdapter;
 import com.miparque.server.ResourceNotFoundException;
 import com.miparque.server.dao.Choice;
 import com.miparque.server.dao.Poll;
@@ -24,51 +30,182 @@ import com.miparque.server.dao.PollType;
 public class PollFtDao {
     private static final String POLL_FID = "2149092";
     private static final String CHOICE_FID = "2149094";
+    private static final String USER_CHOICE_HISTORY_FID = "2148972";
     private static final String columnsPoll = "ROWID,description,title,openGraphUrl,pollType,active,openGraphImageUrl";
     private static final String columnsChoice = "ROWID,viewIndex,openGraphUrl,choice,details,pollId,openGraphImageUrl";
-    //2148972,UserChoiceHistory
+    private static final String columnsHistory = "ROWID,choiceId,userId,timeOfVote,pollId";
 
     /**
-     * TODO: stubbed with mock data.
      * @param rowid rowid for a Poll
-     * @return the Poll associated with the rowid
+     * @return the Poll in json form
      * @throws ResourceNotFoundException 
+     * @throws JSONException 
      */
-    public Poll getById(String rowid) throws ResourceNotFoundException {
+    public JSONObject getPoll(String rowid) throws ResourceNotFoundException, JSONException {
 
         FusionTablesManager fm;
         String pollquery = "SELECT " + columnsPoll + " from " + POLL_FID + " WHERE ROWID = '" + rowid + "'" ;
         String choicequery = "SELECT " + columnsChoice + " from " + CHOICE_FID + " WHERE 'pollId' = '" + rowid + "'" ;
-        List<Map<String, String>> pollrows;
-        List<Map<String,String>> choicerows;
-        try {
-            fm = new FusionTablesManager();
-            pollrows = fm.runSelect(pollquery);
-            System.out.println(pollrows);
-        } catch (Exception e) {
-            throw new RuntimeException("Unable to find poll for query: " + pollquery, e);
-        }
-        if (pollrows.isEmpty()) {
-            throw new ResourceNotFoundException("No poll results found for query: " + pollquery);
-        }
-        Map<String,String> pollMap = pollrows.get(0);
 
-        Poll poll = pollFromMappedResults(pollMap);
+        List<Map<String, String>> pollrows = runSelect(pollquery);
+        // TODO allow unattached polls? If so, try/catch this result
+        List<Map<String, String>> choicerows = runSelect(choicequery);
 
-        try {
-            choicerows = fm.runSelect(choicequery);
-            System.out.println(choicerows);
-        } catch (Exception e) {
-            throw new RuntimeException("Unable to find choices for query: " + choicequery, e);
-        }
-        // attach Choices to Poll if any exist
+        Map<String,String> pollMap = pollrows.get(0); // TODO want to throw an exception for more than one result?
+
+        JSONObject pollJson = PollJsonAdapter.pollFromMappedResults(pollMap); 
+
+        List<JSONObject> choices = new ArrayList<JSONObject>();
         for (Map<String,String> choiceMap : choicerows) {
-            Choice choice = choiceFromMappedResults(choiceMap);
-            poll.addChoice(choice);
+            JSONObject choice = PollJsonAdapter.choiceFromMappedResults(choiceMap);
+            choices.add(choice);
         }
+        pollJson.put("choices", choices);
 
-        return poll;
+        return pollJson;
     }
+    public Poll getDetachedPoll(String rowid) throws ResourceNotFoundException {
+        String pollquery = "SELECT " + columnsPoll + " from " + POLL_FID + " WHERE ROWID = '" + rowid + "'" ;
+        List<Map<String, String>> pollrows = runSelect(pollquery);
+        if (pollrows.size() > 1) {
+            // the database is screwed up
+            throw new RuntimeException("No unique choice. poll: " + rowid + " results: " + pollrows);
+        }
+        return pollFromMappedResults(pollrows.get(0));
+    }
+    public Choice getDetachedChoice(String pollId, String choiceId) throws ResourceNotFoundException {
+        String choicequery = "SELECT " + columnsChoice + " from " + CHOICE_FID
+                + " WHERE 'pollId' = '" + pollId + "'"
+                + " AND ROWID = '" + choiceId + "'";
+        List<Map<String, String>> rows = runSelect(choicequery);
+        if (rows.size() > 1) {
+            // the database is screwed up
+            throw new RuntimeException("No unique choice. poll: " + pollId + " choice: " + choiceId
+                    + " results: " + rows);
+        }
+        return choiceFromMappedResults(rows.get(0));
+    }
+    
+    public List<JSONObject> getUserChoiceHistory(String userId) throws ResourceNotFoundException, JSONException {
+        String query = "SELECT " + columnsHistory + " FROM " + USER_CHOICE_HISTORY_FID + " WHERE 'userId' = '"
+                + userId + "'";
+        List<Map<String,String>> rows = runSelect(query);
+        
+        List<JSONObject> history = new ArrayList<JSONObject>();
+        for (Map<String,String> row : rows) {
+            JSONObject json = PollJsonAdapter.jsonFromMap(row);
+            history.add(json);
+        }
+        return history;
+    }
+
+    /**
+     * Persist a Poll and its Choices to fusiontables.
+     * 
+     * @param poll poll entity to be persisted
+     * @return rowid of the new row
+     * @throws RuntimeExceptions if any of the objects do not pass validation, or there are service problems.
+     */
+    public String createPoll(Poll poll) {
+        validate(poll);
+        String pollInsert = pollInsertSql(poll);
+
+        List<String> rowids = new ArrayList<String>();
+        rowids = runInsert(pollInsert);
+        String pollid = rowids.get(0);
+
+        String choicesInsert = choicesInsertSql(poll.getChoices(), pollid);
+        runInsert(choicesInsert);
+        return pollid;
+    }
+    public List<String> createUserChoiceHistory(String pollId, String choiceId, String userId) {
+        // https://groups.google.com/group/fusion-tables-users-group/msg/7c41c7f6ea5f485f?dmode=source&output=gplain&noredirect
+        // fusiontables ignore time right now
+        Date date = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd");
+        StringBuffer sb = new StringBuffer("insert into ")
+                .append(USER_CHOICE_HISTORY_FID)
+                .append(" (choiceId,userId,timeOfVote,pollId) ")
+                .append(" values (")
+                .append(nullSafeString(choiceId))
+                .append(",")
+                .append(nullSafeString(userId))
+                .append(",")
+                .append(nullSafeString(df.format(date)))
+                .append(",")
+                .append(nullSafeString(pollId))
+                .append(" )");
+        return runInsert(sb.toString());
+    }
+
+    /**
+     * Delegates to FusionTableManager.runInsert and does validation
+     * @param insert sql insert command
+     * @return list of new rowids
+     * @throws RuntimeExceptions if any of the objects do not pass validation, or there are service problems.
+     */
+    private List<String> runInsert(String insert) {
+        System.out.println(insert);
+        List<String> rowids = new ArrayList<String>();
+        try {
+            FusionTablesManager fm = new FusionTablesManager();
+            rowids = fm.runInsert(insert);
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to persist. insert: [" + insert + "]", e);
+        }
+        if (rowids == null || rowids.isEmpty()) {
+            throw new RuntimeException("There was a problem persisting this object. We did not find any ROWIDS in the "
+                    + " response. insert: [" + insert + "]");
+        }
+        return rowids;
+    }
+
+    /**
+     * Runs a select against the fusiontables manager and returns results or throws
+     * an exception if no results are found.
+     * 
+     * @param query fustiontable sql statement 
+     * @return list of maps for each row in the result
+     * @throws ResourceNotFoundException if no results are found
+     */
+    private List<Map<String,String>> runSelect(String query) throws ResourceNotFoundException {
+        // logger.debug(query)
+        System.out.println(query);
+        List<Map<String, String>> rows;
+        try {
+            FusionTablesManager fm = new FusionTablesManager();
+            rows = fm.runSelect(query);
+            System.out.println(rows);
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to find results for query: " + query, e);
+        }
+        if (rows.isEmpty()) {
+            throw new ResourceNotFoundException("No results found for query: " + query);
+        }
+        return rows;
+    }
+    /**
+     * Validates a poll for storing
+     * @param poll
+     */
+    private void validate(Poll poll) {
+        if (poll.getTitle() == null || poll.getTitle().isEmpty()) {
+            throw new IllegalArgumentException("Polls need a title in order to be stored. Failed to store" +
+                    " Poll object: " + poll);
+        }
+    }
+    private void validate(Choice choice) {
+        if (choice.getChoice() == null || choice.getChoice().isEmpty()) {
+            throw new IllegalArgumentException("Choices need a choice in order to be stored. Failed to store" +
+                    " Choice object: " + choice);
+        }
+    }
+    /**
+     * Builds a poll from the map of strings returned by {@link FusionTablesManager#runSelect(String)}
+     * 
+     * @param m map of column values from a fusiontable row
+     * @return a Poll representation of the results
+     */
     private Poll pollFromMappedResults(Map<String,String> m) {
         Poll poll = new Poll();
         if (m.containsKey("rowid")) {
@@ -94,6 +231,12 @@ public class PollFtDao {
         }
         return poll;
     }
+    /**
+     * Builds a choice from the map of strings returned by {@link FusionTablesManager#runSelect(String)}
+     * 
+     * @param m map of column values from a fusiontable row
+     * @return a Choice representation of the results
+     */
     private Choice choiceFromMappedResults(Map<String,String> m) {
         //"ROWID,viewIndex,openGraphUrl,choice,details,pollId,openGraphImageUrl";
         Choice choice = new Choice();
@@ -120,72 +263,6 @@ public class PollFtDao {
         }
         return choice;
     }
-
-    /**
-     * TODO: Stub
-     */
-    public void update(Poll entity) {
-    }
-
-
-    /**
-     * Persist a Poll and its Choices to fusiontables.
-     * 
-     * @param poll poll entity to be persisted
-     * @return rowid of the new row
-     * @throws RuntimeExceptions if any of the objects do not pass validation, or there are service problems.
-     */
-    public String create(Poll poll) {
-        validate(poll);
-        String pollInsert = pollInsertSql(poll);
-
-        List<String> rowids = new ArrayList<String>();
-        rowids = runInsert(pollInsert, poll);
-        String pollid = rowids.get(0);
-
-        String choicesInsert = choicesInsertSql(poll.getChoices(), pollid);
-        runInsert(choicesInsert, poll.getChoices());
-        return pollid;
-    }
-
-    /**
-     * Delegates to FusionTableManager.runInsert and does validation
-     * @param insert sql insert command
-     * @return list of new rowids
-     * @throws RuntimeExceptions if any of the objects do not pass validation, or there are service problems.
-     */
-    private List<String> runInsert(String insert, Object thang) {
-        List<String> rowids = new ArrayList<String>();
-        try {
-            FusionTablesManager fm = new FusionTablesManager();
-            rowids = fm.runInsert(insert);
-        } catch (Exception e) {
-            throw new RuntimeException("Unable to persist. insert: [" + insert + "]", e);
-        }
-        if (rowids == null || rowids.isEmpty()) {
-            throw new RuntimeException("There was a problem persisting this object. We did not find any ROWIDS in the "
-                    + " response. insert: [" + insert + "]");
-        }
-        return rowids;
-    }
-
-    /**
-     * Validates a poll for storing
-     * @param poll
-     */
-    private void validate(Poll poll) {
-        if (poll.getTitle() == null || poll.getTitle().isEmpty()) {
-            throw new IllegalArgumentException("Polls need a title in order to be stored. Failed to store" +
-                    " Poll object: " + poll);
-        }
-    }
-    private void validate(Choice choice) {
-        if (choice.getChoice() == null || choice.getChoice().isEmpty()) {
-            throw new IllegalArgumentException("Choices need a choice in order to be stored. Failed to store" +
-                    " Choice object: " + choice);
-        }
-    }
-
     /**
      * Generates insert statement for requested poll
      * @param poll a validate poll
@@ -265,25 +342,4 @@ public class PollFtDao {
                 .toLowerCase();
     }
 
-    private Poll mockPoll(String rowid) {
-        Poll poll = new Poll();
-         poll.setId(rowid);
-         poll.setOpenGraphUrl("perma/link/to/poll/favorite-colour");
-         poll.setTitle("what is your favorite colour");
-         poll.setDescription("Select your favorite colour");
-         poll.setType(PollType.PLURALITY);
-         Choice blue = new Choice();
-         blue.setChoice("Blue");
-         blue.setDetail("Blue tastes like chairs");
-         blue.setOpenGraphUrl("perma/link/to/blue");
-         blue.setViewIndex("0");
-         Choice red = new Choice();
-         red.setChoice("Red");
-         red.setDetail("Ice is not red.");
-         red.setOpenGraphUrl("perma/link/to/red");
-         red.setViewIndex("1");
-         poll.addChoice(blue);
-         poll.addChoice(red);
-         return poll;
-    }
 }

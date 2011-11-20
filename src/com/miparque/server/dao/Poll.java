@@ -91,7 +91,7 @@ public class Poll implements Serializable {
     public void setActive(boolean active) {
         this.active = active;
     }
-    public String getOpenGraphType() {
+    public static String getOpenGraphType() {
         return og_type;
     }
     public int hashCode() {

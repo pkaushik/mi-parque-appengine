@@ -22,7 +22,8 @@ public class UserChoiceHistory implements Serializable {
     private String userId;
     private String pollId;
     private String choiceId;
-    private DateTime timeOfVote;
+    // https://groups.google.com/group/fusion-tables-users-group/msg/7c41c7f6ea5f485f?dmode=source&output=gplain&noredirect
+    private DateTime timeOfVote = DateTime.now();
 
     public String getId() {
         return id;

@@ -86,7 +86,7 @@ public class Choice implements Serializable {
     public void setDetail(String detail) {
         this.detail = detail;
     }
-    public String getOpenGraphType() {
+    public static String getOpenGraphType() {
         return og_type;
     }
     public int hashCode() {

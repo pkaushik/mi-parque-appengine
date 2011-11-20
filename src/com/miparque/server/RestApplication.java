@@ -4,9 +4,12 @@ import org.restlet.Application;
 import org.restlet.Restlet;
 import org.restlet.routing.Router;
 
+import com.miparque.restlet.AppStatusService;
 import com.miparque.restlet.IdeaListResource;
 import com.miparque.restlet.IdeaResource;
 import com.miparque.restlet.PollResource;
+import com.miparque.restlet.UserChoiceResource;
+import com.miparque.restlet.UserChoicesResource;
 
 
 public class RestApplication extends Application {
@@ -24,6 +27,13 @@ public class RestApplication extends Application {
         // URIs for Mi Voto Polls
         apiRouter.attach("/voto/{id}", PollResource.class);
         apiRouter.attach("/voto", PollResource.class);
+
+        // URI for making a Choice in a Poll
+        apiRouter.attach("/userchoice/{pollId}/{choiceId}/{userId}", UserChoiceResource.class);
+        // URI for getting all choices for a user
+        apiRouter.attach("/userchoices/{userId}", UserChoicesResource.class);
+
+        setStatusService(new AppStatusService());
 
         return apiRouter;
 	}

@@ -22,13 +22,9 @@ import com.miparque.server.database.PollFtDao;
 /**
  * Resource representation of Polls/Voto. Attached to the router in {@link RestApplication} 
  * <li>
- * <ul>/voto
- * <ul>/voto/{id}
+ * <ul>POST /voto
+ * <ul>GET /voto/{id}
  * </ul>
- * 
- * TODO: question about restlet framework. Is there a way to automatically map exceptions on to content and status
- * codes so that I don't have to put try/catch blocks with returns? That's pretty ugly. I'd like to be able to
- * let exceptions go through and get handled by the framework.
  * 
  * @author codersquid
  *
@@ -43,35 +39,41 @@ public class PollResource extends ServerResource {
      * {@code $ curl -v -X GET -H 'accept:application/json' "http://localhost:8888/api/voto/123"}
      * 
      * @return json representation of {@link Poll}
-     * @throws Exception 
+     * <pre>
+     * {
+     *  "id":"203",
+     *  "og_image_url":"",
+     *  "title":"More Park Names",
+     *  "description":"What should we name the park? Based on name submissions we are now voting on the top 3!",
+     *  "choices":[
+     *    {
+     *      "id":"5",
+     *      "og_image_url":"",
+     *      "detail":"labor organizer, farm worker and environmental justice advocate",
+     *      "index":"0",
+     *      "choice":"Parque Marentes",
+     *      "og_type":"poll",
+     *      "og_url":"parque-marentes"
+     *   },
+     *  ],
+     *  "active":false,
+     *  "og_type":"unassigned",
+     *  "multiple":false,
+     *  "og_url":"more-park-names"
+     * }
+     * </pre>
+     * 
+     * @throws JSONException 
+     * @throws ResourceNotFoundException 
      */
     @Get("json")
-    public Representation represent() throws Exception {
+    public Representation represent() throws ResourceNotFoundException, JSONException {
         getResponse().getCacheDirectives().add(CacheDirective.noCache());
-        // try
-        // get poll ... logic here or pass id to data manager?
-        // prob data manager... will also want logic to get choices. things could get lengthy. hate huge classes
-        // catch not found, return 404
-        // catch some service exception, 500
 
         String id = (String) getRequest().getAttributes().get("id");
-        Poll poll = null;
-        try {
-            poll = pollDao.getById(id); // mock data
-        } catch (ResourceNotFoundException e) {
-            setStatus(Status.CLIENT_ERROR_NOT_FOUND);
-            return jsonifyException(e);
-        }
+        JSONObject poll = pollDao.getPoll(id);
 
-        JSONObject json = new JSONObject();
-        try {
-            json = PollJsonAdapter.toJson(poll);
-        } catch (JSONException e) {
-            setStatus(Status.SERVER_ERROR_INTERNAL);
-            return jsonifyException(e);
-        }
-
-        JsonRepresentation jr = new JsonRepresentation(json);
+        JsonRepresentation jr = new JsonRepresentation(poll);
         jr.setCharacterSet(CharacterSet.UTF_8);
 
         setStatus(Status.SUCCESS_OK);
@@ -101,10 +103,11 @@ public class PollResource extends ServerResource {
      * {@code $ curl -v -X POST -d @parkname.json -H 'content-type:application/json' -H 'accept:application/json' "http://localhost:8888/api/voto"}
      * 
      * @param entity    Representation containing a json Poll
+     * @throws JSONException 
      * 
      */
     @Post
-    public Representation acceptRepresentation(JsonRepresentation entity) {
+    public Representation acceptRepresentation(JsonRepresentation entity) throws JSONException {
         if (! entity.getMediaType().isCompatible(MediaType.APPLICATION_JSON)) {
             setStatus(Status.CLIENT_ERROR_UNSUPPORTED_MEDIA_TYPE);
             return new JsonRepresentation(new JSONObject());
@@ -123,7 +126,7 @@ public class PollResource extends ServerResource {
 
         String rowid = "";
         try {
-            rowid = pollDao.create(poll);
+            rowid = pollDao.createPoll(poll);
         } catch (Exception e) {
             // catch already exists and return 4xx
             // catch some service exception and return 500
@@ -135,12 +138,7 @@ public class PollResource extends ServerResource {
         // everything works
         setStatus(Status.SUCCESS_CREATED);
         JSONObject json = new JSONObject();
-        try {
-			json.putOpt("rowid", rowid);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        json.putOpt("rowid", rowid);
         JsonRepresentation jr = new JsonRepresentation(json);
         jr.setCharacterSet(CharacterSet.UTF_8);
         return jr;
