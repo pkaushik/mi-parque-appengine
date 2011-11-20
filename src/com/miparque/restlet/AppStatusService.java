@@ -13,6 +13,9 @@ public class AppStatusService extends StatusService {
         if (throwable instanceof ResourceNotFoundException) {
             return Status.CLIENT_ERROR_NOT_FOUND;
         }
+        if (throwable instanceof IllegalArgumentException) {
+            return Status.CLIENT_ERROR_BAD_REQUEST;
+        }
         return Status.SERVER_ERROR_INTERNAL;
     }
 }

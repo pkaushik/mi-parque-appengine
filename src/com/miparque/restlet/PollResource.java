@@ -1,6 +1,7 @@
 package com.miparque.restlet;
 
 import java.net.URLEncoder;
+import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,6 +18,7 @@ import org.restlet.resource.ServerResource;
 import com.miparque.server.ResourceNotFoundException;
 import com.miparque.server.RestApplication;
 import com.miparque.server.dao.Poll;
+import com.miparque.server.database.ChoiceFtDao;
 import com.miparque.server.database.PollFtDao;
 
 /**
@@ -31,7 +33,10 @@ import com.miparque.server.database.PollFtDao;
  */
 public class PollResource extends ServerResource {
     // pretend like we have data injection or whatever and we get different impls based on our backing data store
+    // and if we ever get to the point where we do any sort of testing it would be nice to be able to mock interfaces
+    // so we'll make these impls of interfaces, yep. unless we don't need to.
     private PollFtDao pollDao = new PollFtDao();
+    private ChoiceFtDao choiceDao = new ChoiceFtDao();
 
     /**
      * GET /voto/{id} where {id} is the key in to the db for a Poll
@@ -71,7 +76,10 @@ public class PollResource extends ServerResource {
         getResponse().getCacheDirectives().add(CacheDirective.noCache());
 
         String id = (String) getRequest().getAttributes().get("id");
-        JSONObject poll = pollDao.getPoll(id);
+        JSONObject poll = pollDao.getJson(id);
+        // want to allow polls with no choices? then catch this, otherwise let it blow up. let's go with strict for now
+        List<JSONObject> choices = choiceDao.getJsonList(id);
+        poll.put("choices", choices);
 
         JsonRepresentation jr = new JsonRepresentation(poll);
         jr.setCharacterSet(CharacterSet.UTF_8);
@@ -117,7 +125,7 @@ public class PollResource extends ServerResource {
         try {
             // allow required elements to blow up when they are not found
             JSONObject json = entity.getJsonObject();
-            poll = PollJsonAdapter.fromJson(json);
+            poll = Poll.mergeFrom(json);
         } catch (JSONException e) {
             e.printStackTrace();
             setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
@@ -126,7 +134,8 @@ public class PollResource extends ServerResource {
 
         String rowid = "";
         try {
-            rowid = pollDao.createPoll(poll);
+            rowid = pollDao.insert(poll);
+            choiceDao.insertList(poll.getChoices(), rowid);
         } catch (Exception e) {
             // catch already exists and return 4xx
             // catch some service exception and return 500

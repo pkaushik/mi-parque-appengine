@@ -21,6 +21,7 @@ import com.google.gdata.client.Service.GDataRequest.RequestType;
 import com.google.gdata.util.AuthenticationException;
 import com.google.gdata.util.ContentType;
 import com.google.gdata.util.ServiceException;
+import com.miparque.server.ResourceNotFoundException;
 import com.miparque.server.dao.Notification;
 
 
@@ -60,6 +61,7 @@ public class FusionTablesManager {
    * @throws ServiceException
    */
   public List<String> runInsert(String updateQuery) throws IOException,ServiceException {
+      System.out.println(updateQuery);
       URL url = new URL(SERVICE_URL);
       GDataRequest request = service.getRequestFactory().getRequest(RequestType.INSERT, url,
               new ContentType("application/x-www-form-urlencoded"));
@@ -89,6 +91,7 @@ public class FusionTablesManager {
    * @throws ServiceException
    */
   public List<Map<String,String>> runSelect(String selectQuery) throws IOException, ServiceException {
+    System.out.println(selectQuery);
     //URL url = new URL(SERVICE_URL + "?hdrs=false&sql=" + URLEncoder.encode(selectQuery, "UTF-8"));
     URL url = new URL(SERVICE_URL + "?sql=" + URLEncoder.encode(selectQuery, "UTF-8"));
     GDataRequest request = service.getRequestFactory().getRequest(RequestType.QUERY, url, ContentType.TEXT_PLAIN);

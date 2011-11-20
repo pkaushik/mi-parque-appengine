@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * A model of a Mi Voto poll
  *
@@ -128,5 +132,44 @@ public class Poll implements Serializable {
                 + ", active=" + active
                 + "]";
     }
+    /**
+     * Adapts a Poll object in to its json representation
+     * @param poll
+     * @return a Poll transformed in to a json representation
+     * @throws JSONException
+     */
+    public JSONObject toJson() throws JSONException {
+        JSONObject json = new JSONObject();
+        json.putOpt("id", getId());
+        json.put("title", getTitle());
+        json.put("description", getDescription());
+        json.put("multiple", getType().equals(PollType.APPROVAL));
+        json.putOpt("og_type", getOpenGraphType());
+        json.put("og_url", getOpenGraphUrl());
+        json.putOpt("og_image_url", getOpenGraphImageUrl());
+        json.put("active", isActive());
 
+        List<JSONObject> choiceJsonList = new ArrayList<JSONObject>();
+        for (Choice choice : getChoices()) {
+            choiceJsonList.add(choice.toJson());
+        }
+        json.put("choices", choiceJsonList);
+
+        return json;
+    }
+
+    public static Poll mergeFrom(JSONObject json) throws JSONException {
+        Poll poll = new Poll();
+        poll.setActive(false); // needs to be moderated by hand
+        poll.setTitle(json.getString("title"));
+        poll.setDescription(json.getString("description"));
+        PollType type = json.optBoolean("mulitple") ? PollType.APPROVAL : PollType.PLURALITY;
+        poll.setType(type);
+        JSONArray choices = json.getJSONArray("choices");
+        for (int i = 0; i < choices.length(); i++) {
+            Choice choice = Choice.mergeFrom(choices.getJSONObject(i));
+            poll.addChoice(choice);
+        }
+        return poll;
+    }
 }

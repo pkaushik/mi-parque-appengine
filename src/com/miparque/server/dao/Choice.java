@@ -2,6 +2,9 @@ package com.miparque.server.dao;
 
 import java.io.Serializable;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * A model of a choice in a Mi Voto Poll. Polls can have multiple choices.
  * 
@@ -14,6 +17,7 @@ import java.io.Serializable;
  * col3,details,string
  * col4,pollId,string
  * col5,openGraphImageUrl,string
+ * col6,active,string
  * 
  * fusiontable uses Strings for row ids
  * 
@@ -43,6 +47,9 @@ public class Choice implements Serializable {
 
     /** URL to open graph friendly image for this Choic */
     private String openGraphImageUrl;
+
+    /** determines if the choice is currently available for voting */
+    private boolean active;
 
     public String getOpenGraphUrl() {
         return openGraphUrl;
@@ -89,6 +96,12 @@ public class Choice implements Serializable {
     public static String getOpenGraphType() {
         return og_type;
     }
+    public boolean isActive() {
+        return active;
+    }
+    public void setActive(boolean active) {
+        this.active = active;
+    }
     public int hashCode() {
         final int prime = 31;
         int result = 1;
@@ -120,8 +133,33 @@ public class Choice implements Serializable {
                 + ", detail=" + detail
                 + ", openGraphImageUrl=" + openGraphImageUrl
                 + ", openGraphType=" + og_type
+                + ", active=" + active
                 + "]";
     }
-
-    
+    /**
+     * Adapts a Choice object in to its json representation
+     * @param choice
+     * @return a Choice transformed in to a json representation
+     * @throws JSONException
+     */
+    public JSONObject toJson() throws JSONException {
+        JSONObject json = new JSONObject();
+        json.put("index", getViewIndex());
+        json.put("choice", getChoice());
+        json.put("detail", getDetail());
+        json.putOpt("id", getId());
+        json.put("og_type", getOpenGraphType());
+        json.put("og_url", getOpenGraphUrl());
+        json.putOpt("og_image_url", getOpenGraphImageUrl());
+        json.put("active", isActive());
+        return json;
+    }
+    public static Choice mergeFrom(JSONObject json) throws JSONException {
+        Choice choice = new Choice();
+        choice.setChoice(json.getString("choice"));
+        choice.setViewIndex(json.getString("index"));
+        choice.setDetail(json.optString("detail"));
+        //choice.setActive(json.optBoolean("active")); // manual moderation is required
+        return choice;
+    }
 }

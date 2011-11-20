@@ -1,29 +1,34 @@
 package com.miparque.server.dao;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 
 import com.google.gdata.data.DateTime;
 
 /**
  * Record of a vote of a member. When a user votes, we add an entry to the history table
- *
- * UserChoiceHistory 2148972
+ * 
+ * VotoHistory 2218422
  * column id,name,type
- * col0,choiceId,string
- * col1,userId,string
- * col2,timeOfVote,datetime
- * col3,pollId,string
+ * col0,userId,string
+ * col4,pollId,string
+ * col5,choiceId,string
+ * col3,timeOfVote,datetime
+ * col6,timeStamp,number
  * 
  * @author codersquid
  */
-public class UserChoiceHistory implements Serializable {
+public class VotoHistory implements Serializable {
     private static final long serialVersionUID = 1L;
     private String id;
     private String userId;
     private String pollId;
     private String choiceId;
+
+    //use a SimpleDateFormat("yyyy.MM.dd");
+    private String timeOfVote; // = df.format(date)))
     // https://groups.google.com/group/fusion-tables-users-group/msg/7c41c7f6ea5f485f?dmode=source&output=gplain&noredirect
-    private DateTime timeOfVote = DateTime.now();
+    private Long timeStamp; // = java.lang.System.currentTimeMillis();
 
     public String getId() {
         return id;
@@ -49,11 +54,17 @@ public class UserChoiceHistory implements Serializable {
     public void setChoiceId(String choiceId) {
         this.choiceId = choiceId;
     }
-    public DateTime getTimeOfVote() {
+    public String getTimeOfVote() {
         return timeOfVote;
     }
-    public void setTimeOfVote(DateTime timeOfVote) {
+    public void setTimeOfVote(String timeOfVote) {
         this.timeOfVote = timeOfVote;
+    }
+    public Long getTimeStamp() {
+        return this.timeStamp;
+    }
+    public void setTimeStamp(Long timeStamp) {
+        this.timeStamp = timeStamp;
     }
     public int hashCode() {
         final int prime = 31;
@@ -68,7 +79,7 @@ public class UserChoiceHistory implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        UserChoiceHistory other = (UserChoiceHistory) obj;
+        VotoHistory other = (VotoHistory) obj;
         if (id == null) {
             if (other.id != null)
                 return false;
