@@ -33,9 +33,11 @@ public class RestApplication extends Application {
         apiRouter.attach("/votos", PollListResource.class);
 
         // URI for recording the choice of a user in a poll
-        apiRouter.attach("/historia/voto/{pollId}/{choiceId}/{userId}", VotoHistoryResource.class);
+        apiRouter.attach("/historia/voto/{userId}/{pollId}/{choiceId}", VotoHistoryResource.class);
         // URI for getting the history of all votes of a user
         apiRouter.attach("/historia/votos/{userId}", VotoHistoryListResource.class);
+        // URI for getting the history of a user's votes for a specific poll
+        apiRouter.attach("/historia/votos/{userId}/{pollId}", VotoHistoryListResource.class);
 
         setStatusService(new AppStatusService());
 

@@ -25,16 +25,18 @@ public class VotoHistoryResource extends ServerResource {
     private ChoiceFtDao choiceDao = new ChoiceFtDao();
 
     /**
+     * POST /historia/voto/{userId}/{pollId}/{choiceId}
+     * 
      * example
-     * {code curl -v -X POST -H 'content-length:0'  "http://localhost:8888/api/historia/voto/203/5/123"}
+     * {code curl -v -X POST -H 'content-length:0'  "http://localhost:8888/api/historia/voto/123/203/5"}
      * @throws ResourceNotFoundException
      * @throws JSONException
      */
     @Post
     public Representation acceptVoto() throws ResourceNotFoundException, JSONException {
+        String userId = (String) getRequest().getAttributes().get("userId");
         String pollId = (String) getRequest().getAttributes().get("pollId");
         String choiceId = (String) getRequest().getAttributes().get("choiceId");
-        String userId = (String) getRequest().getAttributes().get("userId");
         System.out.println("poll " + pollId + " choice " + choiceId + " user " + userId);
 
         // TODO does the user exist?
