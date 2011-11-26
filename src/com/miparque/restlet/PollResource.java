@@ -110,7 +110,8 @@ public class PollResource extends ServerResource {
      *
      * {@code $ curl -v -X POST -d @parkname.json -H 'content-type:application/json' -H 'accept:application/json' "http://localhost:8888/api/voto"}
      * 
-     * @param entity    Representation containing a json Poll
+     * @param entity
+     *     Representation containing a json Poll
      * @throws JSONException 
      * 
      */
@@ -121,57 +122,22 @@ public class PollResource extends ServerResource {
             return new JsonRepresentation(new JSONObject());
         }
 
-        Poll poll = new Poll();
-        try {
-            // allow required elements to blow up when they are not found
-            JSONObject json = entity.getJsonObject();
-            poll = Poll.mergeFrom(json);
-        } catch (JSONException e) {
-            e.printStackTrace();
-            setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
-            return jsonifyException(e);
-        }
+        // allow required elements to blow up when they are not found
+        JSONObject json = entity.getJsonObject();
+        Poll poll = Poll.mergeFrom(json);
 
-        String rowid = "";
-        try {
-            rowid = pollDao.insert(poll);
-            choiceDao.insertList(poll.getChoices(), rowid);
-        } catch (Exception e) {
-            // catch already exists and return 4xx
-            // catch some service exception and return 500
-            e.printStackTrace();
-            setStatus(Status.SERVER_ERROR_INTERNAL);
-            return jsonifyException(e);
-        }
+        String rowid = pollDao.insert(poll);
+        choiceDao.insertList(poll.getChoices(), rowid);
 
-        // everything works
         setStatus(Status.SUCCESS_CREATED);
-        JSONObject json = new JSONObject();
-        json.putOpt("rowid", rowid);
-        JsonRepresentation jr = new JsonRepresentation(json);
+        JSONObject responseJson = new JSONObject();
+        responseJson.putOpt("rowid", rowid);
+        JsonRepresentation jr = new JsonRepresentation(responseJson);
         jr.setCharacterSet(CharacterSet.UTF_8);
         return jr;
     }
 
-    private JsonRepresentation jsonifyException(Exception e) {
-        JSONObject json = new JSONObject();
-        try {
-            StringBuffer sb = new StringBuffer(e.getMessage());
-            sb.append("\n");
-            for (StackTraceElement ste : e.getStackTrace()) {
-                sb.append(ste.toString());
-                sb.append("\n");
-            }
-            String msg = URLEncoder.encode(sb.toString(), "UTF-8");
-            json.put("error", msg);
-        } catch (Exception e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
-        JsonRepresentation errorJson = new JsonRepresentation(json);
-        errorJson.setCharacterSet(CharacterSet.UTF_8);
-        return errorJson;
-    }
+
     /**
      * we could have a PUT for adding choices, but
      * then must have a unique way to identify a choice so that we maintain idempotency.

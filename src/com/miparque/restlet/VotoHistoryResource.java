@@ -43,20 +43,23 @@ public class VotoHistoryResource extends ServerResource {
 
         // does this poll exist
         Poll poll = pollDao.get(pollId);
-        //if (!poll.isActive()) {
-        //    setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
-        //}
+
+        if (!poll.isActive()) {
+            throw new IllegalArgumentException("Cannot vote in this poll. It is not active: " + poll);
+        }
 
         // TODO Does this PollType allow for multiple selections?
         // TODO did the user vote in this poll before?
 
         // does the choice exist?
         Choice choice = choiceDao.get(choiceId);
+
         // verify that this choice is in this poll
         if (!pollId.equals(choice.getPollId())) {
-            throw new IllegalArgumentException("This choice does not belong to this poll: "
-                    + "Choice [" + choice + "] "
-                    + "Poll [" + poll + "]");
+            throw new IllegalArgumentException("This choice does not belong to this poll: " + choice + " " + poll);
+        }
+        if (!choice.isActive()) {
+            throw new IllegalArgumentException("This choice is not active yet: " + choice);
         }
 
         // https://groups.google.com/group/fusion-tables-users-group/msg/7c41c7f6ea5f485f?dmode=source&output=gplain&noredirect
