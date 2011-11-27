@@ -13,20 +13,25 @@ import com.miparque.server.ResourceNotFoundException;
 import com.miparque.server.dao.Choice;
 
 public class ChoiceFtDao extends AbstractFtDao<Choice,String> {
-    private static final String CHOICE_FID = "2149094";
-    private static final String columnsChoice = "ROWID,viewIndex,openGraphUrl,choice,details,pollId,openGraphImageUrl,active";
-
+    protected static final String FID = "2149094";
+    private static final String columns = "ROWID,viewIndex,openGraphUrl,choice,details,pollId,openGraphImageUrl,active";
+    protected String getFusionTableId() {
+        return FID;
+    }
+    protected String getColumns() {
+        return columns;
+    }
     public Choice get(String choiceId) throws ResourceNotFoundException {
-        String choicequery = "SELECT " + columnsChoice + " from " + CHOICE_FID
+        String choicequery = "SELECT " + columns + " from " + FID
                 + " WHERE ROWID = '" + choiceId + "'";
         List<Map<String, String>> rows = runSelect(choicequery);
-        return choiceFromMappedResults(rows.get(0));
+        return mergeFromMap(rows.get(0));
     }
     public JSONObject getJson(String choiceId) {
         return null;
     }
     public List<JSONObject> getJsonList(String pollId) throws ResourceNotFoundException, JSONException {
-        String choicequery = "SELECT " + columnsChoice + " from " + CHOICE_FID
+        String choicequery = "SELECT " + columns + " from " + FID
                 + " WHERE 'pollId' = '" + pollId + "'";
         List<Map<String, String>> rows = runSelect(choicequery);
         List<JSONObject> choices = new ArrayList<JSONObject>();
@@ -39,18 +44,8 @@ public class ChoiceFtDao extends AbstractFtDao<Choice,String> {
     public String insert(Choice choice) {
         return null;
     }
-    public List<String> insertList(List<Choice> choices) {
-        return null;
-    }
-    public List<String> insertList(List<Choice> choices, String pollId) {
-        String insertSql = choicesInsertSql(choices, pollId);
-        return runInsert(insertSql);
-    }
-    public List<Choice> getList(String pollId) {
-        return null;
-    }
     public Choice getDetachedChoice(String pollId, String choiceId) throws ResourceNotFoundException {
-        String choicequery = "SELECT " + columnsChoice + " from " + CHOICE_FID
+        String choicequery = "SELECT " + columns + " from " + FID
                 + " WHERE 'pollId' = '" + pollId + "'"
                 + " AND ROWID = '" + choiceId + "'";
         List<Map<String, String>> rows = runSelect(choicequery);
@@ -59,21 +54,7 @@ public class ChoiceFtDao extends AbstractFtDao<Choice,String> {
             throw new RuntimeException("No unique choice. poll: " + pollId + " choice: " + choiceId
                     + " results: " + rows);
         }
-        return choiceFromMappedResults(rows.get(0));
-    }
-
-    private String choicesInsertSql(List<Choice> choices, String pollId) {
-        Iterator<Choice> iter = choices.iterator();
-        StringBuffer sb = new StringBuffer();
-        while (iter.hasNext()) {
-            Choice choice = iter.next();
-            validate(choice);
-            sb.append(choiceInsertSql(choice, pollId));
-            if (iter.hasNext()) {
-                sb.append(";");
-            }
-        }
-        return sb.toString();
+        return mergeFromMap(rows.get(0));
     }
 
     /**
@@ -82,7 +63,7 @@ public class ChoiceFtDao extends AbstractFtDao<Choice,String> {
      * @param m map of column values from a fusiontable row
      * @return a Choice representation of the results
      */
-    private Choice choiceFromMappedResults(Map<String,String> m) {
+    protected Choice mergeFromMap(Map<String,String> m) {
         //"ROWID,viewIndex,openGraphUrl,choice,details,pollId,openGraphImageUrl,active";
         Choice choice = new Choice();
         if (m.containsKey("rowid")) {
@@ -111,11 +92,10 @@ public class ChoiceFtDao extends AbstractFtDao<Choice,String> {
         }
         return choice;
     }
-    private String choiceInsertSql(Choice choice, String pollId) {
+    protected String getInsertSql(Choice choice) {
         choice.setOpenGraphUrl(slugify(choice.getChoice()));
-        choice.setPollId(pollId);
         StringBuffer sb = new StringBuffer("insert into ")
-                .append(CHOICE_FID)
+                .append(FID)
                 .append(" (viewIndex,openGraphUrl,choice,details,pollId,openGraphImageUrl)")
                 .append(" values (")
                 .append(nullSafeString(choice.getViewIndex()))
@@ -132,10 +112,31 @@ public class ChoiceFtDao extends AbstractFtDao<Choice,String> {
                 .append(" )");
         return sb.toString();
     }
-    private void validate(Choice choice) {
+    private String getChoiceInsertSql(Choice choice, String pollId) {
+        choice.setOpenGraphUrl(slugify(choice.getChoice()));
+        choice.setPollId(pollId);
+        StringBuffer sb = new StringBuffer("insert into ")
+                .append(FID)
+                .append(" (viewIndex,openGraphUrl,choice,details,pollId,openGraphImageUrl)")
+                .append(" values (")
+                .append(nullSafeString(choice.getViewIndex()))
+                .append(",")
+                .append(nullSafeString(choice.getOpenGraphUrl()))
+                .append(",")
+                .append(nullSafeString(choice.getChoice()))
+                .append(",")
+                .append(nullSafeString(choice.getDetail()))
+                .append(",")
+                .append(nullSafeString(choice.getPollId()))
+                .append(",")
+                .append(nullSafeString(choice.getOpenGraphImageUrl()))
+                .append(" )");
+        return sb.toString();
+    }
+    protected void validateForInsert(Choice choice) {
         if (choice.getChoice() == null || choice.getChoice().isEmpty()) {
-            throw new IllegalArgumentException("Choices need a choice in order to be stored. Failed to store" +
-                    " Choice object: " + choice);
+            throw new IllegalArgumentException("Choices need a choice description in order to be stored. "
+                    + "Failed to store Choice object: " + choice);
         }
     }
 

@@ -1,6 +1,6 @@
 package com.miparque.restlet;
 
-import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONException;
@@ -17,6 +17,7 @@ import org.restlet.resource.ServerResource;
 
 import com.miparque.server.ResourceNotFoundException;
 import com.miparque.server.RestApplication;
+import com.miparque.server.dao.Choice;
 import com.miparque.server.dao.Poll;
 import com.miparque.server.database.ChoiceFtDao;
 import com.miparque.server.database.PollFtDao;
@@ -127,7 +128,13 @@ public class PollResource extends ServerResource {
         Poll poll = Poll.mergeFrom(json);
 
         String rowid = pollDao.insert(poll);
-        choiceDao.insertList(poll.getChoices(), rowid);
+        // take rowid from poll insertion, modify the choice DAOs to have the poll key and insert the choice list
+        List<Choice> choices = new ArrayList<Choice>();
+        for (Choice choice : poll.getChoices()) {
+            choice.setPollId(rowid);
+            choices.add(choice);
+        }
+        choiceDao.insertList(choices);
 
         setStatus(Status.SUCCESS_CREATED);
         JSONObject responseJson = new JSONObject();

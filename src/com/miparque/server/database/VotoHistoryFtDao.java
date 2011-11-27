@@ -12,28 +12,28 @@ import com.miparque.server.ResourceNotFoundException;
 import com.miparque.server.dao.VotoHistory;
 
 public class VotoHistoryFtDao extends AbstractFtDao<VotoHistory,String> {
-    private static final String VOTO_HISTORY_FID = "2218422";
-    private static final String columnsHistory = "ROWID,userId,pollId,choiceId,timeOfVote,timeStamp";
+    private static final String FID = "2218422";
+    private static final String columns = "ROWID,userId,pollId,choiceId,timeOfVote,timeStamp";
+    protected String getFusionTableId() {
+        return FID;
+    }
+    protected String getColumns() {
+        return columns;
+    }
 
     public JSONObject getJson(String key) throws ResourceNotFoundException, JSONException {
-        String query = "SELECT " + columnsHistory + " FROM " + VOTO_HISTORY_FID + " WHERE ROWID  = '"
-                + key + "'";
-        List<Map<String,String>> rows = runSelect(query);
-
+        List<Map<String,String>> rows = getMappedResults(key);
         return JsonAdapter.jsonFromMap(rows.get(0));
     }
-    public List<String> insertList(List<VotoHistory> objs) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+
     /**
      * @param userId
      *     user whose history we want
      * @return
      *     json representation of the user's voto history
      */
-    public List<JSONObject> getJsonList(String userId) throws ResourceNotFoundException, JSONException {
-        String query = "SELECT " + columnsHistory + " FROM " + VOTO_HISTORY_FID + " WHERE 'userId' = '"
+    public List<JSONObject> getUserHistoryJsonList(String userId) throws ResourceNotFoundException, JSONException {
+        String query = "SELECT " + getColumns() + " FROM " + getFusionTableId() + " WHERE 'userId' = '"
                 + userId + "'";
         List<Map<String,String>> rows = runSelect(query);
 
@@ -52,8 +52,8 @@ public class VotoHistoryFtDao extends AbstractFtDao<VotoHistory,String> {
      * @return
      *     json representation of the user's voto history for the specified poll in reverse chronology
      */
-    public List<JSONObject> getJsonList(String userId, String pollId) throws ResourceNotFoundException, JSONException {
-        String query = "SELECT " + columnsHistory + " FROM " + VOTO_HISTORY_FID + " WHERE 'userId' = '"
+    public List<JSONObject> getUserPollHistoryJsonList(String userId, String pollId) throws ResourceNotFoundException, JSONException {
+        String query = "SELECT " + getColumns() + " FROM " + getFusionTableId() + " WHERE 'userId' = '"
                 + userId + "'" + " AND 'pollId' = " + "'" + pollId + "'"
                 + " ORDER BY 'timeStamp' DESC";
         List<Map<String,String>> rows = runSelect(query);
@@ -65,9 +65,9 @@ public class VotoHistoryFtDao extends AbstractFtDao<VotoHistory,String> {
         }
         return history;
     }
-    public String insert(VotoHistory vh) {
+    protected String getInsertSql(VotoHistory vh) {
         StringBuffer sb = new StringBuffer("insert into ")
-                .append(VOTO_HISTORY_FID)
+                .append(getFusionTableId())
                 .append(" (choiceId,userId,timeOfVote,pollId,timeStamp) ")
                 .append(" values (")
                 .append(nullSafeString(vh.getChoiceId()))
@@ -80,7 +80,7 @@ public class VotoHistoryFtDao extends AbstractFtDao<VotoHistory,String> {
                 .append(",")
                 .append(nullSafeNumber(vh.getTimeStamp()))
                 .append(" )");
-        return runInsert(sb.toString()).get(0);
+        return sb.toString();
     }
 
     public List<VotoHistory> getList(String key)
@@ -88,11 +88,23 @@ public class VotoHistoryFtDao extends AbstractFtDao<VotoHistory,String> {
         // TODO Auto-generated method stub
         return null;
     }
-    public VotoHistory get(String key) throws ResourceNotFoundException {
+    public List<JSONObject> getJsonList(String key)
+            throws ResourceNotFoundException, JSONException {
         // TODO Auto-generated method stub
         return null;
     }
-
-
+    protected void validateForInsert(VotoHistory entity) {
+        // TODO Auto-generated method stub
+    }
+    protected VotoHistory mergeFromMap(Map<String, String> rowMap) {
+        VotoHistory vh = new VotoHistory();
+        vh.setChoiceId(rowMap.get("choiceId"));
+        vh.setId(rowMap.get("rowid"));
+        vh.setPollId(rowMap.get("pollId"));
+        vh.setTimeOfVote(rowMap.get("timeOfVote"));
+        Long timeStamp = Long.valueOf(rowMap.get("timeStamp"));
+        vh.setTimeStamp(timeStamp);
+        return vh;
+    }
 
 }

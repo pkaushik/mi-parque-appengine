@@ -20,8 +20,14 @@ import com.miparque.server.dao.PollType;
  * @author codersquid
  */
 public class PollFtDao extends AbstractFtDao<Poll,String> {
-    private static final String POLL_FID = "2149092";
-    private static final String columnsPoll = "ROWID,description,title,openGraphUrl,pollType,active,openGraphImageUrl";
+    private static final String FID = "2149092";
+    private static final String columns = "ROWID,description,title,openGraphUrl,pollType,active,openGraphImageUrl";
+    protected String getFusionTableId() {
+        return FID;
+    }
+    protected String getColumns() {
+        return columns;
+    }
 
     /**
      * @param rowid rowid for a Poll
@@ -36,32 +42,8 @@ public class PollFtDao extends AbstractFtDao<Poll,String> {
         return pollJson;
     }
 
-
-    /**
-     * Persist a Poll and its Choices to fusiontables.
-     * 
-     * @param poll poll entity to be persisted
-     * @return rowid of the new row
-     * @throws RuntimeExceptions if any of the objects do not pass validation, or there are service problems.
-     */
-    public String insert(Poll poll) {
-        validate(poll);
-        String pollInsert = pollInsertSql(poll);
-        List<String> rowids = new ArrayList<String>();
-        rowids = runInsert(pollInsert);
-        String pollid = rowids.get(0);
-        return pollid;
-    }
-
-    public Poll get(String key) throws ResourceNotFoundException {
-        List<Map<String,String>> pollrows = getMappedResults(key);
-        Map<String,String> pollMap = pollrows.get(0); // TODO want to throw an exception for more than one result?
-        return pollFromMappedResults(pollMap);
-    }
-
     public List<JSONObject> getAllJson() throws ResourceNotFoundException, JSONException {
-        String pollquery = "SELECT " + columnsPoll + " from " + POLL_FID;
-        List<Map<String, String>> pollrows = runSelect(pollquery);
+        List<Map<String, String>> pollrows = getAllMappedResults();
         List<JSONObject> polls = new ArrayList<JSONObject>();
         for (Map<String,String> m : pollrows) {
             JSONObject j = JsonAdapter.pollFromMappedResults(m);
@@ -71,31 +53,14 @@ public class PollFtDao extends AbstractFtDao<Poll,String> {
     }
     public List<JSONObject> getJsonList(String key) throws ResourceNotFoundException, JSONException {
         // TODO Auto-generated method stub
-        throw new RuntimeException("This doesn't even make sense to implement but I'm too dopey right now" +
-                " to fix it ");
+        throw new RuntimeException("not implemented yet");
     }
 
-    public List<String> insertList(List<Poll> objs) {
-        // TODO Auto-generated method stub
-        throw new RuntimeException("Not implemented yet. Could not insert: " + objs);
-    }
-
-
-    public List<Poll> getList(String key) throws ResourceNotFoundException {
-        throw new RuntimeException("This doesn't even make sense to implement but I'm too dopey right now" +
-                " to fix it ");
-    }
-
-    private List<Map<String,String>> getMappedResults(String rowid) throws ResourceNotFoundException {
-        String pollquery = "SELECT " + columnsPoll + " from " + POLL_FID + " WHERE ROWID = '" + rowid + "'" ;
-        List<Map<String, String>> pollrows = runSelect(pollquery);
-        return pollrows;
-    }
     /**
      * Validates a poll for storing
      * @param poll
      */
-    private void validate(Poll poll) {
+    protected void validateForInsert(Poll poll) {
         if (poll.getTitle() == null || poll.getTitle().isEmpty()) {
             throw new IllegalArgumentException("Polls need a title in order to be stored. Failed to store" +
                     " Poll object: " + poll);
@@ -108,7 +73,7 @@ public class PollFtDao extends AbstractFtDao<Poll,String> {
      * @param m map of column values from a fusiontable row
      * @return a Poll representation of the results
      */
-    private Poll pollFromMappedResults(Map<String,String> m) {
+    protected Poll mergeFromMap(Map<String,String> m) {
         Poll poll = new Poll();
         if (m.containsKey("rowid")) {
             poll.setId(m.get("rowid"));
@@ -139,11 +104,11 @@ public class PollFtDao extends AbstractFtDao<Poll,String> {
      * @param poll a validate poll
      * @return sql insert statement valid for fusiontables
      */
-    private String pollInsertSql(Poll poll) {
+    protected String getInsertSql(Poll poll) {
         String active = poll.isActive() ? "true" : "false";
         poll.setOpenGraphUrl(slugify(poll.getTitle()));
         StringBuffer sb = new StringBuffer("insert into ")
-                .append(POLL_FID)
+                .append(FID)
                 .append(" (description,title,openGraphUrl,pollType,active,openGraphImageUrl)")
                 .append(" values (")
                 .append(nullSafeString(poll.getDescription()))

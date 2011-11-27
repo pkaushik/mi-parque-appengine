@@ -1,9 +1,9 @@
 package com.miparque.server.dao;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
+import java.util.Map;
 
-import com.google.gdata.data.DateTime;
+import com.miparque.restlet.JsonAdapter;
 
 /**
  * Record of a vote of a member. When a user votes, we add an entry to the history table
@@ -95,5 +95,5 @@ public class VotoHistory implements Serializable {
                 + ", timeOfVote=" + timeOfVote
                 + "]";
     }
-    
+
 }

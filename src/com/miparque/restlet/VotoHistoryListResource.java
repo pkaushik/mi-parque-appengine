@@ -53,9 +53,9 @@ public class VotoHistoryListResource extends ServerResource {
         String pollId = (String) getRequest().getAttributes().get("pollId");
         List<JSONObject> history = new ArrayList<JSONObject>();
         if (pollId == null) {
-            history = vhDao.getJsonList(id);
+            history = vhDao.getUserHistoryJsonList(id);
         } else {
-            history= vhDao.getJsonList(id, pollId);
+            history= vhDao.getUserPollHistoryJsonList(id, pollId);
         }
         JSONObject json = new JSONObject();
         json.put("history", history);
