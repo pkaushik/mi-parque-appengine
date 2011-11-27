@@ -51,6 +51,7 @@ public class PollFtDao extends AbstractFtDao<Poll,String> {
         }
         return polls;
     }
+
     public List<JSONObject> getJsonList(String key) throws ResourceNotFoundException, JSONException {
         // TODO Auto-generated method stub
         throw new RuntimeException("not implemented yet");
@@ -98,6 +99,9 @@ public class PollFtDao extends AbstractFtDao<Poll,String> {
         }
         return poll;
     }
+    private String generateOpenGraphUrl(Poll poll) {
+        return slugify(poll.getTitle());
+    }
 
     /**
      * Generates insert statement for requested poll
@@ -106,7 +110,7 @@ public class PollFtDao extends AbstractFtDao<Poll,String> {
      */
     protected String getInsertSql(Poll poll) {
         String active = poll.isActive() ? "true" : "false";
-        poll.setOpenGraphUrl(slugify(poll.getTitle()));
+        poll.setOpenGraphUrl(generateOpenGraphUrl(poll));
         StringBuffer sb = new StringBuffer("insert into ")
                 .append(FID)
                 .append(" (description,title,openGraphUrl,pollType,active,openGraphImageUrl)")

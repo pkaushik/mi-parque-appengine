@@ -1,5 +1,6 @@
 package com.miparque.server.database;
 
+import java.io.IOException;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.util.ArrayList;
@@ -10,7 +11,10 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.gdata.util.AuthenticationException;
+import com.google.gdata.util.ServiceException;
 import com.miparque.server.ResourceNotFoundException;
+import com.miparque.server.dao.Choice;
 import com.miparque.server.dao.Poll;
 
 /**
@@ -51,10 +55,6 @@ public abstract class AbstractFtDao<T,K> {
      */
     protected abstract T mergeFromMap(Map<String, String> resultMap);
 
-    public List<String> getByOpenGraphUrl(String ogUrl) {
-        String foo = getFusionTableId();
-        return null;
-    }
     /**
      * Persist an entity to its fusion table
      * 
@@ -67,11 +67,12 @@ public abstract class AbstractFtDao<T,K> {
         String insertSql = getInsertSql(entity);
         List<String> rowids = runInsert(insertSql);
         if (rowids.size() > 1) {
-            throw new RuntimeException("There should only be one rowid resulting from an insertion of one entity but "
+            // This would be a WARN log line.
+            System.out.println("There should only be one rowid resulting from an insertion of one entity but "
                     + " we got more than one. rowids: " + rowids + " entity: " + entity);
         }
-        String pollid = rowids.get(0);
-        return pollid;
+        String rowid = rowids.get(0);
+        return rowid;
     }
     /**
      * Assumption being made: Expect a unique result for T based on this key
@@ -93,6 +94,17 @@ public abstract class AbstractFtDao<T,K> {
             resultList.add(mergeFromMap(resultMap));
         }
         return resultList;
+    }
+    public T getByOpenGraphUrl(String ogUrl) throws ResourceNotFoundException {
+        String ogQuery = "SELECT " + getColumns() + " from " + getFusionTableId()
+                + " WHERE openGraphUrl = '" + ogUrl + "'";
+        List<Map<String, String>> rows = runSelect(ogQuery);
+        if (rows.size() > 1) {
+            // the data is screwed up
+            throw new RuntimeException("We should only get one result from an open graph url query. "
+                    + " results: " + rows);
+        }
+        return mergeFromMap(rows.get(0));
     }
     /**
      * Inserts a list of entities in to their fusion table. We want to use this when we have multiple objects

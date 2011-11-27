@@ -81,6 +81,16 @@ public class FusionTablesManager {
       }
       return rowids;
   }
+  public void runUpdate(String updateQuery) throws IOException,ServiceException {
+      System.out.println(updateQuery);
+      URL url = new URL(SERVICE_URL);
+      GDataRequest request = service.getRequestFactory().getRequest(RequestType.UPDATE, url,
+              new ContentType("application/x-www-form-urlencoded"));
+      OutputStreamWriter writer = new OutputStreamWriter(request.getRequestStream());
+      writer.append("sql=" + URLEncoder.encode(updateQuery, "UTF-8"));
+      writer.flush();
+      request.execute();
+  }
 
   /**
    * Runs select request

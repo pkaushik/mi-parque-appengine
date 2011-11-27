@@ -57,6 +57,11 @@ public class ChoiceFtDao extends AbstractFtDao<Choice,String> {
         return mergeFromMap(rows.get(0));
     }
 
+
+    private String generateOpenGraphUrl(Choice c) {
+        String slug = c.getPollId() + "-" + slugify(c.getChoice());
+        return slug;
+    }
     /**
      * Builds a choice from the map of strings returned by {@link FusionTablesManager#runSelect(String)}
      * 
@@ -93,7 +98,8 @@ public class ChoiceFtDao extends AbstractFtDao<Choice,String> {
         return choice;
     }
     protected String getInsertSql(Choice choice) {
-        choice.setOpenGraphUrl(slugify(choice.getChoice()));
+        String ogUrl = generateOpenGraphUrl(choice);
+        choice.setOpenGraphUrl(ogUrl);
         StringBuffer sb = new StringBuffer("insert into ")
                 .append(FID)
                 .append(" (viewIndex,openGraphUrl,choice,details,pollId,openGraphImageUrl)")
@@ -112,27 +118,7 @@ public class ChoiceFtDao extends AbstractFtDao<Choice,String> {
                 .append(" )");
         return sb.toString();
     }
-    private String getChoiceInsertSql(Choice choice, String pollId) {
-        choice.setOpenGraphUrl(slugify(choice.getChoice()));
-        choice.setPollId(pollId);
-        StringBuffer sb = new StringBuffer("insert into ")
-                .append(FID)
-                .append(" (viewIndex,openGraphUrl,choice,details,pollId,openGraphImageUrl)")
-                .append(" values (")
-                .append(nullSafeString(choice.getViewIndex()))
-                .append(",")
-                .append(nullSafeString(choice.getOpenGraphUrl()))
-                .append(",")
-                .append(nullSafeString(choice.getChoice()))
-                .append(",")
-                .append(nullSafeString(choice.getDetail()))
-                .append(",")
-                .append(nullSafeString(choice.getPollId()))
-                .append(",")
-                .append(nullSafeString(choice.getOpenGraphImageUrl()))
-                .append(" )");
-        return sb.toString();
-    }
+
     protected void validateForInsert(Choice choice) {
         if (choice.getChoice() == null || choice.getChoice().isEmpty()) {
             throw new IllegalArgumentException("Choices need a choice description in order to be stored. "
