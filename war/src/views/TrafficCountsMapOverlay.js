@@ -13,9 +13,9 @@ define([
 	  this.dotter = new Dotter(4);
 	  this.legendDotter = new Dotter(8.5);
 	  
-	  this.el.find("#dot1").append("<img src=\"" + this.legendDotter.getDot("#FECC5C") + "\"/>");
-	  this.el.find("#dot2").append("<img src=\"" + this.legendDotter.getDot("#FD8D3C") + "\"/>");
-	  this.el.find("#dot3").append("<img src=\"" + this.legendDotter.getDot("#F03B20") + "\"/>");
+	  this.el.find(".dot1").append("<img src=\"" + this.legendDotter.getDot("#FECC5C") + "\"/>");
+	  this.el.find(".dot2").append("<img src=\"" + this.legendDotter.getDot("#FD8D3C") + "\"/>");
+	  this.el.find(".dot3").append("<img src=\"" + this.legendDotter.getDot("#F03B20") + "\"/>");
 		  
 	  var that = this;
 	  _(traffic_raw.data).each(function(arr){ 

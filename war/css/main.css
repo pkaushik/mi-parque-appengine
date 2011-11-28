@@ -33,6 +33,14 @@ div.hide-auto-login-button iframe {
   width: 100%;
 }
 
+.legend-swatch {
+  height: 20px;
+}
+
+.small {
+  font-size: 12px;
+}
+
 
 /* jqm docs css
 

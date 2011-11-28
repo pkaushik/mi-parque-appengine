@@ -2,6 +2,7 @@
 define([
   '../data/gis/community_south_lawndale',
   'views/GreenMapOverlay',
+  'views/SchoolGroundsMapOverlay',
   'views/NeighborspaceGardensMapOverlay',
   'views/TrafficCountsMapOverlay',
   'views/AvisoMapOverlay',
@@ -12,6 +13,7 @@ define([
 ], function(
   LittleVillageGeoJSON, 
   GreenMapOverlay, 
+  SchoolGroundsMapOverlay,
   NeighborspaceGardensMapOverlay,
   TrafficCountsMapOverlay, 
   AvisoMapOverlay,
@@ -118,6 +120,7 @@ define([
     	
     	// Fixed overlays
         new GreenMapOverlay({ el: $("#mapa"), map: map });
+        new SchoolGroundsMapOverlay({ el: $("#mapa"), map: map });
         new TrafficCountsMapOverlay({ el: $("#mapa"), map: map });
         new NeighborspaceGardensMapOverlay({ el: $("#mapa"), map: map });
         
