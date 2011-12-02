@@ -30,6 +30,22 @@ public class ActivePoll implements Serializable {
     String[] cogurls = new String[] { null, null, null, null, null};
     String[] cogimageurls = new String[] { null, null, null, null, null};
 
+    String pollid;
+    String[] choiceids =  new String[] { null, null, null, null, null};
+    public String getPollId() {
+        return pollid;
+    }
+    public void setPollId(String pollid) {
+        this.pollid = pollid;
+    }
+    public String getChoiceId(int i) {
+        validate(i);
+        return choiceids[i];
+    }
+    public void setChoiceId(String id, int i) {
+        validate(i);
+        choiceids[i] = id;
+    }
     public String getTitle() {
         return title;
     }
@@ -127,19 +143,27 @@ public class ActivePoll implements Serializable {
     }
 
     public String toString() {
-        return "ActivePoll [title=" + title + ", description=" + description
-                + ", multiple=" + multiple + ", first=" + first + ", ogurl="
-                + ogurl + ", ogimage_url=" + ogimage_url + ", indexs="
-                + Arrays.toString(indexs) + ", choices="
-                + Arrays.toString(choices) + ", details="
-                + Arrays.toString(details) + ", cogurls="
-                + Arrays.toString(cogurls) + ", cogimageurls="
-                + Arrays.toString(cogimageurls) + "]";
+        return "ActivePoll ["
+                + "title=" + title
+                + ", pollid=" + pollid
+                + ", description=" + description
+                + ", multiple=" + multiple
+                + ", first=" + first
+                + ", ogurl=" + ogurl
+                + ", ogimage_url=" + ogimage_url
+                + ", indexs=" + Arrays.toString(indexs)
+                + ", choiceids=" + Arrays.toString(choices)
+                + ", choices=" + Arrays.toString(choices)
+                + ", details=" + Arrays.toString(details)
+                + ", cogurls=" + Arrays.toString(cogurls)
+                + ", cogimageurls=" + Arrays.toString(cogimageurls)
+                + "]";
     }
 
     public JSONObject toJson() throws JSONException {
         JSONObject pjson = new JSONObject();
         pjson.put("title", title);
+        pjson.put("id", pollid);
         pjson.put("description", description);
         pjson.put("multiple", multiple);
         pjson.put("first", first);
@@ -148,10 +172,13 @@ public class ActivePoll implements Serializable {
 
         List<JSONObject> choices = new ArrayList<JSONObject>();
         for (int i = 0; i < 5; i++) {
-            if (getIndex(i) == null) continue; // assume if an index is not null then the rest are populated
+            if (getIndex(i) == null || getIndex(i).isEmpty()) {
+                continue; // assume if an index is not null then the rest are populated
+            }
             JSONObject c = new JSONObject();
             c.put("index", getIndex(i));
             c.put("choice", getChoice(i));
+            c.put("choiceid", getChoiceId(i));
             c.putOpt("detail", getDetail(i));
             c.putOpt("cogurl", getCogurl(i));
             c.putOpt("cogimage_url", getCogImageUrl(i));
@@ -163,12 +190,14 @@ public class ActivePoll implements Serializable {
     public void mergeChoice(Choice c, int i) {
         setChoice(c.getChoice(), i);
         setDetail(c.getDetail(), i);
-        setIndex(c.getId(), i);
+        setIndex(c.getId(), i); // TODO do we want this mod 5 the choice id so we get 0 through 4?
+        setChoiceId(c.getId(), i);
         setCogurl(c.getOpenGraphUrl(), i);
         setCogimageUrl(c.getOpenGraphImageUrl(), i);
     }
     public void mergePoll(Poll p) {
         this.description = p.getDescription();
+        this.pollid = p.getId();
         this.title = p.getTitle();
         this.ogurl = p.getOpenGraphUrl();
         this.ogimage_url = p.getOpenGraphImageUrl();
