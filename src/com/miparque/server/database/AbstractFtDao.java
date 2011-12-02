@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,6 +35,7 @@ import com.miparque.server.dao.Poll;
  * @author codersquid
  */
 public abstract class AbstractFtDao<T,K> {
+    public static Logger log = Logger.getLogger(AbstractFtDao.class.getName());
     public abstract List<JSONObject> getJsonList(K key) throws ResourceNotFoundException, JSONException;
     public abstract JSONObject getJson(K key) throws ResourceNotFoundException, JSONException;
     protected abstract void validateForInsert(T entity);
@@ -67,8 +69,7 @@ public abstract class AbstractFtDao<T,K> {
         String insertSql = getInsertSql(entity);
         List<String> rowids = runInsert(insertSql);
         if (rowids.size() > 1) {
-            // This would be a WARN log line.
-            System.out.println("There should only be one rowid resulting from an insertion of one entity but "
+        	log.warning("There should only be one rowid resulting from an insertion of one entity but "
                     + " we got more than one. rowids: " + rowids + " entity: " + entity);
         }
         String rowid = rowids.get(0);
@@ -186,7 +187,6 @@ public abstract class AbstractFtDao<T,K> {
         try {
             FusionTablesManager fm = new FusionTablesManager();
             rows = fm.runSelect(query);
-            System.out.println(rows);
         } catch (Exception e) {
             throw new RuntimeException("Unable to find results for query: " + query, e);
         }
