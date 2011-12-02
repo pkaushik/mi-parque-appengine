@@ -30,6 +30,17 @@ public class ChoiceFtDao extends AbstractFtDao<Choice,String> {
     public JSONObject getJson(String choiceId) {
         return null;
     }
+    public List<Choice> getActive(String pollId) throws ResourceNotFoundException {
+        String choicequery = "SELECT " + columns + " from " + FID
+                + " WHERE 'pollId' = '" + pollId + "'"
+                + " AND 'active' = 'true'";
+        List<Map<String, String>> rows = runSelect(choicequery);
+        List<Choice> choices = new ArrayList<Choice>();
+        for (Map<String, String> rowMap : rows) {
+            choices.add(mergeFromMap(rowMap));
+        }
+        return choices;
+    }
     public List<JSONObject> getJsonList(String pollId) throws ResourceNotFoundException, JSONException {
         String choicequery = "SELECT " + columns + " from " + FID
                 + " WHERE 'pollId' = '" + pollId + "'";

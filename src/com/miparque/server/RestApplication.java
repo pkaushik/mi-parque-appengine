@@ -4,6 +4,7 @@ import org.restlet.Application;
 import org.restlet.Restlet;
 import org.restlet.routing.Router;
 
+import com.miparque.restlet.ActivePollResource;
 import com.miparque.restlet.AppStatusService;
 import com.miparque.restlet.ChoiceResource;
 import com.miparque.restlet.IdeaListResource;
@@ -32,6 +33,10 @@ public class RestApplication extends Application {
         apiRouter.attach("/voto", PollResource.class);
         // URI to get information about all polls (GET)
         apiRouter.attach("/votos", PollListResource.class);
+
+        // URI to create an active poll
+        apiRouter.attach("/activepoll/{pollId}", ActivePollResource.class);
+        apiRouter.attach("/activepolls", ActivePollResource.class);
 
         // URI to get information about a choice in a poll based on its open graph url (GET)
         apiRouter.attach("/choice/{ogUrl}", ChoiceResource.class);

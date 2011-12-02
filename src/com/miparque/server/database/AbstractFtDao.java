@@ -138,6 +138,14 @@ public abstract class AbstractFtDao<T,K> {
         }
         return sb.toString();
     }
+    public List<T> getAll() throws ResourceNotFoundException {
+        List<Map<String,String>> rowMaps = getAllMappedResults();
+        List<T> entities = new ArrayList<T>();
+        for (Map<String, String> m : rowMaps) {
+            entities.add(mergeFromMap(m));
+        }
+        return entities;
+    }
 
     protected List<Map<String,String>> getAllMappedResults() throws ResourceNotFoundException {
         String pollquery = "SELECT " + getColumns() + " from " + getFusionTableId();
