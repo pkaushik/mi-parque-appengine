@@ -8,6 +8,8 @@ public class Notification {
 	private float lat;
 	private float lon;
 	private String imgURL;
+	private String dateCreated;
+	
 	public Notification() {
 		// TODO Auto-generated constructor stub
 	}
@@ -59,6 +61,16 @@ public class Notification {
 		return imgURL;
 	}
 
+	public void setDateCreated(String dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+
+
+	public String getDateCreated() {
+		return dateCreated;
+	}
+
+	
 	public String toString() {
         return String.format("id: %s, title: %s, type: %s, lat:  %s, lon:  %s, description:  %s, imgURL:  %s", id, title, type,lat,lon,description,imgURL);
     }

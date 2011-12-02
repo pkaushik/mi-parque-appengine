@@ -1,13 +1,18 @@
 <div data-theme="b" data-content-theme="d" data-role="collapsible" {{if first}} data-collapsed="false" {{else}} data-collapsed="true"{{/if}} data-theme="d" >
   <h3>${title}</h3>
-	  <p>
-	    ${description}
-	  </p>
-	  <fb:like href="http://mi-parque.appspot.com/pages/ideas/${id}.html"
-		   layout="button_count"
-		   show_faces="true"
-		   action="like"
-		   colorscheme="light">
-	  </fb:like>
-	  <br/>
+	 <!--<h4>Submitted on:  ${dateCreated}</h4>-->
+
+          <p>
+            ${description}
+          </p>
+      <p>
+      <fb:like href="http://mi-parque.appspot.com/pages/ideas/${id}.html"
+           layout="button_count"
+           show_faces="true"
+           action="like"
+           colorscheme="light">
+      </fb:like>
+     &nbsp;&nbsp;
+     {{if imgURL}} <img src="${imgURL}" width="200" height="200"/> {{/if}}
+      </p>
 </div>
