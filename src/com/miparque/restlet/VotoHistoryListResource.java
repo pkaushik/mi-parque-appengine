@@ -3,6 +3,7 @@ package com.miparque.restlet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.restlet.data.CacheDirective;
@@ -33,10 +34,10 @@ public class VotoHistoryListResource extends ServerResource {
      * 
      * @return list of user choice histories in reverse chronology
      * <pre>
-     * {"history":[
+     * {
      *   {"pollId":"801","timeStamp":"1322237594991","choiceId":"401","userId":"123", * "timeOfVote":"2011.11.25","rowid":"1201"},
      *   {"pollId":"801","timeStamp":"1322237578645","choiceId":"402","userId":"123","timeOfVote":"2011.11.25","rowid":"1001"}
-     * ]}
+     * }
      * </pre>
      * @throws ResourceNotFoundException
      * @throws JSONException
@@ -57,8 +58,7 @@ public class VotoHistoryListResource extends ServerResource {
         } else {
             history= vhDao.getUserPollHistoryJsonList(id, pollId);
         }
-        JSONObject json = new JSONObject();
-        json.put("history", history);
+        JSONArray json = new JSONArray(history);
         JsonRepresentation jr = new JsonRepresentation(json);
         jr.setCharacterSet(CharacterSet.UTF_8);
         return jr;

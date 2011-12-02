@@ -2,6 +2,7 @@ package com.miparque.restlet;
 
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.restlet.data.CacheDirective;
@@ -24,8 +25,7 @@ public class PollListResource extends ServerResource {
         getResponse().getCacheDirectives().add(CacheDirective.noCache());
 
         List<JSONObject> polls = pollDao.getAllJson();
-        JSONObject json = new JSONObject();
-        json.put("votos", polls);
+        JSONArray json = new JSONArray(polls);
 
         JsonRepresentation jr = new JsonRepresentation(json);
         jr.setCharacterSet(CharacterSet.UTF_8);
