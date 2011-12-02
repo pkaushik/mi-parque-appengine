@@ -20,6 +20,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.logging.Logger;
 import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
 import java.util.List;
@@ -28,6 +29,7 @@ import java.io.InputStreamReader;
 import java.io.BufferedReader;
 
 public class FusionTablesManager {
+    public static Logger log = Logger.getLogger(FusionTablesManager.class.getName());
   private static final Pattern CSV_VALUE_PATTERN =
 	      Pattern.compile("([^,\\r\\n\"]*|\"(([^\"]*\"\")*[^\"]*)\")(,|\\r?\\n)");
   private static final String email="liliann.v.lucas@gmail.com";
@@ -64,7 +66,7 @@ public class FusionTablesManager {
    * @throws ServiceException
    */
   public List<String> runInsert(String updateQuery) throws IOException,ServiceException {
-      System.out.println(updateQuery);
+      log.info(updateQuery);
       URL url = new URL(SERVICE_URL);
       GDataRequest request = service.getRequestFactory().getRequest(RequestType.INSERT, url,
               new ContentType("application/x-www-form-urlencoded"));
@@ -100,7 +102,7 @@ public class FusionTablesManager {
 //	  }
   
   public void runUpdate(String updateQuery) throws IOException,ServiceException {
-      System.out.println(updateQuery);
+      log.info(updateQuery);
       URL url = new URL(SERVICE_URL);
       GDataRequest request = service.getRequestFactory().getRequest(RequestType.UPDATE, url,
               new ContentType("application/x-www-form-urlencoded"));
@@ -120,7 +122,7 @@ public class FusionTablesManager {
    * @throws ServiceException
    */
   public List<Map<String,String>> runSelect(String selectQuery) throws IOException, ServiceException {
-    System.out.println(selectQuery);
+    log.info(selectQuery);
     //URL url = new URL(SERVICE_URL + "?hdrs=false&sql=" + URLEncoder.encode(selectQuery, "UTF-8"));
     URL url = new URL(SERVICE_URL + "?sql=" + URLEncoder.encode(selectQuery, "UTF-8"));
     GDataRequest request = service.getRequestFactory().getRequest(RequestType.QUERY, url, ContentType.TEXT_PLAIN);

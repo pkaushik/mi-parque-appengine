@@ -1,6 +1,5 @@
 package com.miparque.server.database;
 
-import java.io.IOException;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.util.ArrayList;
@@ -12,11 +11,7 @@ import java.util.logging.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.google.gdata.util.AuthenticationException;
-import com.google.gdata.util.ServiceException;
 import com.miparque.server.ResourceNotFoundException;
-import com.miparque.server.dao.Choice;
-import com.miparque.server.dao.Poll;
 
 /**
  * Every FT based Dao will want to call {@link FusionTablesManager} and will want to do validation and

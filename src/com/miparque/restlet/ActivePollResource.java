@@ -30,6 +30,31 @@ public class ActivePollResource extends ServerResource {
     private ChoiceFtDao choiceDao = new ChoiceFtDao();
     private ActivePollFtDao activeDao = new ActivePollFtDao();
 
+    /**
+     * example
+     * {code curl http://1767.mi-parque.appspot.com/api/activepolls}
+     * 
+     * @return json array of active polls and their choices
+     * <pre>
+     * [ {
+     *  "title": "Park Name",
+     *  "ogurl": "park-name",
+     *  "description": "What should we name the park? Based on name submissions we are now voting on the top 3!",
+     *  "choices": [ {
+     *          "detail": "labor organizer, farm worker and environmental justice advocate",
+     *          "index": "201",
+     *          "cogurl": "601-parque-marentes",
+     *          "choice": "Parque Marentes",
+     *          "cogimage_url": ""
+     *      }, ],
+     *  "ogimage_url": "",
+     *  "first": false,
+     *  "multiple": false
+     * } ]
+     * </pre>
+     * @throws ResourceNotFoundException
+     * @throws JSONException
+     */
     @Get("json")
     public Representation represent() throws ResourceNotFoundException, JSONException {
         List<ActivePoll> polls = activeDao.getAll();
@@ -44,6 +69,16 @@ public class ActivePollResource extends ServerResource {
         return jr;
     }
 
+    /**
+     * TODO: this does not check whether the poll is already active. it is pretty flaky.
+     * 
+     * example
+     * 
+     * {code curl -v -X POST -H 'content-length:0'  "http://localhost:8888/api/activepoll/601"}
+     * @param pollId
+     *     id of poll to activate
+     * @throws ResourceNotFoundException
+     */
     @Post()
     public void activate() throws ResourceNotFoundException {
         String pollId = (String) getRequest().getAttributes().get("pollId");
