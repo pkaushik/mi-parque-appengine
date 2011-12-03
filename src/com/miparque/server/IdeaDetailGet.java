@@ -63,7 +63,7 @@ public class IdeaDetailGet extends HttpServlet{
 		sb = sb.append("<meta property=\"og:title\" content=\""+selectedIdea.getTitle()+"\" />\n");
 		sb = sb.append("<meta property=\"og:site_name\" content=\"Mi Parque - Little Village\" />\n");
 		sb = sb.append("<meta property=\"fb:app_id\" content=\"281417341887864\">\n");
-		sb = sb.append("<meta property=\"og:url\" content=\"http://mi-parque.appspot.com/idea/ideaGetDetail?id="+selectedIdea.getId()+"\">\n");
+		sb = sb.append("<meta property=\"og:url\" content=\"http://mi-parque.appspot.com/idea/idea/detail?id="+selectedIdea.getId()+"\">\n");
 		sb = sb.append("<meta property=\"og:description\" content=\""+selectedIdea.getDescription()+"\">\n");
 		sb = sb.append("<meta property=\"og:image\" content=\"http://mi-parque.appspot.com/images/logo_bottom.png\">\n");
 		sb = sb.append("<link rel=\"stylesheet\" href=\"http://mi-parque.appspot.com/lib/jquery/jquery.mobile/jquery.mobile.min.css\" />\n");
