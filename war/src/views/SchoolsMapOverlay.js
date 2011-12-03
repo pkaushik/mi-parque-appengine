@@ -1,10 +1,10 @@
 define([
-  '../../data/gis/school_grounds_little_village',
+//  '../../data/gis/school_grounds_little_village',
   '../../data/gis/private_schools_little_village',
   '../../data/gis/public_schools_little_village'
-], function(school_grounds, private_schools, public_schools) {
+], function(/*school_grounds,*/ private_schools, public_schools) {
   return Backbone.View.extend({
-	school_grounds: null,
+//	school_grounds: null,
 	
 	public_schools: null,
 	
@@ -12,19 +12,24 @@ define([
 	
 	dotter: null,
 	
+	legendDotter: null,
+	
 	initialize: function() {
 	  if (typeof google === 'undefined') return this;
 	  
 	  this.dotter = new Dotter(4);
-	  this.legendDotter = new Dotter(8.5);
+	  this.legendDotter = new Dotter(7);
 	  
-	  this.school_grounds = new GeoJSON(school_grounds, {
-		strokeColor: "#531BE0",
-		strokeWeight: 1,
-		strokeOpacity: 0.75,
-		fillOpacity: 1,
-		fillColor: "#531BE0" 
-	  });
+	  this.el.find(".dot2716C4").append("<img src=\"" + this.legendDotter.getDot("#2716C4") + "\"/>");
+	  this.el.find(".dot5193C9").append("<img src=\"" + this.legendDotter.getDot("#5193C9") + "\"/>");
+	  
+//	  this.school_grounds = new GeoJSON(school_grounds, {
+//		strokeColor: "#531BE0",
+//		strokeWeight: 1,
+//		strokeOpacity: 0.75,
+//		fillOpacity: 1,
+//		fillColor: "#531BE0" 
+//	  });
 	  
 	  this.public_schools = new GeoJSON(public_schools, {
 		icon: this.dotter.getDot('#2716C4')

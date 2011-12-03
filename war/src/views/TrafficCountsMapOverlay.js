@@ -11,11 +11,11 @@ define([
 	  if (typeof google === 'undefined') return this;
 	  
 	  this.dotter = new Dotter(4);
-	  this.legendDotter = new Dotter(8.5);
+	  this.legendDotter = new Dotter(7);
 	  
-	  this.el.find(".dot1").append("<img src=\"" + this.legendDotter.getDot("#FECC5C") + "\"/>");
-	  this.el.find(".dot2").append("<img src=\"" + this.legendDotter.getDot("#FD8D3C") + "\"/>");
-	  this.el.find(".dot3").append("<img src=\"" + this.legendDotter.getDot("#F03B20") + "\"/>");
+	  this.el.find(".dotFECC5C").append("<img src=\"" + this.legendDotter.getDot("#FECC5C") + "\"/>");
+	  this.el.find(".dotFD8D3C").append("<img src=\"" + this.legendDotter.getDot("#FD8D3C") + "\"/>");
+	  this.el.find(".dotF03B20").append("<img src=\"" + this.legendDotter.getDot("#F03B20") + "\"/>");
 		  
 	  var that = this;
 	  _(traffic_raw.data).each(function(arr){ 

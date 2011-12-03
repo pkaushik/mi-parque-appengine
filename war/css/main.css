@@ -34,7 +34,11 @@ div.hide-auto-login-button iframe {
 }
 
 .legend-swatch {
-  height: 20px;
+  height: 15px;
+}
+
+.legend-swatch-container {
+  width: 20px;
 }
 
 .small {
