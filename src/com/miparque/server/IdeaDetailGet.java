@@ -114,7 +114,7 @@ public class IdeaDetailGet extends HttpServlet{
 			sb = sb.append("</p>\n");
 		}
 		
-		sb = sb.append("<fb:comments href=\"http://mi-parque.appspot.com/idea/ideaGetDetail?id="+selectedIdea.getId()+"\"");
+		sb = sb.append("<fb:comments href=\"http://mi-parque.appspot.com/idea/detail?id="+selectedIdea.getId()+"\"");
 		sb = sb.append(" num_posts=\"4\"></fb:comments>\n");
 		sb = sb.append("</div>\n");
 		sb = sb.append("<div data-role=\"footer\" class=\"footer-docs\" data-theme=\"c\">\n");
