@@ -24,12 +24,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
         <servlet-name>IdeaGet</servlet-name>
         <servlet-class>com.miparque.server.IdeaGet</servlet-class>
   </servlet>
-  
    <servlet>
         <servlet-name>IdeaUpdate</servlet-name>
         <servlet-class>com.miparque.server.IdeaUpdate</servlet-class>
   </servlet>
-  
   <servlet>
     <servlet-name>APIServlet</servlet-name>
     <servlet-class>org.restlet.ext.servlet.ServerServlet</servlet-class>
@@ -38,8 +36,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
       <param-value>com.miparque.server.RestApplication</param-value>
     </init-param>
   </servlet>
-  
+  <servlet>
+        <servlet-name>IdeaDetail</servlet-name>
+        <servlet-class>com.miparque.server.IdeaDetailGet</servlet-class>
+  </servlet>
     <servlet-mapping>
+        <servlet-name>IdeaDetail</servlet-name>
+        <url-pattern>/idea/detail</url-pattern>
+   </servlet-mapping> 
+  <servlet-mapping>
         <servlet-name>IdeaUpdate</servlet-name>
         <url-pattern>/idea/update</url-pattern>
    </servlet-mapping>  
@@ -50,11 +55,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
   <servlet-mapping>
         <servlet-name>Notification</servlet-name>
         <url-pattern>/notify</url-pattern>
-   </servlet-mapping>  
-  <servlet-mapping>
-        <servlet-name>Notification</servlet-name>
-        <url-pattern>/notify</url-pattern>
-   </servlet-mapping>  
+   </servlet-mapping>   
   <servlet-mapping>
         <servlet-name>Registration</servlet-name>
         <url-pattern>/reg</url-pattern>
