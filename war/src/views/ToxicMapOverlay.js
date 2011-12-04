@@ -20,7 +20,7 @@ define([
 	  _(placemarks).each(function(item){ 
 		  var marker = new google.maps.Marker({
 			position: new google.maps.LatLng(item.lon, item.lat),
-			icon: 'images/factory.png',
+			icon: 'images/toxic.png',
 		  });
 		  
 		  var message = {

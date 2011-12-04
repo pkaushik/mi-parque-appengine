@@ -1,19 +1,17 @@
 define([
-  '../../data/gis/site_remediation_little_village'
-], function(site) {
+  '../../data/gis/fire_stations_little_village',
+//  '../../data/gis/police_stations_little_village'
+], function(fire/*, police*/) {
   return Backbone.View.extend({
 	
+//	police: null,
+	
 	initialize: function() {
-	  if (typeof google === 'undefined') return this;
-	  
-//	  this.epa = new GeoJSON(epa, {
-//		strokeColor: "#343434",
-//		strokeWeight: 1,
-//		strokeOpacity: 0.75,
-//		fillOpacity: 1,
-//		fillColor: "#343434" 
+//	  this.police = new GeoJSON(police, {
+//		icon: "images/police.png"
 //	  });
 	  
+	  if (typeof google === 'undefined') return this;
 	  this.render();
 	  return this;
 	},
@@ -38,16 +36,19 @@ define([
 	
     render: function() { 
       var that = this;
-      //this.renderFeatureCollection(this.epa, this.options.map);
-      _(site.data).each(function(arr){ 
+      
+//      this.renderFeatureCollection(this.police, this.options.map);
+      
+      _(fire.data).each(function(arr){ 
   		  var marker = new google.maps.Marker({
-  			position: new google.maps.LatLng(arr[10], arr[11]),
-  			icon: 'images/aviso_community_small.png',
+  			position: new google.maps.LatLng(arr[14][1], arr[14][2]),
+  			icon: 'images/fire_station.png',
   	        flat: true,
   	        clickable: false,
   	        map: that.options.map
   		  });
   	  });
+      
       return this;
     }
   });

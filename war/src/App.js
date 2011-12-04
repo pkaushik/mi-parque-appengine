@@ -2,7 +2,9 @@
 define([
   '../data/gis/community_south_lawndale',
   'views/GreenMapOverlay',
-//  'views/EPAMapOverlay',
+  'views/HealthServicesMapOverlay',
+  'views/EPAMapOverlay',
+  'views/CityServicesMapOverlay',
   'views/SchoolsMapOverlay',
   'views/NeighborspaceGardensMapOverlay',
   'views/TrafficCountsMapOverlay',
@@ -14,7 +16,9 @@ define([
 ], function(
   LittleVillageGeoJSON, 
   GreenMapOverlay, 
-//  EPAMapOverlay,
+  HealthServicesMapOverlay,
+  EPAMapOverlay,
+  CityServicesMapOverlay,
   SchoolsMapOverlay,
   NeighborspaceGardensMapOverlay,
   TrafficCountsMapOverlay, 
@@ -122,14 +126,16 @@ define([
     	
     	// Fixed overlays
         new GreenMapOverlay({ el: $("#mapa"), map: map });
-        //new EPAMapOverlay({ el: $("#mapa"), map: map });
+        new HealthServicesMapOverlay({ el: $("#mapa"), map: map });
+        new EPAMapOverlay({ el: $("#mapa"), map: map });
+        new CityServicesMapOverlay({ el: $("#mapa"), map: map });
         new SchoolsMapOverlay({ el: $("#mapa"), map: map });
         new TrafficCountsMapOverlay({ el: $("#mapa"), map: map });
         new NeighborspaceGardensMapOverlay({ el: $("#mapa"), map: map });
         
         // Toggle-able overlays
         new ToxicMapOverlay({ el: $("#mapa"), map: map });
-        new AvisoMapOverlay({ el: $("#mapa"), collection: avisoCollection, map: map });
+        //new AvisoMapOverlay({ el: $("#mapa"), collection: avisoCollection, map: map });
         
         // Pages
         new IdeaCollection({ el: $('#Ideas'), collection: new Backbone.Collection(ideas) });
