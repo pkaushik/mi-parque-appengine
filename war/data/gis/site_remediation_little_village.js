@@ -1,0 +1,10 @@
+define(function(){
+return {
+  "data" : [ 
+  [ 2272, "BE2E59D1-1754-48E5-8114-FF4C958B1203", 2272, 1308101055, "393204", 1308101055, "393204", "{\n}", "'0316305004", "2324 South Kenneth Avenue", "41.847674", "-87.735475", "ILD982065872", "Freeport-McMoRan Chicago Rod, Inc.", "Cook", "Freeport-McMoRan Chicago Rod, Inc.", "Vice President", "William", "Cobb", "(602) 366-7826", "2011-04-05T00:00:00", "Conestoga-Rovers & Associates", "Kenneth Duwal", "(773) 380-9241", "Conner", null, null, null, "True", "16.699999999999999" ]
+, [ 2286, "3988188B-08C0-42B3-A233-A833090644B0", 2286, 1308101055, "393204", 1308101055, "393204", "{\n}", "'0316306443", "3455 West 31st Place", "41.837092","-87.711422", null, "Chicago Land Trust 120304-09", "Cook", "Koltun Realty, LLC", "Mr.", "David", "Reich", "(312) 372-1947", "2010-05-04T00:00:00", "Environmental Group Services, Ltd.", "William Lennon", "(312) 447-1200", "Twum", null, null, null, "True", "4.4000000000000004" ]
+, [ 2284, "13E4B20A-C34A-4F52-B3F2-F0F802B3E2E2", 2284, 1308101055, "393204", 1308101055, "393204", "{\n}", "'0316306418", "3738-3762 West Ogden Avenue", "41.853287", "-87.718925", null, "Northern Environmental Development", "Cook", "Lawndale Christian Health Center", "Mr.", "Bruce", "Miller", "(773) 843-3000", "2011-04-25T00:00:00", "GSG Consultants, Inc.", "George Kougias", "(312) 733-6262", "Landers", null, null, null, "True", "0.76000000000000001" ]  
+, [ 2287, "35CA5480-C43D-49A6-8D85-4B267A9471F2", 2287, 1308101055, "393204", 1308101055, "393204", "{\n}", "'0316306447", "2501 South Christiana Avenue", "41.846077", "-87.708707", null, "Little Village Laundromat", "Cook", null, "Mr.", "Basil", "Demeur", "(708) 771-4515", "2009-12-03T00:00:00", "Gabriel Environmental Services", "Paul Basso", "(773) 486-2123", "Salch", null, null, null, "True", "0.114784" ]
+ ]
+}
+});
