@@ -32,8 +32,8 @@ public class FusionTablesManager {
     public static Logger log = Logger.getLogger(FusionTablesManager.class.getName());
   private static final Pattern CSV_VALUE_PATTERN =
 	      Pattern.compile("([^,\\r\\n\"]*|\"(([^\"]*\"\")*[^\"]*)\")(,|\\r?\\n)");
-  private static final String email="liliann.v.lucas@gmail.com";
-  private static final String password="iop!2taa";
+  private static final String email="XXXXXX";
+  private static final String password="XXXXXX";
   private static final String SERVICE_URL =
       "https://www.google.com/fusiontables/api/query";
 
